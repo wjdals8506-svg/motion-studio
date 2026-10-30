@@ -1,0 +1,14 @@
+{
+  "name": "motion-studio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"scripts/*.test.mjs\""
+  },
+  "devDependencies": {
+    "hyperframes": "0.8.221"
+  }
+}
