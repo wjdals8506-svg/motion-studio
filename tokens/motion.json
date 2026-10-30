@@ -1,0 +1,48 @@
+{
+  "fps": 30,
+  "durations_ms": {
+    "short1": 50, "short2": 100, "short3": 150, "short4": 200,
+    "medium1": 250, "medium2": 300, "medium3": 350, "medium4": 400,
+    "long1": 450, "long2": 500, "long3": 550, "long4": 600,
+    "extra-long1": 700, "extra-long2": 800, "extra-long3": 900, "extra-long4": 1000
+  },
+  "easings": {
+    "standard": [0.2, 0, 0, 1],
+    "standard-decelerate": [0, 0, 0, 1],
+    "standard-accelerate": [0.3, 0, 1, 1],
+    "emphasized-decelerate": [0.05, 0.7, 0.1, 1],
+    "emphasized-accelerate": [0.3, 0, 0.8, 0.15],
+    "linear": [0, 0, 1, 1]
+  },
+  "measured_eases": {
+    "crashIn":    { "fn": "snapOver",  "params": [2.0, 0.19, 0.218], "frames": 10, "use": "제자리에 부딪히며 살짝 지나침 (t≈.27에서 1.18)" },
+    "popOver":    { "fn": "spring",    "params": [2.67, 4.36],        "frames": 15, "use": "느리고 늦은 오버슛 (t≈.72에서 1.08)" },
+    "bounceHard": { "fn": "spring",    "params": [1.34, 5.07],        "frames": 22, "use": "큰 오버슛 1.48, 아껴 쓴다" },
+    "snapSettle": { "fn": "snapRamp",  "params": [0.942, 0.118],      "frames": 11, "use": "기본 히어로 진입: 시간의 10%에 이동의 54%" },
+    "softLand":   { "fn": "expoOut",   "params": [3.41],              "frames": 12, "use": "단단한 감속, 텍스트·패널의 주력" },
+    "whip":       { "fn": "powerOut",  "params": [2.52],              "frames": 7,  "use": "강하게 감속하는 큰 이동" },
+    "glide":      { "fn": "powerOut",  "params": [1.7],               "frames": 10, "use": "중간 이동의 부드러운 감속" },
+    "cruise":     { "fn": "linear",    "params": [],                  "frames": 9,  "use": "페이드, 드리프트, 카운터" },
+    "softInOut":  { "fn": "smoothP",   "params": [1.42],              "frames": 9,  "use": "불투명도·블러용 대칭 S" },
+    "gentleIn":   { "fn": "powerIn",   "params": [2.07],              "frames": 9,  "use": "약한 가속" },
+    "accelExit":  { "fn": "powerIn",   "params": [2.6],               "frames": 13, "use": "퇴장 곡선" },
+    "crashOut":   { "fn": "powerIn",   "params": [3.97],              "frames": 17, "use": "컷으로 들어가는 강한 가속" }
+  },
+  "stagger_frames": {
+    "letters": 1,
+    "siblings": 3,
+    "words_fast_hook": [2, 4],
+    "words_headline": [4, 6],
+    "words_voice_led": [8, 12]
+  },
+  "median_move_frames": 10,
+  "end_hold_s": [0.6, 1.4],
+  "source": {
+    "durations_ms": "https://github.com/material-components/material-web/blob/main/tokens/versions/latest/sass/_md-sys-motion.scss",
+    "easings": "https://github.com/material-components/material-web/blob/main/tokens/versions/latest/sass/_md-sys-motion.scss",
+    "measured_eases": "https://github.com/Tejashmakwana/motionmaxxing/blob/8c8ec0f2a6f6c9a0da15cd24f7b1298ab298368c/runtime/motion.js",
+    "stagger_frames": "https://github.com/Tejashmakwana/motionmaxxing/blob/8c8ec0f2a6f6c9a0da15cd24f7b1298ab298368c/SKILL.md (craft laws 5, 11)",
+    "end_hold_s": "https://github.com/Tejashmakwana/motionmaxxing/blob/8c8ec0f2a6f6c9a0da15cd24f7b1298ab298368c/SKILL.md (gate G3)",
+    "fns": "measured_eases의 fn 정의(powerOut, powerIn, expoOut, snapRamp, snapOver, spring, smoothP)는 vendor/motionmaxxing/runtime/motion.js 17~36행"
+  }
+}
