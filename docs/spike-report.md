@@ -32,4 +32,33 @@
 
 ## C. 오디오·라이선스 (Task 4)
 
-(진행 예정)
+| 항목 | 결과 | 메모 |
+|---|---|---|
+| HyperFrames MusicGen 폴백 | 통과 (규칙으로 차단) | 로컬 음악 생성(Lyria → MusicGen `facebook/musicgen-small`, CC-BY-NC)은 `/media-use` 오디오 엔진이 HeyGen 자격 증명 없이 `bgm` 모드를 자동으로 둘 때만 실행된다. 공식 차단 스위치는 `audio_request.json`의 `bgm: { mode: "none" }`. 원판 규칙: HyperFrames 오디오 엔진을 쓸 때는 항상 `bgm.mode = "none"`이고 BGM은 우리 ElevenLabs 파이프라인에서 만든다. `transformers`·`torch`는 설치하지 않는다(현재 미설치) |
+| ElevenLabs Music API (Creator) | 통과 | 유료 플랜에서 사용 가능, composition plan 지원. Creator 음악 다운로드 한도 월 250분 (https://elevenlabs.io/music-terms, https://elevenlabs.io/docs/overview/capabilities/music) |
+| ElevenLabs Sound Effects API (Creator) | 조건부 통과 | 유료 플랜에서 열리는 것으로 보이나 Creator를 명시한 문장은 찾지 못함. 첫 호출에서 확인 |
+| 크레딧 | 메모 | Creator 월 121,000 크레딧, 음악 분당 900, 효과음 1회 200 (https://elevenlabs.io/pricing). 단, API 요금 페이지는 달러 기준이라 API 호출 과금 방식은 미확인 |
+| 상업 사용 범위 (음악) | 통과 | "필름·TV·라디오·Studio Games를 제외한 온·오프라인 상업 사용 허용", 스트리밍 배포 허용 (Music Terms Exhibit A). 별도 페이지(elevenlabs.io/creative)는 광고·마케팅에도 추가 라이선스가 필요하다고 적어 충돌 — **광고·마케팅 캠페인 영상은 미확인**으로 둔다 |
+| **생성물을 공개 레포에 올리기** | **불가** | 소유권은 사용자에게 있지만, 음악은 "Music Library" 구성 금지(§4.2, 제3자가 내려받아 쓸 수 있게 공개하는 것 포함), 효과음은 "독립 오디오 파일·샘플로 공개" 금지(ElevenCreative Terms Exhibit 4). TTS는 명시 조항이 없지만 금지 사용 정책 §12(자기보다 느슨한 조건으로 제3자에게 제공 금지)에 걸릴 수 있어 같이 취급 (https://elevenlabs.io/music-terms, https://elevenlabs.io/creative-terms, https://elevenlabs.io/use-policy). 완성 MP4처럼 다른 소재와 결합된 결과물은 허용 |
+
+### 결정: 스펙 9절의 대비책 적용
+
+- 코드·규칙·스타일 레포(`motion-studio`)는 **공개 유지**.
+- ElevenLabs 생성 음원(BGM, 효과음, 내레이션)은 **별도 비공개 레포**에 둔다(이름 제안: `motion-studio-media`). 렌더 워크플로가 GitHub Secrets의 읽기 전용 토큰으로 렌더 직전에 받아 온다. 비공개 레포는 저장만 하고 Actions를 돌리지 않으므로 무료 분 제한과 무관하다.
+- 공개 레포에는 실수 방지용으로 오디오 확장자(`*.mp3 *.wav *.m4a *.aac *.ogg *.flac`)를 `.gitignore`에 넣는다.
+- 공개 레포 아티팩트·Release로 나가는 완성 MP4는 "다른 소재와 결합된 결과물"이라 허용된다.
+- 이 대비책은 3단계(BGM) 계획에서 구현한다. 지금은 규칙만 확정.
+
+## D. Go / No-go
+
+| 항목 | 판정 |
+|---|---|
+| Windows 미리보기, lint/check, 한글 폰트(로컬), 결정론 | Go |
+| GitHub Actions 원격 렌더, 한글 폰트(원격), 무료 사용 | Go |
+| 결과 회수 | Go (아티팩트 다운로드 503은 재시도로 해결, 반복 시 Release로 전환) |
+| MusicGen 폴백 | Go (`bgm.mode = "none"` 규칙) |
+| ElevenLabs 음악·효과음 사용 | Go (Creator, 웹 상업 사용) |
+| ElevenLabs 생성물 공개 레포 게시 | 대비책 적용 (비공개 미디어 레포) |
+| 메모리 5.9GB PC | 주의 — 미리보기·스냅샷은 동작. 무거운 3D·셰이더 장면에서 미리보기가 느려질 수 있음 |
+
+**권고: Go.** 엔진은 HyperFrames 0.8.221로 계속 간다.
