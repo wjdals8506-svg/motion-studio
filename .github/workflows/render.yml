@@ -1,0 +1,57 @@
+name: render
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "컴포지션 폴더 (레포 루트 기준, 예: spike)"
+        required: true
+      quality:
+        description: "draft | looks | delivery"
+        required: false
+        default: delivery
+
+env:
+  HYPERFRAMES_NO_TELEMETRY: "1"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install pinned HyperFrames
+        run: npm ci
+
+      - name: Ensure headless Chrome
+        working-directory: ${{ inputs.project }}
+        run: "$GITHUB_WORKSPACE/node_modules/.bin/hyperframes" browser ensure
+
+      - name: Render
+        working-directory: ${{ inputs.project }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          "$GITHUB_WORKSPACE/node_modules/.bin/hyperframes" render --quality "${{ inputs.quality }}" --output "$GITHUB_WORKSPACE/out/out.mp4"
+
+      - name: Check duration matches the composition
+        working-directory: ${{ inputs.project }}
+        run: |
+          expected=$(grep -o 'data-composition-id="[^"]*"[^>]*data-duration="[0-9.]*"' index.html | head -1 | grep -o 'data-duration="[0-9.]*"' | grep -o '[0-9.]*')
+          actual=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$GITHUB_WORKSPACE/out/out.mp4")
+          echo "expected=$expected actual=$actual"
+          awk -v e="$expected" -v a="$actual" 'BEGIN { d = a - e; if (d < 0) d = -d; exit !(d <= 0.1) }'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: render-${{ github.run_id }}
+          path: out/out.mp4
+          retention-days: 14
