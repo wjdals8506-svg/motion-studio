@@ -34,7 +34,8 @@ jobs:
 
       - name: Ensure headless Chrome
         working-directory: ${{ inputs.project }}
-        run: "$GITHUB_WORKSPACE/node_modules/.bin/hyperframes" browser ensure
+        run: |
+          "$GITHUB_WORKSPACE/node_modules/.bin/hyperframes" browser ensure
 
       - name: Render
         working-directory: ${{ inputs.project }}
