@@ -15,7 +15,7 @@
 | 클립 구조 규칙 | 규칙 발견 | `class="clip"` 요소는 각각 화면 전체 크기 상자가 된다. 한 화면에 함께 배치할 요소는 하나의 장면 클립 안에 넣어야 겹침 오류가 나지 않는다 |
 | 한글 렌더 (스냅샷) | 통과 | 0.3/2.5/4.6초 스냅샷에서 Pretendard Bold·Regular가 정상으로 보이고, 두부 문자나 대체 글꼴이 없다. 숫자·영문 혼용 줄도 정상 |
 | 결정론 | 통과 | 같은 시점을 두 번 스냅샷해 SHA-256이 같았다: 정지 구간 2.5초(`5b9feac5…`), 진입 애니메이션 중 0.5초(`37fe1cc0…`) |
-| 브라우저 미리보기 | 통과 (사용자 확인 대기) | `preview --background` → `http://localhost:3002` 200. Studio에서 5초 타임라인 재생 확인, Pretendard woff2 두 파일 200으로 로드 |
+| 브라우저 미리보기 | 통과 (사용자 확인: 정상) | `preview --background` → `http://localhost:3002` 200. Studio에서 5초 타임라인 재생 확인, Pretendard woff2 두 파일 200으로 로드 |
 
 ## B. GitHub Actions 원격 렌더 (Task 3)
 
