@@ -19,7 +19,16 @@
 
 ## B. GitHub Actions 원격 렌더 (Task 3)
 
-(진행 예정)
+레포: https://github.com/wjdals8506-svg/motion-studio (공개). 실행: run `41057772896`.
+
+| 항목 | 결과 | 메모 |
+|---|---|---|
+| 워크플로 실행 | 통과 | `gh workflow run render.yml -f project=spike -f quality=delivery`. 모든 단계 성공, 전체 48초(12:45:35 → 12:46:23 UTC). 첫 푸시에서 YAML 따옴표 오류가 나서 고쳤다 |
+| 결과 규격 | 통과 | H.264, 1920×1080, 30fps, yuv420p, 5.000초, 106KB. 워크플로 안의 길이 검사(±0.1초)도 통과 |
+| 한글 글꼴 (원격) | 통과 | MP4의 2.5초 프레임이 로컬 스냅샷과 같은 Pretendard로 보인다. 리눅스에서 대체 글꼴로 바뀌지 않음 |
+| 결과 회수 | 조건부 통과 | `gh run download` 첫 시도에서 `HTTP 503 Egress is over the account limit`, 20초 뒤 재시도에서 성공. GitHub 문서에 아티팩트 다운로드 대역폭 한도는 문서화되어 있지 않다. 반복되면 Release 자산으로 바꾼다(자산당 2GiB 미만, 전체 크기·대역폭 한도 없음: https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) |
+| 무료 사용 조건 | 통과 | 공개 레포의 표준 러너는 무료·무제한 (https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job). 작업당 최대 6시간, 동시 작업 20개 (https://docs.github.com/en/actions/reference/limits) |
+| 아티팩트 보관 | 메모 | 기본 90일 (https://docs.github.com/en/actions/how-tos/manage-workflow-runs/remove-workflow-artifacts). 워크플로는 14일로 지정. Free 플랜 아티팩트 저장 500MB가 공개 레포에도 적용되는지는 문서가 분명하지 않다 → 보관 14일로 짧게 유지 |
 
 ## C. 오디오·라이선스 (Task 4)
 
