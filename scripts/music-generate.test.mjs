@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readEnvKey, musicRequest, redact, promptSummary } from './music-generate.mjs';
+import { readEnvKey, musicRequest, redact, promptSummary, errorText } from './music-generate.mjs';
 
 // 키 모양 문자열은 쪼개 둬서 이 파일이 커밋 검사에 걸리지 않게 한다.
 const KEY = 'k' + 'ey123';
@@ -38,4 +38,11 @@ test('redact는 키를 모두 가린다', () => {
 
 test('prompt 요약은 전역·구간 스타일을 담는다', () => {
   assert.equal(promptSummary(plan), '80 BPM, instrumental | -vocals | intro(6.0s): soft');
+});
+
+test('에러 본문은 가린 다음에 자른다', () => {
+  const body = 'x'.repeat(490) + KEY + 'y'.repeat(20);
+  const out = errorText(body, KEY);
+  assert.ok(!out.includes(KEY.slice(0, 3)), out.slice(485));
+  assert.ok(out.length <= 500);
 });

@@ -6,14 +6,14 @@ import { readCutTable, readingTime, buildTiming } from './timing.mjs';
 const TABLE = `| # | 역할 | 시청자가 믿게 될 것 | 카피 | 연결(서사) | 연결(디자인) | 키 모션 | 길이(초) |
 |---|---|---|---|---|---|---|---|
 | 1 | hook (2) | a | (없음) | b | c | — | 3.0 |
-| 2 | turn (3) | a | 스며드는 / 윤종신의 목소리와 이야기 | b | c | **바람**(15.0초 시작, "스며드는" 18.0초 착지) | 6.0 |`;
+| 2 | turn (3) | a | 스며드는 / 윤종신의 목소리와 이야기 | b | c | **바람**(5.0초 시작, "스며드는" 8.0초 착지) | 6.0 |`;
 
 const round1 = x => Math.round(x * 10) / 10;
 
 test('컷 설계표를 읽는다', () => {
   assert.deepEqual(readCutTable(TABLE), [
     { n: 1, role: 'hook', copy: '', dur: 3, keyMotionAt: [] },
-    { n: 2, role: 'turn', copy: '스며드는\n윤종신의 목소리와 이야기', dur: 6, keyMotionAt: [15, 18] },
+    { n: 2, role: 'turn', copy: '스며드는\n윤종신의 목소리와 이야기', dur: 6, keyMotionAt: [5, 8] },
   ]);
 });
 
@@ -29,7 +29,7 @@ test('시작 시각은 누적합', () => {
   assert.equal(t.duration, 9);
   assert.equal(t.bpm, 80);
   assert.equal(t.audio, null);
-  assert.deepEqual(t.beats[1].keyMotions, [{ at: 15 }, { at: 18 }]);
+  assert.deepEqual(t.beats[1].keyMotions, [{ at: 5 }, { at: 8 }]);
   assert.deepEqual(t.beats[0].boxes, []);
 });
 
@@ -39,4 +39,25 @@ test('파일럿 설계표는 6컷 30초', () => {
   assert.equal(t.beats.length, 6);
   assert.equal(t.duration, 30);
   assert.deepEqual(t.beats.flatMap(b => b.keyMotions.map(k => k.at)), [15, 18, 24]);
+});
+
+const HEAD = `| # | 역할 | 시청자가 믿게 될 것 | 카피 | 연결(서사) | 연결(디자인) | 키 모션 | 길이(초) |
+|---|---|---|---|---|---|---|---|
+`;
+
+test('열이 밀린 행은 행 번호와 함께 실패', () => {
+  assert.throws(() => readCutTable(HEAD + '| 1 | hook | a | A | B | b | c | — | 3.0 |'), /1번째 행/);
+});
+
+test('길이가 숫자가 아니면 실패', () => {
+  assert.throws(() => readCutTable(HEAD + '| 1 | hook | a | x | b | c | — | 3초 |'), /길이/);
+});
+
+test('필요한 열이 없으면 열 이름과 함께 실패', () => {
+  assert.throws(() => readCutTable('| # | 역할 | 길이(초) |\n|---|---|---|\n| 1 | hook | 3 |'), /카피/);
+});
+
+test('영상 밖의 키 모션 시각은 실패', () => {
+  const cuts = readCutTable(HEAD + '| 1 | hook | a | x | b | c | **번짐**(2.0초 시작, 0.6초 동안) | 3.0 |\n| 2 | cta | a | y | b | c | **끝**(9.0초 시작) | 3.0 |');
+  assert.throws(() => buildTiming(cuts, { bpm: 80 }), /키 모션 9초/);
 });

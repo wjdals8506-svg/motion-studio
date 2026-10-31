@@ -50,3 +50,11 @@ test('평범한 파일은 통과', () => {
   git('add', '.');
   assert.equal(scan(d), 0);
 });
+
+test('애니매틱 음원 사본 폴더는 확장자와 관계없이 막는다', () => {
+  const { d, git, write } = repo();
+  fs.mkdirSync(path.join(d, 'p', '03_animatic', 'assets', 'audio'), { recursive: true });
+  write('p/03_animatic/assets/audio/bgm.aiff', 'x');
+  git('add', '-f', '.');
+  assert.equal(scan(d), 1);
+});

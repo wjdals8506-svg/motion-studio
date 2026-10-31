@@ -10,6 +10,7 @@ out/
 .thumbnails/
 # ElevenLabs 생성 음원은 레포에 올리지 않고 PC의 media/에서만 관리한다 (docs/spike-report.md C절)
 media/
+projects/*/*/assets/audio/
 *.mp3
 *.wav
 *.m4a

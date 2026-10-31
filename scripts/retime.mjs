@@ -59,12 +59,18 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const out = path.join(dir, '03_animatic');
   const timingFile = path.join(out, 'timing.json');
   const before = path.join(out, 'timing.before-retime.json');
-  if (!fs.existsSync(before)) fs.copyFileSync(timingFile, before);
+  const current = JSON.parse(fs.readFileSync(timingFile, 'utf8'));
+  // retimed 표시가 없으면 새로 만들었거나 손본 timing.json이므로 그것이 새 기준(보관본)이다.
+  if (!current.retimed || !fs.existsSync(before)) fs.copyFileSync(timingFile, before);
   // 늘 보관본에서 다시 계산해, 여러 번 돌려도 옮긴 값 위에 또 옮기지 않는다.
   const timing = JSON.parse(fs.readFileSync(before, 'utf8'));
-  const current = JSON.parse(fs.readFileSync(timingFile, 'utf8'));
+  const shape = t => JSON.stringify(t.beats.map(b => [b.n, b.copy, b.keyMotions.length]));
+  if (shape(current) !== shape(timing)) {
+    console.error('재조정한 timing.json의 컷 구성(번호·카피·키 모션 수)이 보관본과 다름. 수정은 timing.before-retime.json에 하거나, timing.json에서 "retimed"를 지운 뒤 다시 돌린다.');
+    process.exit(1);
+  }
   const map = JSON.parse(fs.readFileSync(path.join(out, 'music_map.json'), 'utf8'));
   const r = retime({ ...timing, audio: current.audio, beats: timing.beats.map((b, i) => ({ ...b, boxes: current.beats[i]?.boxes ?? b.boxes, section: current.beats[i]?.section ?? b.section })) }, map);
-  fs.writeFileSync(timingFile, JSON.stringify(r.timing, null, 2) + '\n');
+  fs.writeFileSync(timingFile, JSON.stringify({ ...r.timing, retimed: true }, null, 2) + '\n');
   console.log(JSON.stringify({ shifts: r.shifts, warnings: r.warnings }, null, 2));
 }

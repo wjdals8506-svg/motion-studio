@@ -20,7 +20,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     .split('\0').filter(Boolean);
   let leaks = 0;
   for (const f of files) {
-    if (AUDIO.test(f)) {
+    // 애니매틱 미리보기용 음원 사본 폴더는 확장자와 관계없이 막는다.
+    if (AUDIO.test(f) || f.includes('/assets/audio/')) {
       console.error(`${f} · audio-file`);
       leaks++;
       continue;

@@ -33,6 +33,8 @@ export function musicRequest(plan, key, { outputFormat = 'mp3_44100_128' } = {})
 }
 
 export const redact = (text, key) => (key ? text.split(key).join('***') : text);
+// 가린 다음에 자른다. 먼저 자르면 경계에 걸친 키 앞부분이 그대로 나간다.
+export const errorText = (body, key) => redact(body, key).slice(0, 500);
 
 export function promptSummary(plan) {
   const cp = plan.composition_plan;
@@ -71,7 +73,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       process.exit(1);
     }
     if (!res.ok) {
-      console.error(`ElevenLabs ${res.status}: ${redact((await res.text()).slice(0, 500), key)}`);
+      console.error(`ElevenLabs ${res.status}: ${errorText(await res.text(), key)}`);
       process.exit(1);
     }
     const rel = `media/${slug}/bgm-${k}.mp3`;
