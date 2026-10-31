@@ -64,7 +64,7 @@
       const FIRST_NOTE = 1.52;                                            // 3단계 음악 측정: 첫 음 1.52초
       const clamp01 = x => Math.min(1, Math.max(0, x));
       const fg = FogGlass.create(document.getElementById('cv'), { seed: 7 });
-      const DX = 0.55, Y0 = 0.40, R = 0.012;                               // 물방울(유리 위 좌표, 화면 높이 비율)
+      const DX = 0.55, Y0 = 0.62, R = 0.012;   // 유리 아래쪽: 뒤로 도시 불빛이 김 너머 번져 보이는 자리                               // 물방울(유리 위 좌표, 화면 높이 비율)
       function renderAt(t) {
         const run = clamp01((t - FIRST_NOTE) / (3.045 - FIRST_NOTE));
         const dy = Y0 + 0.012 * Math.sin(t * 2.1) * (1 - run) * 0.1 + 0.075 * Math.pow(run, 1.6);   // 맺혀 있다가 점점 빨리 흐른다

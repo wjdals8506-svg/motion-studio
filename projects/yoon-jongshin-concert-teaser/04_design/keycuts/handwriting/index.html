@@ -80,7 +80,8 @@
           trail: { progress: 1, y: 0.7, h: 0.12 },
           sweep: { progress: 1 },
           refog: 0.62 + 0.38 * (1 - Math.pow(1 - clamp01(tt / 0.7), 3)),  // 앞 컷에서 서리기 시작한 김이 0.7초에 다 덮인다
-          writing: { strokes, width: 0.018, progress: clamp01((tt - __cues[0] - 0.15) / 2.35) },  // 0.15 → 2.5초 동안 씀
+          writing: { strokes, width: 0.018, progress: clamp01((tt - __cues[0] - 0.15) / 2.35),  // 0.15 → 2.5초 동안 씀
+                     drip: clamp01((tt - 2.6) / 2.0) },                                              // 획 끝 물줄기는 엔드 홀드 전에 멈춘다
         });
       }
       window.addEventListener('hf-seek', e => renderAt(e.detail.time));
