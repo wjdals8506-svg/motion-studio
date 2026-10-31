@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'Pretendard'; font-weight: 400; src: url('assets/fonts/pretendard/Pretendard-Regular.woff2') format('woff2'); }
+      @font-face { font-family: 'Pretendard'; font-weight: 600; src: url('assets/fonts/pretendard/Pretendard-SemiBold.woff2') format('woff2'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #efe6d8; }
+      #root { width: 100%; height: 100%; position: relative; font-family: 'Pretendard', sans-serif; word-break: keep-all; }
+      .clip { position: absolute; inset: 0; }
+      canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+      .copy { position: absolute; left: 0; right: 0; text-align: center; color: #3b2a20; text-shadow: 0 1px 18px rgba(255, 240, 220, 0.6); }
+      #c1 { top: 31%; font-size: 140px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+      #c2 { top: 46%; font-size: 48px; font-weight: 400; letter-spacing: -0.01em; color: #4a3528; }
+    </style>
+  </head>
+  <body>
+    <!-- 후보 D: B의 종이 겹 도시 + A의 김 서린 유리 (Styles-20 #8 + #19). 18.045초 히어로 프레임 -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="1" data-width="1920" data-height="1080">
+      <section class="clip" id="hero" data-start="0" data-duration="1">
+        <canvas id="cv" width="1920" height="1080"></canvas>
+        <p class="copy" id="c1">스며드는</p>
+        <p class="copy" id="c2">윤종신의 목소리와 이야기</p>
+      </section>
+    </div>
+    <script>
+      const W = 1920, H = 1080;
+      const rng = (s => () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296))(7);
+      const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+
+      // 창밖: 해 질 녘 하늘, 먼 건물, 가까운 건물과 불 켜진 창, 거리 불빛
+      const scene = mk(), s = scene.getContext('2d');
+      // 하늘: 색종이 띠 네 겹
+      const bands = ['#7c6a86', '#b58a8c', '#e0a98a', '#f1c792'];
+      bands.forEach((c, i) => {
+        s.fillStyle = c;
+        s.beginPath(); s.moveTo(0, H * (0.1 + i * 0.16));
+        for (let x = 0; x <= W; x += 60) s.lineTo(x, H * (0.1 + i * 0.16) + Math.sin(x / 210 + i) * 10);
+        s.lineTo(W, H); s.lineTo(0, H); s.closePath(); s.fill();
+      });
+      // 해: 반쯤 가린 둥근 종이
+      s.fillStyle = '#f7dcae'; s.beginPath(); s.arc(W * 0.7, H * 0.66, 120, 0, Math.PI * 2); s.fill();
+
+      // 도시: 깊이가 다른 오린 종이 세 겹, 앞 겹일수록 짙고 그림자가 깊다
+      const layer = (base, minH, maxH, color, shadow, lit) => {
+        s.save(); s.shadowColor = 'rgba(40,24,18,0.35)'; s.shadowBlur = shadow; s.shadowOffsetY = shadow / 3;
+        s.fillStyle = color; s.beginPath(); s.moveTo(-10, H);
+        let x = -10; const wins = [];
+        while (x < W + 10) {
+          const w = 70 + rng() * 150, h = minH + rng() * (maxH - minH);
+          s.lineTo(x, base - h); s.lineTo(x + w, base - h);
+          if (lit) for (let wy = base - h + 22; wy < base - 16; wy += 34) for (let wx = x + 16; wx < x + w - 18; wx += 30) if (rng() < 0.28) wins.push([wx, wy]);
+          x += w;
+        }
+        s.lineTo(W + 10, H); s.closePath(); s.fill(); s.restore();
+        s.fillStyle = '#f6c56f'; for (const [wx, wy] of wins) s.fillRect(wx, wy, 12, 16);
+      };
+      layer(H * 0.78, 80, 220, '#8d6f7e', 10, false);
+      layer(H * 0.88, 120, 300, '#5a4352', 16, true);
+      layer(H * 1.0, 60, 160, '#33242e', 22, true);
+      
+
+      const gimg = s.getImageData(0, 0, W, H), gd = gimg.data;
+      for (let i = 0; i < gd.length; i += 4) { const n = (rng() - 0.5) * 18; gd[i] += n; gd[i + 1] += n; gd[i + 2] += n; }
+      s.putImageData(gimg, 0, 0);
+
+      // 김 서린 유리: 흐린 창밖 + 우윳빛 막 + 맺힌 물방울
+      const fog = mk(), f = fog.getContext('2d');
+      f.filter = 'blur(34px)'; f.drawImage(scene, 0, 0); f.filter = 'none';
+      f.fillStyle = 'rgba(238,230,218,0.62)'; f.fillRect(0, 0, W, H);
+      for (let i = 0; i < 9000; i++) {
+        const x = rng() * W, y = rng() * H, r = 0.6 + rng() * 2.4;
+        f.fillStyle = rng() < 0.5 ? 'rgba(255,250,242,0.22)' : 'rgba(70,60,60,0.10)';
+        f.beginPath(); f.arc(x, y, r, 0, Math.PI * 2); f.fill();
+      }
+
+      // 바람이 닦아 낸 자리: 왼쪽에서 오른쪽으로 쓸고 간 넓은 띠(약 70%), 가장자리는 부드럽게
+      const mask = mk(), m = mask.getContext('2d');
+      for (let t = 0; t <= 1; t += 0.004) {
+        const x = -80 + t * (W + 160), y = H * (0.5 + 0.02 * Math.sin(t * 4.1) - 0.02 * t) + (rng() - 0.5) * H * 0.08;
+        const r = H * (0.27 + 0.05 * Math.sin(t * 9.1 + 1.3) + rng() * 0.05);
+        const g = m.createRadialGradient(x, y, r * 0.55, x, y, r);
+        g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+        m.fillStyle = g; m.beginPath(); m.arc(x, y, r, 0, Math.PI * 2); m.fill();
+      }
+      f.globalCompositeOperation = 'destination-out'; f.drawImage(mask, 0, 0); f.globalCompositeOperation = 'source-over';
+
+      const ctx = document.getElementById('cv').getContext('2d');
+      ctx.drawImage(scene, 0, 0);
+      ctx.drawImage(fog, 0, 0);
+      // 닦인 가장자리에 남은 물기: 아래로 흐르는 물줄기 몇 개
+      for (let i = 0; i < 14; i++) {
+        const x = 120 + rng() * (W - 240), y0 = H * (0.78 + rng() * 0.05), len = 40 + rng() * 140;
+        const g = ctx.createLinearGradient(x, y0, x, y0 + len);
+        g.addColorStop(0, 'rgba(255,248,236,0.35)'); g.addColorStop(1, 'rgba(255,248,236,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 2 + rng() * 3; ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x + rng() * 6 - 3, y0 + len); ctx.stroke();
+      }
+      // 필름 그레인
+      const img = ctx.getImageData(0, 0, W, H), d = img.data;
+      for (let i = 0; i < d.length; i += 4) { const n = (rng() - 0.5) * 22; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+      ctx.putImageData(img, 0, 0);
+
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
