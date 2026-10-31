@@ -1,7 +1,7 @@
 ---
 stage: 5
-status: draft
-approved_at:
+status: approved
+approved_at: 2026-10-31T17:06
 ---
 
 # 모션: 윤종신 콘서트 예고
