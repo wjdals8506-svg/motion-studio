@@ -31,5 +31,27 @@
     "license": "ElevenLabs Music Terms (Creator)",
     "commercial": true,
     "public_redistribution": false
+  },
+  {
+    "id": "sfx-gather-1",
+    "path": "media/yoon-jongshin-concert-teaser/sfx-gather-1.mp3",
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "model": "eleven_text_to_sound_v2",
+    "prompt": "soft airy whoosh that gently settles, like a cool autumn breeze gathering, warm and subtle, no impact, no hit (2s, 위치 18.045s)",
+    "license": "ElevenLabs Terms (Creator), 독립 파일 공개 금지",
+    "commercial": true,
+    "public_redistribution": false
+  },
+  {
+    "id": "sfx-title-1",
+    "path": "media/yoon-jongshin-concert-teaser/sfx-title-1.mp3",
+    "kind": "sfx",
+    "source": "elevenlabs",
+    "model": "eleven_text_to_sound_v2",
+    "prompt": "gentle warm shimmer swell that resolves softly, delicate chime-like air, calm and intimate, no bells ringing loudly (2.5s, 위치 24.045s)",
+    "license": "ElevenLabs Terms (Creator), 독립 파일 공개 금지",
+    "commercial": true,
+    "public_redistribution": false
   }
 ]
