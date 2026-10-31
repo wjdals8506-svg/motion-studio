@@ -35,4 +35,4 @@
 ## HyperFrames 컴포지션 규칙 (스파이크에서 확인)
 - 에셋 경로는 컴포지션 프로젝트 폴더 안이어야 한다(`../` 금지). 공용 폰트는 레포 `assets/fonts/`에서 프로젝트의 `assets/fonts/`로 복사해 쓴다.
 - 한 화면에 함께 배치할 요소는 하나의 장면 클립(`class="clip"`) 안에 넣는다. `clip` 요소는 각각 화면 전체 크기가 된다.
-- 한국어 텍스트는 `word-break: keep-all`, 폰트는 Pretendard.
+- 한국어 텍스트는 `word-break: keep-all`. 서체는 프로젝트 2·4단계에서 사용자가 고른 것(기본 Pretendard, 공용 서체는 레포 `assets/fonts/`, OFL 등 공개 레포에 넣을 수 있는 라이선스만).
