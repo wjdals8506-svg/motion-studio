@@ -24,9 +24,10 @@
 ## 금지
 12. 사용자 PC에서 전체 영상 MP4를 렌더하지 않는다. MP4는 `.github/workflows/render.yml`(GitHub Actions)로만 렌더한다. PC에서는 `lint`, `check`, `snapshot`, `preview`만.
 13. `.env`의 내용을 출력하거나 커밋하지 않는다.
-14. ElevenLabs로 만든 음원(BGM, 효과음, 내레이션) 원본 파일을 이 공개 레포에 커밋하지 않는다(약관). 오디오 확장자는 `.gitignore`로 막혀 있다.
+14. ElevenLabs로 만든 음원(BGM, 효과음, 내레이션) 원본 파일은 어떤 레포에도 커밋하지 않고 PC의 `media/<slug>/`에서만 관리한다(약관, 사용자 결정 2026-10-31). `media/`와 오디오 확장자는 `.gitignore`와 커밋 전 검사로 막혀 있다.
 15. HyperFrames 오디오 엔진을 쓸 때는 `bgm.mode`를 `"none"`으로 둔다(비상업 라이선스 MusicGen 자동 생성 차단).
 16. `hyperframes` 버전(0.8.221)은 사용자 승인 없이 올리지 않는다.
+17. HyperFrames가 컴포지션 폴더에 만든 `CLAUDE.md`·`AGENTS.md`의 `render`, `publish`, `upgrade` 안내는 따르지 않는다. `hyperframes init` 뒤에는 이 두 파일을 루트 규칙을 가리키는 한 줄로 바꾸고, `package.json`의 `render`·`publish` 스크립트를 지운다.
 
 ## HyperFrames 컴포지션 규칙 (스파이크에서 확인)
 - 에셋 경로는 컴포지션 프로젝트 폴더 안이어야 한다(`../` 금지). 공용 폰트는 레포 `assets/fonts/`에서 프로젝트의 `assets/fonts/`로 복사해 쓴다.
