@@ -15,14 +15,15 @@ const WEIGHTS = { thin: 100, extralight: 200, light: 300, regular: 400, medium: 
 export function keycutWindow(timing, from, to) {
   if (!(from >= 0 && to <= timing.duration && from < to))
     throw new Error(`키 컷 범위 ${from}~${to}초가 영상(0~${timing.duration}초) 안의 올바른 범위가 아님`);
+  // 경계는 반올림한 값으로 비교한다(retime이 소수 셋째 자리로 맞추므로 start+dur에 부동소수 오차가 남는다)
   const beats = timing.beats
-    .filter(b => b.start < to && b.start + b.dur > from)
     .map(b => {
       const s = Math.max(b.start, from);
-      const e = Math.min(b.start + b.dur, to);
+      const e = Math.min(round(b.start + b.dur), to);
       return { n: b.n, copy: b.copy, start: round(s - from), dur: round(e - s) };
-    });
-  const cues = timing.beats.flatMap(b => b.keyMotions.filter(k => k.at >= from && k.at < to).map(k => ({ at: round(k.at - from), n: b.n })));
+    })
+    .filter(b => b.dur > 0);
+  const cues = timing.beats.flatMap(b => b.keyMotions.filter(k => round(k.at) >= round(from) && round(k.at) < round(to)).map(k => ({ at: round(k.at - from), n: b.n })));
   return { duration: round(to - from), beats, cues, mediaStart: from };
 }
 

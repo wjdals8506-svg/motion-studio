@@ -21,10 +21,10 @@ test('브리프 승인, 키메시지 초안이면 1단계', () => {
   assert.deepEqual(projectStatus(d), { stage: 1, approved: ['00_brief.md'], stale: [] });
 });
 
-test('0~4 모두 승인이면 5단계', () => {
+test('0~5 모두 승인이면 6단계', () => {
   const d = dir();
-  for (const f of ['00_brief.md', '01_key_message.md', '02_story.md', '03_animatic.md', '04_design.md']) write(d, f, 'approved');
-  assert.equal(projectStatus(d).stage, 5);
+  for (const f of ['00_brief.md', '01_key_message.md', '02_story.md', '03_animatic.md', '04_design.md', '05_film.md']) write(d, f, 'approved');
+  assert.equal(projectStatus(d).stage, 6);
 });
 
 test('3단계 초안이면 3단계', () => {

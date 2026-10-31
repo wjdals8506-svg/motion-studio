@@ -81,3 +81,9 @@ test('음원 원본이 없는 클론에서도 틀을 만들고 audio 없이 경�
   assert.match(r.stderr, /음원/);
   assert.ok(!fs.readFileSync(path.join(d, '04_design', 'keycuts', 'x', 'index.html'), 'utf8').includes('<audio'));
 });
+
+test('start+dur 부동소수 오차로 길이 0 컷이 생기지 않는다', () => {
+  const t = { ...timing, duration: 3, beats: [b(1, 0, 0.014), b(2, 0.014, 1.12), b(3, 1.134, 1.866)] };
+  const w = keycutWindow(t, 1.134, 3);
+  assert.deepEqual(w.beats.map(x => x.n), [3]);
+});
