@@ -9,6 +9,7 @@ export const STAGES = [
   { n: 0, file: '00_brief.md' },
   { n: 1, file: '01_key_message.md' },
   { n: 2, file: '02_story.md' },
+  { n: 3, file: '03_animatic.md' },
 ];
 
 function readFront(file) {
