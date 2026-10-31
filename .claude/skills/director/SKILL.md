@@ -15,6 +15,7 @@ description: 이 레포에서 모션그래픽 영상의 서사, 컷 사이 연�
 | 컷 설계표의 `연결(서사)`, `연결(디자인)` 열을 채우거나 점검할 때 | [connection.md](references/connection.md) |
 | 애니매틱·키 컷·전체 컷의 화면을 배치할 때 (3~5단계) | [composition.md](references/composition.md), [korean-type.md](references/korean-type.md) |
 | BGM 구간을 계획하고 컷·키 모션을 박자에 맞출 때 (3단계) | [music.md](references/music.md) |
+| 장면 요소와 모션을 구체화할 때 (4·5단계, 참고 자료) | [motion-principles-thedalbee.md](references/motion-principles-thedalbee.md) |
 | 진입·퇴장·이징·길이·stagger를 정할 때 | [laws.md](references/laws.md), `tokens/motion.json` |
 | 어떤 요소를 넣을지 말지 망설일 때, 리뷰할 때 | [never-ship.md](references/never-ship.md) |
 | 한국어 헤드라인·자막·내레이션 원고를 다룰 때 | [korean-type.md](references/korean-type.md) |
