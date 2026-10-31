@@ -22,9 +22,9 @@
 11. 영상에 들어가는 사실·수치는 출처 URL이 있는 것만 쓴다.
 
 ## 금지
-12. 사용자 PC에서 전체 영상 MP4를 렌더하지 않는다. MP4는 `.github/workflows/render.yml`(GitHub Actions)로만 렌더한다. PC에서는 `lint`, `check`, `snapshot`, `preview`만.
+12. 사용자 PC에서 전체 영상 MP4를 렌더하지 않는다. MP4는 `.github/workflows/render.yml`(GitHub Actions)로만 렌더한다. PC에서는 `lint`, `check`, `snapshot`, `preview`와, 원격 무음 MP4에 음원만 섞어 붙이기(`-c:v copy`, 영상 재인코딩 없음)·MP4 측정(ffprobe, ffmpeg 측정 필터)만.
 13. `.env`의 내용을 출력하거나 커밋하지 않는다.
-14. ElevenLabs로 만든 음원(BGM, 효과음, 내레이션) 원본 파일은 어떤 레포에도 커밋하지 않고 PC의 `media/<slug>/`에서만 관리한다(약관, 사용자 결정 2026-10-31). `media/`와 오디오 확장자는 `.gitignore`와 커밋 전 검사로 막혀 있다. 원격 렌더에 필요하면 렌더 때만 임시로 올리고 렌더가 끝나면 지운다(사용자 결정 2026-10-31). 공개 레포에는 음원이 평문으로 잠시라도 올라가지 않게 한다(**제안**: 암호화해서 올리고 워크플로가 Secrets의 키로 푼다). 구체적인 방식은 6단계 계획에서 정한다(3단계 승인은 HTML 미리보기라 원격 렌더에 음원이 필요 없다).
+14. ElevenLabs로 만든 음원(BGM, 효과음, 내레이션) 원본 파일은 어떤 레포에도 커밋하지 않고 PC의 `media/<slug>/`에서만 관리한다(약관, 사용자 결정 2026-10-31). `media/`와 오디오 확장자는 `.gitignore`와 커밋 전 검사로 막혀 있다. 원격 렌더에는 음원을 올리지 않는다. 원격은 무음 MP4를 만들고 음원은 PC에서 합친다(`scripts/mux-audio.mjs`, 사용자 결정 2026-10-31 "합쳐서 보내봐", 6단계 계획). 음원이 든 완성본 MP4도 커밋하지 않고 `media/<slug>/`에 둔다.
 15. HyperFrames 오디오 엔진을 쓸 때는 `bgm.mode`를 `"none"`으로 둔다(비상업 라이선스 MusicGen 자동 생성 차단).
 16. `hyperframes` 버전(0.8.221)은 사용자 승인 없이 올리지 않는다.
 17. HyperFrames가 컴포지션 폴더에 만든 `CLAUDE.md`·`AGENTS.md`의 `render`, `publish`, `upgrade` 안내는 따르지 않는다. `hyperframes init` 뒤에는 이 두 파일을 루트 규칙을 가리키는 한 줄로 바꾸고, `package.json`의 `render`·`publish` 스크립트를 지운다.

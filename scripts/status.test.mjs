@@ -27,6 +27,21 @@ test('0~5 모두 승인이면 6단계', () => {
   assert.equal(projectStatus(d).stage, 6);
 });
 
+const ALL = ['00_brief.md', '01_key_message.md', '02_story.md', '03_animatic.md', '04_design.md', '05_film.md', '06_final.md'];
+
+test('0~6 모두 승인이면 stage 7, stale 없음', () => {
+  const d = dir();
+  ALL.forEach((f, i) => fs.writeFileSync(path.join(d, f), `---\nstatus: approved\napproved_at: 2026-10-31T1${i}:00\n---\n`));
+  assert.deepEqual(projectStatus(d), { stage: 7, approved: ALL, stale: [] });
+});
+
+test('05까지 승인이고 06_final.md가 draft면 stage 6', () => {
+  const d = dir();
+  for (const f of ALL.slice(0, 6)) write(d, f, 'approved');
+  write(d, '06_final.md', 'draft');
+  assert.deepEqual(projectStatus(d), { stage: 6, approved: ALL.slice(0, 6), stale: [] });
+});
+
 test('3단계 초안이면 3단계', () => {
   const d = dir();
   for (const f of ['00_brief.md', '01_key_message.md', '02_story.md']) write(d, f, 'approved');
