@@ -128,14 +128,19 @@
         m.save(); m.translate(wx(s.x), wy(s.y)); m.scale(1.7, 1); stamp(m, 0, 0, s.r * H * 0.78, 0.5); m.restore();
       }
       if (st.droplet) {
-        const d = st.droplet, x = wx(d.x);
-        m.strokeStyle = 'rgba(0,0,0,0.85)'; m.lineCap = 'round'; m.lineWidth = d.r * H * 1.1;
-        m.beginPath(); m.moveTo(x, wy(d.y0)); m.lineTo(x + Math.sin(d.y * 20) * 3, wy(d.y)); m.stroke();
+        // 물방울이 지나간 자국: 폭이 들쭉날쭉하고 살짝 휘는 길(김이 닦인 자리)
+        const d = st.droplet;
+        for (let y = d.y0; y < d.y; y += 0.0015) {
+          const k = (y - d.y0) * 900, w = d.r * H * (0.34 + 0.04 * Math.sin(k * 0.35) + 0.02 * Math.sin(k * 1.3));
+          m.fillStyle = 'rgba(0,0,0,0.55)'; m.beginPath(); m.arc(wx(d.x + 0.0007 * Math.sin(k * 0.21)), wy(y), w, 0, 6.2832); m.fill();
+        }
       }
       // 2) 다시 서리는 김: 가장자리부터 안쪽으로 마스크를 지운다
       if (st.refog) {
         const r = st.refog, cx = WW / 2, cy = WH / 2, R = Math.hypot(W, H) * 0.62;
-        const g = m.createRadialGradient(cx, cy, R * Math.max(0, 1 - r * 1.15), cx, cy, R * Math.max(0.05, 1.25 - r));
+        // r=1이면 안쪽 반지름 0, 바깥 반지름 1px: 마스크 전체를 지워 김이 완전히 덮인다
+        const inner = R * 1.1 * (1 - r), outer = inner + R * 0.3 * (1 - r) + 1;
+        const g = m.createRadialGradient(cx, cy, inner, cx, cy, outer);
         g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
         m.globalCompositeOperation = 'destination-out'; m.fillStyle = g; m.fillRect(0, 0, WW, WH);
         m.globalCompositeOperation = 'source-over';
@@ -168,11 +173,27 @@
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(L.x, L.y, L.r, 0, 6.2832); ctx.fill();
       }
       ctx.drawImage(fog, 0, 0);
+      // 김 너머로 번져 보이는 저녁 불빛(강조색의 유일한 의미). 김이 덮인 곳에서만 보이도록 김 위에 넓고 옅게 얹는다
+      for (const L of scene.lights) {
+        const a2 = 0.24 + 0.03 * Math.sin(t * 1.3 + L.ph), R2 = L.r * 2.6;
+        const g = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, R2);
+        g.addColorStop(0, `rgba(255,196,130,${a2})`); g.addColorStop(1, 'rgba(255,196,130,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(L.x, L.y, R2, 0, 6.2832); ctx.fill();
+      }
       if (st.droplet) {                                  // 물방울: 작은 렌즈(밝은 테두리와 맺힌 빛)
-        const d = st.droplet, x = wx(d.x), y = wy(d.y), r = d.r * H;
-        const g = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.1, x, y, r);
-        g.addColorStop(0, 'rgba(255,252,246,0.95)'); g.addColorStop(0.35, 'rgba(250,236,220,0.35)'); g.addColorStop(0.85, 'rgba(60,48,58,0.25)'); g.addColorStop(1, 'rgba(255,245,230,0.6)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, r * 0.9, r * 1.1, 0, 0, 6.2832); ctx.fill();
+        const d = st.droplet, x = wx(d.x), y = wy(d.y), r = d.r * H, sk = 1 + 0.35 * (d.stretch || 0);
+        // 자국 위에 남은 작은 물방울들(위치는 자국 길이로 정해져 늘 같다)
+        for (let yy = d.y0 + 0.01; yy < d.y - 0.012; yy += 0.013) {
+          const k = (yy - d.y0) * 900, bx = wx(d.x + 0.0007 * Math.sin(k * 0.21) + 0.0015 * Math.sin(k * 1.7)), by = wy(yy), br = r * (0.12 + 0.08 * (0.5 + 0.5 * Math.sin(k * 3.1)));
+          const bg = ctx.createRadialGradient(bx - br * 0.3, by - br * 0.3, 0, bx, by, br);
+          bg.addColorStop(0, 'rgba(255,250,240,0.8)'); bg.addColorStop(1, 'rgba(255,245,230,0.15)');
+          ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(bx, by, br, 0, 6.2832); ctx.fill();
+        }
+        // 물방울 몸통: 원 하나를 늘여 그려 빛 맺힘이 모양을 따라간다(아래쪽이 무겁고 위가 가늘다)
+        ctx.save(); ctx.translate(x, y); ctx.scale(0.9 / Math.sqrt(sk), 1.05 * sk);
+        const g = ctx.createRadialGradient(-r * 0.28, -r * 0.32, r * 0.05, 0, r * 0.1, r);
+        g.addColorStop(0, 'rgba(255,252,246,0.9)'); g.addColorStop(0.3, 'rgba(240,226,214,0.28)'); g.addColorStop(0.8, 'rgba(70,56,66,0.22)'); g.addColorStop(1, 'rgba(255,244,228,0.35)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.2832); ctx.fill(); ctx.restore();
       }
       ctx.restore();
       // 5) 필름 그레인(초당 12장 바뀜)과 아주 옅은 비네트
@@ -190,7 +211,7 @@
   // '가을냄새' 손가락 획(음절마다 0~1 상자, 획 순서대로). 위치·크기는 place()로 화면 좌표(0~1)에 놓는다.
   const SYLLABLES = [
     [[[0.10, 0.20], [0.50, 0.19], [0.47, 0.44], [0.36, 0.66], [0.16, 0.88]], [[0.72, 0.06], [0.73, 0.96]], [[0.73, 0.48], [0.93, 0.47]]],
-    [Array.from({ length: 17 }, (_, i) => [0.5 + 0.17 * Math.sin(i / 16 * 6.2832 + 3.14), 0.2 - 0.15 * Math.cos(i / 16 * 6.2832 + 3.14)]),
+    [Array.from({ length: 17 }, (_, i) => [0.5 + 0.15 * Math.sin(i / 16 * 6.2832 + 3.14), 0.16 - 0.12 * Math.cos(i / 16 * 6.2832 + 3.14)]),
       [[0.08, 0.46], [0.92, 0.46]], [[0.22, 0.58], [0.77, 0.58], [0.76, 0.72], [0.22, 0.72], [0.22, 0.88], [0.80, 0.88]]],
     [[[0.14, 0.06], [0.14, 0.42], [0.52, 0.42]], [[0.66, 0.04], [0.66, 0.50]], [[0.66, 0.24], [0.78, 0.24]], [[0.86, 0.02], [0.86, 0.55]],
       [[0.20, 0.62], [0.20, 0.94], [0.80, 0.94], [0.80, 0.62], [0.20, 0.62]]],
