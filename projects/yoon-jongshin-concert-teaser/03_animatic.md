@@ -1,7 +1,7 @@
 ---
 stage: 3
-status: draft
-approved_at:
+status: approved
+approved_at: 2026-10-31T14:41
 ---
 
 # 애니매틱과 BGM: 윤종신 콘서트 예고
