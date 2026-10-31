@@ -4,14 +4,14 @@
   "width": 1920,
   "height": 1080,
   "duration": 30,
-  "audio": null,
+  "audio": "media/yoon-jongshin-concert-teaser/bgm-3.mp3",
   "beats": [
     {
       "n": 1,
       "role": "hook",
       "copy": "",
       "start": 0,
-      "dur": 3,
+      "dur": 3.045,
       "keyMotions": [],
       "boxes": [
         {
@@ -35,7 +35,7 @@
       "n": 2,
       "role": "hook",
       "copy": "서늘한 바람처럼",
-      "start": 3,
+      "start": 3.045,
       "dur": 4.5,
       "keyMotions": [],
       "boxes": [
@@ -67,7 +67,7 @@
       "n": 3,
       "role": "proof",
       "copy": "",
-      "start": 7.5,
+      "start": 7.545,
       "dur": 6,
       "keyMotions": [],
       "boxes": [
@@ -113,14 +113,14 @@
       "n": 4,
       "role": "turn",
       "copy": "스며드는\n윤종신의 목소리와 이야기",
-      "start": 13.5,
+      "start": 13.545,
       "dur": 6,
       "keyMotions": [
         {
-          "at": 15
+          "at": 15.045
         },
         {
-          "at": 18
+          "at": 18.045
         }
       ],
       "boxes": [
@@ -138,7 +138,7 @@
       "n": 5,
       "role": "proof",
       "copy": "서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전",
-      "start": 19.5,
+      "start": 19.545,
       "dur": 4.5,
       "keyMotions": [],
       "boxes": [
@@ -163,11 +163,11 @@
       "n": 6,
       "role": "cta",
       "copy": "가을냄새\n2026 윤종신 전국투어 콘서트\n10. 2 서울에서 시작, 11월까지",
-      "start": 24,
-      "dur": 6,
+      "start": 24.045,
+      "dur": 5.955,
       "keyMotions": [
         {
-          "at": 24
+          "at": 24.045
         }
       ],
       "boxes": [
