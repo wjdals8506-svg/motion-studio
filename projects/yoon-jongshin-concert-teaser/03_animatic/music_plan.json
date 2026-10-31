@@ -1,0 +1,68 @@
+{
+  "model_id": "music_v1",
+  "bpm": 80,
+  "duration_ms": 30000,
+  "composition_plan": {
+    "positive_global_styles": [
+      "80 BPM",
+      "instrumental",
+      "warm intimate soft piano",
+      "gentle warm strings",
+      "light fingerpicked acoustic guitar",
+      "autumn evening, nostalgic, calm",
+      "Korean ballad mood, cinematic but restrained",
+      "4/4"
+    ],
+    "negative_global_styles": [
+      "vocals",
+      "drums",
+      "percussion beat",
+      "synthesizer",
+      "bombastic orchestra",
+      "bright pop",
+      "electronic"
+    ],
+    "sections": [
+      {
+        "section_name": "fogged window",
+        "positive_local_styles": [
+          "solo piano, sparse and quiet",
+          "soft sustained notes, room ambience"
+        ],
+        "negative_local_styles": [
+          "strings",
+          "loud dynamics"
+        ],
+        "duration_ms": 15000,
+        "lines": []
+      },
+      {
+        "section_name": "wind seeps in",
+        "positive_local_styles": [
+          "warm strings swell in on the first beat",
+          "piano continues",
+          "gradual build to a gentle peak"
+        ],
+        "negative_local_styles": [
+          "sudden crash",
+          "big drums"
+        ],
+        "duration_ms": 9000,
+        "lines": []
+      },
+      {
+        "section_name": "autumn scent",
+        "positive_local_styles": [
+          "resolve softly to the home chord",
+          "final chord rings out and fades naturally"
+        ],
+        "negative_local_styles": [
+          "abrupt ending",
+          "new melody"
+        ],
+        "duration_ms": 6000,
+        "lines": []
+      }
+    ]
+  }
+}

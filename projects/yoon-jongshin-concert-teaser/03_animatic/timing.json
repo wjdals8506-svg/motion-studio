@@ -29,7 +29,7 @@
           "label": "물방울"
         }
       ],
-      "section": null
+      "section": "fogged window"
     },
     {
       "n": 2,
@@ -61,7 +61,7 @@
           "label": ""
         }
       ],
-      "section": null
+      "section": "fogged window"
     },
     {
       "n": 3,
@@ -107,7 +107,7 @@
           "label": ""
         }
       ],
-      "section": null
+      "section": "fogged window"
     },
     {
       "n": 4,
@@ -132,7 +132,7 @@
           "label": "큰 바람이 쓸고 간 면 (약 70%) · 카메라 밀고 들어감"
         }
       ],
-      "section": null
+      "section": "fogged window"
     },
     {
       "n": 5,
@@ -157,7 +157,7 @@
           "label": "불빛 일곱 (카메라 다시 물러남)"
         }
       ],
-      "section": null
+      "section": "wind seeps in"
     },
     {
       "n": 6,
@@ -186,7 +186,7 @@
           "label": "흐린 저녁 불빛"
         }
       ],
-      "section": null
+      "section": "autumn scent"
     }
   ]
 }

@@ -1,0 +1,40 @@
+{
+  "global": {
+    "positive": [
+      "warm intimate soft piano",
+      "gentle warm strings",
+      "light fingerpicked acoustic guitar",
+      "autumn evening, nostalgic, calm",
+      "Korean ballad mood, cinematic but restrained",
+      "4/4"
+    ],
+    "negative": [
+      "drums",
+      "percussion beat",
+      "synthesizer",
+      "bombastic orchestra",
+      "bright pop",
+      "electronic"
+    ]
+  },
+  "sections": [
+    {
+      "name": "fogged window",
+      "until": 15,
+      "positive": ["solo piano, sparse and quiet", "soft sustained notes, room ambience"],
+      "negative": ["strings", "loud dynamics"]
+    },
+    {
+      "name": "wind seeps in",
+      "until": 24,
+      "positive": ["warm strings swell in on the first beat", "piano continues", "gradual build to a gentle peak"],
+      "negative": ["sudden crash", "big drums"]
+    },
+    {
+      "name": "autumn scent",
+      "until": 30,
+      "positive": ["resolve softly to the home chord", "final chord rings out and fades naturally"],
+      "negative": ["abrupt ending", "new melody"]
+    }
+  ]
+}
