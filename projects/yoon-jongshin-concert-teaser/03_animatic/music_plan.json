@@ -26,23 +26,23 @@
       {
         "section_name": "fogged window",
         "positive_local_styles": [
-          "solo piano, sparse and quiet",
+          "solo piano, quiet and intimate",
           "soft sustained notes, room ambience"
         ],
         "negative_local_styles": [
           "strings",
           "loud dynamics"
         ],
-        "duration_ms": 15000,
+        "duration_ms": 9000,
         "lines": []
       },
       {
         "section_name": "wind seeps in",
         "positive_local_styles": [
-          "string ensemble enters clearly at the start of this section",
-          "cellos and violins, warm legato, clearly audible",
+          "warm string ensemble enters at the start of this section",
+          "cellos and violins, legato, clearly audible",
           "steady crescendo, building emotional intensity",
-          "strings carry the melody to the emotional climax of the piece",
+          "reaches the emotional climax at the very end of this section",
           "piano continues underneath"
         ],
         "negative_local_styles": [
@@ -54,18 +54,30 @@
         "lines": []
       },
       {
+        "section_name": "voice and story",
+        "positive_local_styles": [
+          "full warm strings and piano at their fullest",
+          "sustained emotional peak that slowly begins to ease"
+        ],
+        "negative_local_styles": [
+          "new build",
+          "drums"
+        ],
+        "duration_ms": 6000,
+        "lines": []
+      },
+      {
         "section_name": "autumn scent",
         "positive_local_styles": [
-          "decrescendo, the energy comes down",
-          "strings fall away, gentle piano remains",
-          "quiet, tender, warm",
+          "long gentle decrescendo",
+          "strings slowly fall away, tender piano remains",
           "resolve softly to the home chord",
-          "final chord rings out and fades naturally"
+          "final chord sustains and rings out to the very end"
         ],
         "negative_local_styles": [
           "abrupt ending",
+          "sudden stop",
           "new melody",
-          "loud ending",
           "building"
         ],
         "duration_ms": 6000,

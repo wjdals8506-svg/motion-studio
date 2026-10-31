@@ -20,9 +20,9 @@
   "sections": [
     {
       "name": "fogged window",
-      "until": 15,
+      "until": 9,
       "positive": [
-        "solo piano, sparse and quiet",
+        "solo piano, quiet and intimate",
         "soft sustained notes, room ambience"
       ],
       "negative": [
@@ -32,12 +32,12 @@
     },
     {
       "name": "wind seeps in",
-      "until": 24,
+      "until": 18,
       "positive": [
-        "string ensemble enters clearly at the start of this section",
-        "cellos and violins, warm legato, clearly audible",
+        "warm string ensemble enters at the start of this section",
+        "cellos and violins, legato, clearly audible",
         "steady crescendo, building emotional intensity",
-        "strings carry the melody to the emotional climax of the piece",
+        "reaches the emotional climax at the very end of this section",
         "piano continues underneath"
       ],
       "negative": [
@@ -47,19 +47,30 @@
       ]
     },
     {
+      "name": "voice and story",
+      "until": 24,
+      "positive": [
+        "full warm strings and piano at their fullest",
+        "sustained emotional peak that slowly begins to ease"
+      ],
+      "negative": [
+        "new build",
+        "drums"
+      ]
+    },
+    {
       "name": "autumn scent",
       "until": 30,
       "positive": [
-        "decrescendo, the energy comes down",
-        "strings fall away, gentle piano remains",
-        "quiet, tender, warm",
+        "long gentle decrescendo",
+        "strings slowly fall away, tender piano remains",
         "resolve softly to the home chord",
-        "final chord rings out and fades naturally"
+        "final chord sustains and rings out to the very end"
       ],
       "negative": [
         "abrupt ending",
+        "sudden stop",
         "new melody",
-        "loud ending",
         "building"
       ]
     }
