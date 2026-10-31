@@ -176,6 +176,8 @@
           m.fillStyle = 'rgba(0,0,0,0.3)'; m.beginPath(); m.arc(wx(d.x + 0.0007 * Math.sin(k * 0.21)), wy(y), w, 0, TAU); m.fill();
         }
       }
+      // clear(0~1): 창 전체를 닦은 상태에서 시작(2단계 2차: 맑은 창 + 가장자리 김). refog와 함께 쓴다
+      if (st.clear) { m.globalAlpha = st.clear; m.fillStyle = '#000'; m.fillRect(0, 0, WW, WH); m.globalAlpha = 1; }
       // 2) 다시 서리는 김: 가장자리부터 안쪽으로 마스크를 지운다(r=1이면 전부)
       if (st.refog) {
         const r = st.refog, cx = WW / 2, cy = WH / 2, R = Math.hypot(W, H) * 0.62;
