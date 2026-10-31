@@ -32,7 +32,7 @@ export function checkTokens(tokens, { motion, fontExists }) {
 
   const families = tokens.type?.families ?? {};
   for (const name of new Set(Object.values(families)))
-    if (!fontExists(name)) errors.push(`글꼴 ${name}: 레포 assets/fonts/에 woff2와 LICENSE가 없음`);
+    if (!fontExists(name)) errors.push(`글꼴 ${name}: 레포 assets/fonts/에 글꼴 파일과 라이선스가 없음`);
   for (const [role, r] of Object.entries(tokens.type?.roles ?? {})) {
     if (!(r.family in families)) errors.push(`type.roles.${role}: family '${r.family}'가 type.families에 없음`);
     if (typeof r.size_h !== 'number' || !(r.size_h > 0)) { errors.push(`type.roles.${role}: size_h가 양수 숫자가 아님 (키 이름 확인)`); continue; }
@@ -63,13 +63,13 @@ export function tokensToCss(tokens, height) {
   return `:root {\n  ${lines.join('\n  ')}\n}`;
 }
 
-// 레포 assets/fonts/<글꼴 이름 소문자, 공백은 ->/ 에 woff2와 LICENSE가 있어야 쓴다.
+// 레포 assets/fonts/<글꼴 이름 소문자, 공백은 ->/ 에 글꼴 파일(woff2·ttf·otf)과 LICENSE 또는 OFL이 있어야 쓴다.
 export const fontDir = family => path.join(ROOT, 'assets', 'fonts', family.toLowerCase().replace(/\s+/g, '-'));
 export function fontExists(family) {
   const dir = fontDir(family);
   if (!fs.existsSync(dir)) return false;
   const files = fs.readdirSync(dir);
-  return files.some(f => f.endsWith('.woff2')) && files.some(f => /^LICENSE/i.test(f));
+  return files.some(f => /\.(woff2|ttf|otf)$/i.test(f)) && files.some(f => /^(LICENSE|OFL)/i.test(f));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { contrast, checkTokens, tokensToCss } from './design-tokens.mjs';
+import { contrast, checkTokens, tokensToCss, fontExists } from './design-tokens.mjs';
 
 const tokens = over => ({
   version: 1,
@@ -83,4 +83,10 @@ test('글자 크기 키 오타·누락은 오류, readable은 false라고 적었
   assert.ok(typo.errors.some(e => /info.*size_h/.test(e)));
   const noFlag = checkTokens(withRole('info', { family: 'sans', weight: 400, size_h: 0.01, line: 1.4, tracking: 0 }), opts);
   assert.ok(noFlag.errors.some(e => /info/.test(e)));
+});
+
+test('레포 서체: ttf와 OFL 라이선스만 있는 고운바탕도 쓸 수 있다', () => {
+  assert.equal(fontExists('GowunBatang'), true);
+  assert.equal(fontExists('Pretendard'), true);
+  assert.equal(fontExists('NoSuchFont'), false);
 });

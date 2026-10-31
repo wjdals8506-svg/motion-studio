@@ -1,79 +1,85 @@
 {
   "version": 1,
   "source": {
-    "style": "19 Grainy Gradient (후보 A 필름 김 서린 창)",
-    "why": "사용자 선택: \"우선 A, B나 D는 좀 캐주얼보여서\". 2단계 A안(김 서린 창 한 샷)을 가장 가깝게 잇고, 해 질 녘의 차분함이 공연 톤에 맞음"
+    "style": "4단계 3차 후보 B 번지는 빛 (글자 안의 가을)",
+    "why": "사용자 선택: \"B\" (2026-11-01). 2단계 3차 서사(가을이 글자 사이로 스며든다)를 획 둘레로 번지는 빛으로 보여 줌"
   },
   "colors": {
-    "ground": "#2b2738",
+    "ground": "#1c1611",
     "ink": "#f6efe4",
     "muted": "#d8cbbb",
-    "accent": "#ffc482"
+    "accent": "#ffd6a0"
   },
   "type": {
     "families": {
-      "sans": "Pretendard"
+      "serif": "GowunBatang"
     },
     "roles": {
-      "headline": {
-        "family": "sans",
-        "weight": 600,
-        "size_h": 0.13,
+      "window": {
+        "family": "serif",
+        "weight": 700,
+        "size_h": 0.417,
+        "line": 1,
+        "tracking": -0.03,
+        "readable": true
+      },
+      "window_vertical": {
+        "family": "serif",
+        "weight": 700,
+        "size_h": 0.176,
+        "line": 1,
+        "tracking": 0.02,
+        "readable": true
+      },
+      "title": {
+        "family": "serif",
+        "weight": 700,
+        "size_h": 0.333,
         "line": 1,
         "tracking": -0.02,
         "readable": true
       },
-      "sub": {
-        "family": "sans",
-        "weight": 400,
-        "size_h": 0.045,
-        "line": 1.3,
-        "tracking": -0.01,
-        "readable": true
-      },
       "line": {
-        "family": "sans",
-        "weight": 400,
-        "size_h": 0.06,
-        "line": 1.25,
-        "tracking": -0.01,
-        "readable": true
-      },
-      "cities": {
-        "family": "sans",
-        "weight": 400,
-        "size_h": 0.04,
-        "line": 1.2,
-        "tracking": 0,
+        "family": "serif",
+        "weight": 700,
+        "size_h": 0.093,
+        "line": 1,
+        "tracking": -0.02,
         "readable": true
       },
       "info": {
-        "family": "sans",
+        "family": "serif",
         "weight": 400,
-        "size_h": 0.035,
-        "line": 1.4,
-        "tracking": 0,
+        "size_h": 0.037,
+        "line": 1,
+        "tracking": 0.01,
+        "readable": true
+      },
+      "cities": {
+        "family": "serif",
+        "weight": 400,
+        "size_h": 0.031,
+        "line": 1,
+        "tracking": 0.01,
         "readable": true
       }
     }
   },
   "texture": {
-    "renderer": "styles/modules/19-grainy-gradient/fog-glass.js (색·질감 값은 렌더러 안에 있다. 아래는 그 값의 기록)",
-    "grain": "overlay 16%, 타일 6장 ±45, 초당 12장",
-    "fog_blur_px": 34,
-    "fog_film": "rgba(224,214,202,0.58)",
-    "condensation": "작은 점 26000개(r 0.4~1.5) + 큰 물방울 1400개(r 1.4~3.8)",
-    "city": "네 겹(먼 겹 블러 5px → 가까운 겹 1.2px), 겹 사이 따뜻한 안개, 전체 초점 흐림 1.4px",
-    "wipe": "큰 바람 스탬프 반지름 0.27~0.37H, 가로 1.7배, 닦인 자리에 김 10% 남음, 바람 결·가장자리 물방울",
-    "title": "'가을냄새'는 Pretendard 600, 0.14H 글리프 모양으로 김을 닦아 왼쪽부터 드러냄. 손가락 획·물줄기 없음(사용자 거절)",
-    "accent_meaning": "호박색(#ffc482 계열)은 저녁 불빛에만",
-    "window": "2단계 2차: 맑은 창(clear 1) + 가장자리 김(refog 0.3). 물방울·김 닦기로 글자를 드러내는 효과는 쓰지 않음(사용자 결정)"
+    "window": "Pexels 영상 위에 검은 바탕·흰 글자 층(multiply)을 얹어 획 안에서만 영상이 보임. 그 위에 바탕색(screen)과 나뭇잎 그림자 영상(screen, 9%)",
+    "glow": "획 둘레 번짐: 흰 외곽선 0.012em + text-shadow 30px(75%)·90px(35%). 영상 빛이 획 밖으로 스며 나오는 모양",
+    "line_glow": "한 줄 문장: 호박빛 번짐 40px(rgba 255,214,160 45%) + 어두운 받침 그림자 28px",
+    "curtain_grade": "커튼 영상 sepia 0.45, saturate 1.35, hue-rotate -10deg, brightness 0.92, contrast 1.08 (흰빛을 늦은 오후 호박빛으로)",
+    "color_temperature": "바탕색 #12161d(서늘) → #1c1611(따뜻), 0~15초 동안",
+    "bars": "15초 전까지 위아래 검은 띠 138px(2.39:1), \"스며드는\" 안으로 들어가며 열림",
+    "voice_line": "한 줄 문장 아래 목소리 선(음악 크기 값)",
+    "accent_meaning": "호박빛은 한 줄 문장과 커튼 빛에만"
   },
   "motion": {
     "enter": "emphasized-decelerate",
     "exit": "emphasized-accelerate",
     "idle": "breathe",
-    "idle_scope": "김의 농도와 불빛만 아주 작게 살아 있음(진폭 2% 안). 글자는 착지 후 완전히 정지",
-    "text": "키네틱 배치: 앞 컷의 \"스며드는\"은 사라진 상태에서, \"윤종신의\"(15.02)·\"목소리와\"(16.52)·\"이야기\"(17.27)가 박에 맞춰 서로 다른 자리에 차례로 착지(0.9초 전 출발, power2.out) → 정점(18.045) 0.45초 전부터 세 단어가 \"윤종신의 목소리와 이야기\" 한 덩이로 움직여 모임(1.2초, power2.inOut) → 그 위에 \"서늘한 바람처럼 스며드는\" 한 덩이가 같은 글꼴로 나타남. 두 덩이 같은 글꼴·굵기·크기. 불투명도 페이드 없음"
+    "idle_scope": "4단계 질문 4에서 정한다. 지금은 3단계 렌더본 그대로(영상만 흐르고 글자는 착지 후 정지)",
+    "text": "3단계 3차 렌더본(승인 2026-11-01)과 같은 시각: 컷 경계 4.545·9.045·15.045·19.545·24.0초, 키 모션 15.045·18.045·24.045초"
   }
 }
