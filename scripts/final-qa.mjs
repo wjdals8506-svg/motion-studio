@@ -24,6 +24,8 @@ export function finalQa({ probe, loudness, freezes, silences, expect }) {
   const a = probe.streams.find(s => s.codec_type === 'audio');
   const duration = Number(probe.format.duration);
   if (!(Math.abs(duration - expect.duration) <= 0.1)) errors.push(`길이 ${duration}초: 컴포지션 ${expect.duration}초와 0.1초 넘게 다름`);
+  // 섞은 소리가 컨테이너 길이를 채우므로 영상 스트림 길이도 따로 본다(최종 리뷰 I2)
+  if (v?.duration !== undefined && !(Math.abs(Number(v.duration) - expect.duration) <= 0.1)) errors.push(`영상 스트림 ${Number(v.duration)}초: 컴포지션 ${expect.duration}초와 0.1초 넘게 다름`);
   if (v?.codec_name !== 'h264') errors.push(`비디오 코덱 ${v?.codec_name ?? '없음'}: h264여야 함`);
   if (v && (v.width !== expect.width || v.height !== expect.height)) errors.push(`해상도 ${v.width}×${v.height}: ${expect.width}×${expect.height}여야 함`);
   if (a?.codec_name !== 'aac') errors.push(`오디오 ${a ? `코덱 ${a.codec_name}` : '스트림 없음'}: aac여야 함`);

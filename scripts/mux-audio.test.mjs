@@ -41,6 +41,16 @@ test('planGain: keep → 0 dB, 리미터 없음', () => {
   assert.deepEqual(planGain({ lufs: -19.8, peak: -6.6 }, 'keep'), { gainDb: 0, limit: false });
 });
 
+test('planGain: keep이어도 피크가 −1.5를 넘으면 리미터', () => {
+  assert.deepEqual(planGain({ lufs: -12, peak: -0.5 }, 'keep'), { gainDb: 0, limit: true });
+  assert.match(mixFilter(audioTracks(BGM), { duration: 30, limit: true }), /,alimiter=limit=0\.841:level=false\[mix\]$/);
+});
+
+test('audioTracks는 data-src를 src로 읽지 않고, 빈 숫자 속성은 실패한다', () => {
+  assert.equal(audioTracks('<audio id="x" data-src="x.mp3" src="a.mp3" data-start="0" data-duration="1"></audio>')[0].src, 'a.mp3');
+  assert.throws(() => audioTracks('<audio id="x" src="a.mp3" data-start="0" data-duration="1" data-volume=""></audio>'), /data-volume/);
+});
+
 test('planGain: −16/−9를 −14로 → +2 dB, 리미터 없음', () => {
   assert.deepEqual(planGain({ lufs: -16, peak: -9 }, -14), { gainDb: 2, limit: false });
 });

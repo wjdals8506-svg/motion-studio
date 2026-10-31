@@ -23,6 +23,13 @@ test('길이 0.15초 차이는 오류', () => {
   assert.match(r.errors[0], /길이/);
 });
 
+test('영상 스트림이 29초인데 소리로 컨테이너가 30초면 오류', () => {
+  const [v, a] = probe().streams;
+  const r = finalQa({ ...ok, probe: probe({ streams: [{ ...v, duration: '29.000000' }, { ...a, duration: '30.000000' }], format: { duration: '30.0' } }) });
+  assert.equal(r.errors.length, 1);
+  assert.match(r.errors[0], /영상 스트림/);
+});
+
 test('오디오 스트림 없으면 오류', () => {
   const r = finalQa({ ...ok, probe: probe({ streams: [probe().streams[0]] }) });
   assert.match(r.errors.join(), /오디오/);

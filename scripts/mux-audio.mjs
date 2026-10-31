@@ -6,8 +6,14 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-const attr = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
-const num = (tag, name, d) => (attr(tag, name) === undefined ? d : Number(attr(tag, name)));
+// 앞이 글자나 '-'이면 다른 속성(data-src 등)이라 건너뛴다(최종 리뷰 I3)
+const attr = (tag, name) => tag.match(new RegExp(`(?<![\\w-])${name}="([^"]*)"`))?.[1];
+function num(tag, name, d) {
+  const v = attr(tag, name);
+  if (v === undefined) return d;
+  if (v.trim() === '' || !Number.isFinite(Number(v))) throw new Error(`${name}="${v}": 숫자여야 함`);
+  return Number(v);
+}
 const r3 = x => Number(x.toFixed(3));
 
 export function audioTracks(html) {
@@ -48,7 +54,7 @@ export function mixFilter(tracks, { duration, gainDb = 0, limit = false }) {
 }
 
 export function planGain(measured, target) {
-  if (target === 'keep') return { gainDb: 0, limit: false };
+  if (target === 'keep') return { gainDb: 0, limit: measured.peak > -1.5 }; // keep이어도 −1 dBTP는 지킨다(최종 리뷰 I1)
   const gainDb = Math.round((target - measured.lufs) * 100) / 100;
   return { gainDb, limit: measured.peak + gainDb > -1.5 };
 }
