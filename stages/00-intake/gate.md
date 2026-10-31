@@ -10,4 +10,4 @@
 한 페이지 브리프(`00_brief.md`) 전체.
 
 ## 승인 후
-`status: approved`, `approved_at: YYYY-MM-DD` → `taste/verdicts.md` 기록 → 커밋·푸시.
+`status: approved`, `approved_at: YYYY-MM-DDTHH:MM` → `taste/verdicts.md` 기록 → 커밋·푸시.

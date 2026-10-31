@@ -14,4 +14,4 @@
 스토리라인 3안 → 선택 → 컷 설계표 → (있으면) 원고.
 
 ## 승인 후
-`status: approved`, `approved_at` → `taste/verdicts.md` 기록 → 커밋·푸시. 다음은 3단계(애니매틱과 BGM)이며 별도 구축 계획이 필요하다.
+`status: approved`, `approved_at: YYYY-MM-DDTHH:MM` → `taste/verdicts.md` 기록 → 커밋·푸시. 다음은 3단계(애니매틱과 BGM)이며 별도 구축 계획이 필요하다.

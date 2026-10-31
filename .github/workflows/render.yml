@@ -32,6 +32,9 @@ jobs:
       - name: Install pinned HyperFrames
         run: npm ci
 
+      - name: Check local assets exist (case-sensitive)
+        run: node scripts/check-fonts.mjs "${{ inputs.project }}"
+
       - name: Ensure headless Chrome
         working-directory: ${{ inputs.project }}
         run: |

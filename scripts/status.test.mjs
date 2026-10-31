@@ -40,3 +40,15 @@ test('front matter 없는 파일은 draft로 본다', () => {
   fs.writeFileSync(path.join(d, '00_brief.md'), '# 브리프');
   assert.equal(projectStatus(d).stage, 0);
 });
+
+test('앞 단계를 고쳐 다시 승인하면 그보다 먼저 승인된 뒤 단계는 stale', () => {
+  const d = dir();
+  const put = (file, at) =>
+    fs.writeFileSync(path.join(d, file), `---\nstatus: approved\napproved_at: ${at}\n---\n`);
+  put('00_brief.md', '2026-10-31T09:00');
+  put('01_key_message.md', '2026-10-31T11:00');
+  put('02_story.md', '2026-10-31T10:00');
+  assert.deepEqual(projectStatus(d), {
+    stage: 2, approved: ['00_brief.md', '01_key_message.md'], stale: ['02_story.md'],
+  });
+});

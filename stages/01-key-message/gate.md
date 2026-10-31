@@ -10,4 +10,4 @@
 리서치 요약 → 후보 표 → 확정 문장(사용자가 고른 것).
 
 ## 승인 후
-`status: approved`, `approved_at` → `taste/verdicts.md`에 고른 문장과 버린 후보의 이유 기록 → 커밋·푸시.
+`status: approved`, `approved_at: YYYY-MM-DDTHH:MM` → `taste/verdicts.md`에 고른 문장과 버린 후보의 이유 기록 → 커밋·푸시.

@@ -15,3 +15,9 @@ out/
 *.aac
 *.ogg
 *.flac
+*.oga
+*.opus
+*.pcm
+*.ulaw
+*.alaw
+*.webm
