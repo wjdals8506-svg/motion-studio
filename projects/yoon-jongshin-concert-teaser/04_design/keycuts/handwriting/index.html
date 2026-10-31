@@ -66,29 +66,39 @@
     <script>
       // 키 모션 시각(이 키 컷의 지역 시각, 초). 영상 전체 시각 = 지역 시각 + 24.045
       window.__cues = [0];
-      // 키 컷: 닦였던 유리에 김이 가장자리부터 다시 서리고, 그 위에 손가락으로 '가을냄새'를 쓴다(24.045초 시작).
-      // 손글씨가 닦아 낸 획 사이로 흐린 저녁 불빛이 보인다. 마지막 1.2초는 완전히 정지(엔드 홀드).
+      // 키 컷: 닦였던 유리에 김이 가장자리부터 다시 서리고, 그 김 위로 '가을냄새'가 글꼴 모양 그대로 왼쪽부터 닦여 드러난다
+      // (24.045초 시작, 사용자 결정 2026-10-31: 손가락 글씨 대신 "이쁜 폰트 모양", 물줄기 없음).
+      // 글자 모양 사이로 흐린 저녁 불빛이 보인다. 마지막 1.2초는 완전히 정지(엔드 홀드).
       const OFFSET = 24.045, HOLD = 4.755;
+      const TITLE_FONT = "600 151px 'Pretendard'";                         // 0.14H, 헤드라인 굵기(korean-type.md)
       const clamp01 = x => Math.min(1, Math.max(0, x));
-      const strokes = FogGlass.place(0.5, 0.42, 0.14);
       const fg = FogGlass.create(document.getElementById('cv'), { seed: 7, sweep: { y: 0.5, r: 0.27 } });
+      let glyph = null, lastT = 0;
       function renderAt(t) {
+        lastT = t;
         const tt = Math.min(t, HOLD);                                     // 엔드 홀드: 화면은 HOLD 시각에 멈춘다
+        const p = clamp01((tt - __cues[0] - 0.15) / 2.1);                 // 0.15 → 2.25초 동안 드러남(감속)
         fg.render({
-          t: Math.min(t, HOLD) + OFFSET,
+          t: tt + OFFSET,
           cam: { x: 0.015, y: 0, zoom: 1 + 0.02 * clamp01(tt / HOLD) },
           trail: { progress: 1, y: 0.7, h: 0.12 },
           sweep: { progress: 1 },
           refog: 0.62 + 0.38 * (1 - Math.pow(1 - clamp01(tt / 0.7), 3)),  // 앞 컷에서 서리기 시작한 김이 0.7초에 다 덮인다
-          writing: { strokes, width: 0.018, progress: clamp01((tt - __cues[0] - 0.15) / 2.35),  // 0.15 → 2.5초 동안 씀
-                     drip: clamp01((tt - 2.6) / 2.0) },                                              // 획 끝 물줄기는 엔드 홀드 전에 멈춘다
+          title: { glyph, x: 0.5, y: 0.42, progress: 1 - Math.pow(1 - p, 2) },
         });
       }
+      // 글꼴이 로드된 뒤 글리프를 만들고 다시 그린다. 렌더러는 이 준비가 끝날 때까지 기다린다
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.title = document.fonts.load(TITLE_FONT).then(() => {
+        glyph = FogGlass.makeTitle('가을냄새', TITLE_FONT, -3);
+        renderAt(lastT);
+      });
       window.addEventListener('hf-seek', e => renderAt(e.detail.time));
       renderAt(0);
 
       const tl = gsap.timeline({ paused: true });
-      // 공연 정보: 글씨를 다 쓴 뒤 짧은 오프셋으로 한 줄씩 착지(페이드 인 없음), 4.755초부터 완전 정지
+      // 공연 정보: 제목이 다 드러난 뒤 짧은 오프셋으로 한 줄씩 착지(페이드 인 없음), 4.755초부터 완전 정지
       tl.set('#i1', { visibility: 'visible', y: 14 }, 2.75);
       tl.to('#i1', { y: 0, duration: 0.45, ease: 'power3.out' }, 2.75);
       tl.set('#i2', { visibility: 'visible', y: 18 }, 3.05);

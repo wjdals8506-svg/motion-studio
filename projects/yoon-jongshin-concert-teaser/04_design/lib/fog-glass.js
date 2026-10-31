@@ -143,6 +143,7 @@
     const mask = canvas(), m = mask.getContext('2d');
     const fog = canvas(), f = fog.getContext('2d');
     const sm = canvas(), smc = sm.getContext('2d');
+    const tc = canvas(), tcc = tc.getContext('2d');
     const ctx = target.getContext('2d');
 
     function render(st) {
@@ -208,6 +209,16 @@
         }
       }
 
+      if (st.title && st.title.glyph && st.title.progress > 0) {
+        const T = st.title, g = T.glyph, gx = wx(T.x) - g.width / 2, gy = wy(T.y) - g.height / 2;
+        const fx = gx + (g.width + 120) * T.progress - 60;       // 드러나는 앞쪽 가장자리(부드러운 폭 120px)
+        tcc.globalCompositeOperation = 'source-over'; tcc.clearRect(0, 0, WW, WH);
+        tcc.drawImage(g, gx, gy);
+        const lg = tcc.createLinearGradient(fx - 60, 0, fx + 60, 0);
+        lg.addColorStop(0, 'rgba(0,0,0,1)'); lg.addColorStop(1, 'rgba(0,0,0,0)');
+        tcc.globalCompositeOperation = 'destination-in'; tcc.fillStyle = lg; tcc.fillRect(0, 0, WW, WH);
+        m.drawImage(tc, 0, 0);
+      }
       // 3) 김 = 기본 김(+ 김 너머 번지는 불빛) − 마스크. 숨쉬듯 아주 작게 농도가 변한다(idle: breathe, 진폭 2%)
       f.globalCompositeOperation = 'source-over'; f.clearRect(0, 0, WW, WH);
       f.globalAlpha = 0.98 + 0.02 * Math.sin(t * 0.9); f.drawImage(fogBase, 0, 0); f.globalAlpha = 1;
@@ -313,5 +324,16 @@
     return strokes;
   }
 
-  window.FogGlass = { create, place, W, H };
+  // 글꼴 모양 제목의 글리프 캔버스(글꼴이 로드된 뒤 한 번 만든다). font는 CSS font 문자열
+  function makeTitle(text, font, tracking = 0) {
+    const c0 = canvas(10, 10).getContext('2d'); c0.font = font;
+    const chars = [...text], gap = tracking, widths = chars.map(ch => c0.measureText(ch).width);
+    const w = Math.ceil(widths.reduce((a, b) => a + b, 0) + gap * (chars.length - 1) + 40), h = Math.ceil(parseFloat(font.match(/(\d+(?:\.\d+)?)px/)[1]) * 1.4);
+    const c = canvas(w, h), g = c.getContext('2d');
+    g.font = font; g.textBaseline = 'middle'; g.fillStyle = '#000';
+    let x = 20; chars.forEach((ch, i) => { g.fillText(ch, x, h / 2); x += widths[i] + gap; });
+    return c;
+  }
+
+  window.FogGlass = { create, place, makeTitle, W, H };
 })();
