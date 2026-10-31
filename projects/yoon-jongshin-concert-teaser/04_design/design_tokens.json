@@ -8,26 +8,65 @@
     "ground": "#2b2738",
     "ink": "#f6efe4",
     "muted": "#d8cbbb",
-    "accent": "#f0b072"
+    "accent": "#ffc482"
   },
   "type": {
-    "families": { "sans": "Pretendard" },
+    "families": {
+      "sans": "Pretendard"
+    },
     "roles": {
-      "headline": { "family": "sans", "weight": 600, "size_h": 0.13, "line": 1.0, "tracking": -0.02, "readable": true },
-      "sub": { "family": "sans", "weight": 400, "size_h": 0.045, "line": 1.3, "tracking": -0.01, "readable": true },
-      "line": { "family": "sans", "weight": 400, "size_h": 0.06, "line": 1.25, "tracking": -0.01, "readable": true },
-      "cities": { "family": "sans", "weight": 400, "size_h": 0.04, "line": 1.2, "tracking": 0, "readable": true },
-      "info": { "family": "sans", "weight": 400, "size_h": 0.035, "line": 1.4, "tracking": 0, "readable": true }
+      "headline": {
+        "family": "sans",
+        "weight": 600,
+        "size_h": 0.13,
+        "line": 1,
+        "tracking": -0.02,
+        "readable": true
+      },
+      "sub": {
+        "family": "sans",
+        "weight": 400,
+        "size_h": 0.045,
+        "line": 1.3,
+        "tracking": -0.01,
+        "readable": true
+      },
+      "line": {
+        "family": "sans",
+        "weight": 400,
+        "size_h": 0.06,
+        "line": 1.25,
+        "tracking": -0.01,
+        "readable": true
+      },
+      "cities": {
+        "family": "sans",
+        "weight": 400,
+        "size_h": 0.04,
+        "line": 1.2,
+        "tracking": 0,
+        "readable": true
+      },
+      "info": {
+        "family": "sans",
+        "weight": 400,
+        "size_h": 0.035,
+        "line": 1.4,
+        "tracking": 0,
+        "readable": true
+      }
     }
   },
   "texture": {
-    "grain_amp": 22,
+    "renderer": "styles/modules/19-grainy-gradient/fog-glass.js (색·질감 값은 렌더러 안에 있다. 아래는 그 값의 기록)",
+    "grain": "overlay 16%, 타일 6장 ±45, 초당 12장",
     "fog_blur_px": 34,
     "fog_film": "rgba(224,214,202,0.58)",
-    "condensation_dots": 9000,
-    "wipe_edge": "부드럽고 불규칙 (반지름 0.27~0.37H 스탬프)",
-    "handwriting": "'가을냄새'는 글꼴이 아니라 손가락으로 김을 닦은 SVG 경로. 글자 높이 0.14H, 획 굵기 약 0.018H",
-    "accent_meaning": "호박색은 저녁 불빛(공연이 있는 도시)에만"
+    "condensation": "작은 점 26000개(r 0.4~1.5) + 큰 물방울 1400개(r 1.4~3.8)",
+    "city": "네 겹(먼 겹 블러 5px → 가까운 겹 1.2px), 겹 사이 따뜻한 안개, 전체 초점 흐림 1.4px",
+    "wipe": "큰 바람 스탬프 반지름 0.27~0.37H, 가로 1.7배, 닦인 자리에 김 10% 남음, 바람 결·가장자리 물방울",
+    "title": "'가을냄새'는 Pretendard 600, 0.14H 글리프 모양으로 김을 닦아 왼쪽부터 드러냄. 손가락 획·물줄기 없음(사용자 거절)",
+    "accent_meaning": "호박색(#ffc482 계열)은 저녁 불빛에만"
   },
   "motion": {
     "enter": "emphasized-decelerate",

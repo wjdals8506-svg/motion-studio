@@ -10,8 +10,11 @@ test('dropMissingMedia는 없는 음원만 지운다', () => {
   assert.deepEqual(r.dropped, ['assets/audio/bgm.mp3']);
 });
 
-test('video도 같은 규칙, 다 있으면 그대로', () => {
+test('없는 video는 지우지 않고 missing으로 알린다(장면이 빠진 채 성공하면 안 됨)', () => {
   const html = '<video src="v.mp4" muted></video><img src="x.png">';
-  assert.deepEqual(dropMissingMedia(html, () => true), { html, dropped: [] });
-  assert.deepEqual(dropMissingMedia(html, () => false).dropped, ['v.mp4']);
+  assert.deepEqual(dropMissingMedia(html, () => true), { html, dropped: [], missing: [] });
+  const r = dropMissingMedia(html, () => false);
+  assert.deepEqual(r.dropped, []);
+  assert.deepEqual(r.missing, ['v.mp4']);
+  assert.equal(r.html, html);
 });

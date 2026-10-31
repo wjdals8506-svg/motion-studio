@@ -64,3 +64,20 @@ test('CLI는 손으로 쓴 키 컷을 덮어쓰지 않는다', () => {
   assert.deepEqual(missingAssets(path.join(d, '04_design', 'keycuts', 'wind')), []);
   assert.equal(run().status, 1);
 });
+
+test('음원 원본이 없는 클론에서도 틀을 만들고 audio 없이 경고한다', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), '키 컷 음원 없음 '));
+  fs.mkdirSync(path.join(d, '03_animatic'));
+  fs.mkdirSync(path.join(d, '04_design'));
+  fs.writeFileSync(path.join(d, '03_animatic', 'timing.json'), JSON.stringify({ ...timing, audio: 'media/없는-프로젝트/bgm-9.mp3' }));
+  fs.writeFileSync(path.join(d, '04_design', 'design_tokens.json'), JSON.stringify({
+    version: 1, colors: { ground: '#1d1a17', ink: '#f3ede4', muted: '#a39a8e', accent: '#e7b77a' },
+    type: { families: { sans: 'Pretendard' }, roles: { headline: { family: 'sans', weight: 600, size_h: 0.09, line: 1.25, tracking: -0.02, readable: true } } },
+    texture: {}, motion: { enter: 'emphasized-decelerate', exit: 'emphasized-accelerate', idle: 'still' },
+  }));
+  const cli = fileURLToPath(new URL('./keycut.mjs', import.meta.url));
+  const r = spawnSync('node', [cli, d, '--name', 'x', '--from', '0', '--to', '3'], { encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stderr, /음원/);
+  assert.ok(!fs.readFileSync(path.join(d, '04_design', 'keycuts', 'x', 'index.html'), 'utf8').includes('<audio'));
+});

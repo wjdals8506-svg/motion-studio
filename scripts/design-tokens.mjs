@@ -35,7 +35,8 @@ export function checkTokens(tokens, { motion, fontExists }) {
     if (!fontExists(name)) errors.push(`글꼴 ${name}: 레포 assets/fonts/에 woff2와 LICENSE가 없음`);
   for (const [role, r] of Object.entries(tokens.type?.roles ?? {})) {
     if (!(r.family in families)) errors.push(`type.roles.${role}: family '${r.family}'가 type.families에 없음`);
-    if (!r.readable) continue;
+    if (typeof r.size_h !== 'number' || !(r.size_h > 0)) { errors.push(`type.roles.${role}: size_h가 양수 숫자가 아님 (키 이름 확인)`); continue; }
+    if (r.readable === false) continue;                   // 질감용 글자만 false로 적어 검사에서 뺀다
     if (r.size_h < 0.026) errors.push(`type.roles.${role}: 읽는 글자 ${r.size_h}H < 바닥 0.026H`);
     else if (r.size_h < 0.04) warnings.push(`type.roles.${role}: 읽는 글자 ${r.size_h}H < 목표 0.04H`);
   }

@@ -77,3 +77,10 @@ test('CSS 변수', () => {
   assert.match(css, /--type-headline-weight: 600;/);
   assert.match(css, /--type-headline-tracking: -0.02em;/);
 });
+
+test('글자 크기 키 오타·누락은 오류, readable은 false라고 적었을 때만 건너뛴다', () => {
+  const typo = checkTokens(withRole('info', { family: 'sans', weight: 400, sizeH: 0.02, line: 1.4, tracking: 0, readable: true }), opts);
+  assert.ok(typo.errors.some(e => /info.*size_h/.test(e)));
+  const noFlag = checkTokens(withRole('info', { family: 'sans', weight: 400, size_h: 0.01, line: 1.4, tracking: 0 }), opts);
+  assert.ok(noFlag.errors.some(e => /info/.test(e)));
+});

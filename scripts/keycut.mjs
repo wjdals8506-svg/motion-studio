@@ -112,7 +112,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   fs.mkdirSync(out, { recursive: true });
   const css = `${fontFaces(tokens, out)}\n      ${tokensToCss(tokens, timing.height).replace(/\n/g, '\n      ')}`;
   let audio = null;
-  if (timing.audio) {
+  // 음원은 커밋되지 않으므로(CLAUDE.md 14) 다른 PC·새 클론에는 없다. 없으면 audio 없이 만들고 경고한다
+  if (timing.audio && !fs.existsSync(path.join(ROOT, timing.audio))) {
+    console.error(`경고: 음원 원본이 없어 audio 없이 만듦: ${timing.audio}`);
+  } else if (timing.audio) {
     audio = `bgm${path.extname(timing.audio)}`;
     fs.mkdirSync(path.join(out, 'assets', 'audio'), { recursive: true });
     fs.copyFileSync(path.join(ROOT, timing.audio), path.join(out, 'assets', 'audio', audio));
