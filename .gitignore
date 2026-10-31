@@ -27,3 +27,4 @@ projects/**/assets/audio/
 *.mp4
 # 예외: 스톡 영상 소스(무음으로 잘라 둔 것, 출처는 assets.manifest.json)만 올린다
 !projects/**/assets/video/*.mp4
+.transcode-cache/

@@ -5,73 +5,136 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      @font-face { font-family: 'Pretendard'; font-weight: 400; src: url('assets/fonts/pretendard/Pretendard-Regular.woff2') format('woff2'); }
-      @font-face { font-family: 'Pretendard'; font-weight: 600; src: url('assets/fonts/pretendard/Pretendard-SemiBold.woff2') format('woff2'); }
-      :root { --ground: #16161a; --box: #5c5c63; --ink: #ecebe6; --muted: #8a8a90; }
+      @font-face { font-family: 'GowunBatang'; font-weight: 700; src: url('assets/fonts/gowunbatang/GowunBatang-Bold.ttf'); }
+      @font-face { font-family: 'GowunBatang'; font-weight: 400; src: url('assets/fonts/gowunbatang/GowunBatang-Regular.ttf'); }
+      :root { --ink: #f6efe4; --muted: #d8cbbb; --font: 'GowunBatang', serif; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
-      #root { width: 100%; height: 100%; position: relative; font-family: 'Pretendard', sans-serif; word-break: keep-all; }
-      .beat { width: 100%; height: 100%; position: absolute; inset: 0; }
-      .box { position: absolute; border: 2px dashed var(--box); }
-      .box-label { position: absolute; transform: translateY(-100%); padding-bottom: 4px; white-space: nowrap; color: var(--muted); font-size: 28px; }
-      .copy { position: absolute; left: 10%; right: 10%; top: 50%; transform: translateY(-50%); text-align: center; color: var(--ink); font-size: 76px; font-weight: 600; line-height: 1.3; }
-      .caption { position: absolute; left: 0; right: 0; bottom: 43px; text-align: center; color: var(--muted); font-size: 28px; }
-      .cue { position: absolute; top: 0; left: 0; width: 12px; height: 100%; background: var(--ink); opacity: 0; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { width: 100%; height: 100%; position: relative; word-break: keep-all; }
+      /* 글자 창: 영상 위에 검은 바탕·흰 글자 층을 곱하면 획 안에서만 영상이 보인다.
+         그 위에 바탕색(screen)과 옅은 나뭇잎 그림자(screen)를 얹는다 */
+      #stack { position: absolute; inset: 0; isolation: isolate; overflow: hidden; }
+      #footage { position: absolute; inset: 0; }
+      #footage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #mask { position: absolute; inset: 0; background: #000; mix-blend-mode: multiply; }
+      #mask .w { position: absolute; color: #fff; font-family: var(--font); font-weight: 700; line-height: 1; white-space: nowrap; visibility: hidden; will-change: transform; }
+      #tint { position: absolute; inset: 0; background: #12161d; mix-blend-mode: screen; }
+      #shade { position: absolute; inset: 0; mix-blend-mode: screen; opacity: 0.09; }
+      #shade video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.4); }
+      /* 영상이 화면 전체일 때 글자 받침(5단계 2차 지시: 밝은 배경 위 글자는 막·그림자로) */
+      #veil { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(20,14,10,0.55), rgba(20,14,10,0.12) 75%); opacity: 0; }
+      .line { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--font); color: var(--ink); white-space: nowrap; text-shadow: 0 2px 28px rgba(20,14,10,0.7); }
+      #msg { top: 45%; font-size: 100px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+      #msg span { display: inline-block; visibility: hidden; }
+      #voice { position: absolute; left: 560px; top: 610px; width: 800px; height: 70px; opacity: 0; }
+      .info { font-size: 40px; font-weight: 400; color: var(--muted); letter-spacing: 0.01em; visibility: hidden; text-shadow: none; }
+      /* 보조 장치: 15초 전까지 위아래 검은 띠(2.39:1), "스며드는" 안으로 들어가며 열린다 */
+      .bar { position: absolute; left: 0; right: 0; height: 138px; background: #000; }
+      #barT { top: 0; transform-origin: top; } #barB { bottom: 0; transform-origin: bottom; }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
-      <section class="clip beat" id="beat-1" data-start="0" data-duration="3.045">
-        
-        <p class="copy" id="copy-1">서늘한<br>바람처럼</p>
-        
-        <p class="caption">#1 hook</p>
+      <div id="stack">
+        <!-- Pexels 영상(출처는 assets.manifest.json). 소리 트랙은 잘라 낼 때 뺐다 -->
+        <div id="footage" data-layout-allow-overflow data-layout-allow-occlusion>
+          <video id="vReeds" class="clip" src="assets/video/reeds-28079730.mp4" muted playsinline data-start="0" data-duration="4.7" data-media-start="0" data-track-index="0"></video>
+          <div id="wCurtain" style="position:absolute;inset:0"><video id="vCurtain" class="clip" src="assets/video/curtain-35161057.mp4" muted playsinline data-start="4.545" data-duration="15.2" data-media-start="0" data-track-index="1"></video></div>
+          <div id="wLights" style="position:absolute;inset:0;filter:brightness(1.7) saturate(1.1)"><video id="vLights" class="clip" src="assets/video/citylights-36090170.mp4" muted playsinline data-start="19.545" data-duration="10.455" data-media-start="0" data-track-index="2"></video></div>
+        </div>
+        <div id="mask" data-layout-allow-occlusion>
+          <span class="w" id="t1" style="left:50%;top:50%;font-size:450px;letter-spacing:-0.03em">서늘한</span>
+          <span class="w" id="t2" style="left:58%;top:50%;font-size:420px;letter-spacing:-0.03em">바람처럼</span>
+          <span class="w" id="t3" style="left:64%;top:50%;font-size:190px;writing-mode:vertical-rl;letter-spacing:0.02em">스며드는</span>
+          <span class="w" id="t6" style="left:50%;top:46%;font-size:330px;letter-spacing:-0.02em">가을냄새</span>
+        </div>
+        <div id="tint" data-layout-allow-occlusion></div>
+        <div id="shade" data-layout-allow-occlusion><video id="vShade" class="clip" src="assets/video/leafshadow-5732088.mp4" muted playsinline data-start="0" data-duration="19.6" data-media-start="0" data-playback-rate="0.65" data-track-index="3"></video></div>
+      </div>
+      <div id="veil"></div>
+      <section class="clip" id="copy" data-start="0" data-duration="30">
+        <p class="line" id="msg"><span>윤종신의</span> <span>목소리와</span> <span>이야기</span></p>
+        <svg id="voice" viewBox="0 0 800 70"><path id="voicePath" fill="none" stroke="#f6efe4" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round"/></svg>
+        <p class="line info" id="i1" style="top:71%">2026 윤종신 전국투어 콘서트</p>
+        <p class="line info" id="i2" style="top:77%">10. 2 서울에서 시작, 11월까지</p>
+        <p class="line info" id="i3" style="top:83%;font-size:34px">서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
       </section>
-      <section class="clip beat" id="beat-2" data-start="3.045" data-duration="4.5">
-        
-        
-        
-        <p class="caption">#2 hook</p>
-      </section>
-      <section class="clip beat" id="beat-3" data-start="7.545" data-duration="6">
-        
-        <p class="copy" id="copy-3">스며드는</p>
-        
-        <p class="caption">#3 proof</p>
-      </section>
-      <section class="clip beat" id="beat-4" data-start="13.545" data-duration="6">
-        
-        <p class="copy" id="copy-4">윤종신의<br>목소리와<br>이야기</p>
-        <div class="cue" id="cue-1"></div>
-        <p class="caption">#4 turn</p>
-      </section>
-      <section class="clip beat" id="beat-5" data-start="19.545" data-duration="4.5">
-        
-        <p class="copy" id="copy-5">2026 윤종신 전국투어 콘서트</p>
-        
-        <p class="caption">#5 proof</p>
-      </section>
-      <section class="clip beat" id="beat-6" data-start="24.045" data-duration="5.955">
-        
-        <p class="copy" id="copy-6">가을냄새<br>10. 2 서울에서 시작, 11월까지<br>서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
-        <div class="cue" id="cue-2"></div>
-        <p class="caption">#6 cta</p>
-      </section>
-      <audio id="bgm" src="assets/audio/bgm.mp3" data-start="0" data-duration="30" data-volume="1"></audio>
+      <div class="bar" id="barT"></div><div class="bar" id="barB"></div>
+      <audio id="bgm" src="assets/audio/bgm.mp3" data-start="0" data-duration="30" data-volume="0.55" data-fade-in="1.5" data-fade-out="2.5"></audio>
     </div>
     <script>
-      const tl = gsap.timeline({ paused: true });
-      tl.fromTo('#copy-1', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.1);
-      tl.fromTo('#copy-3', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 7.645);
-      tl.fromTo('#copy-4', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 13.645);
-      tl.fromTo('#copy-5', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 19.645000000000003);
-      tl.fromTo('#copy-6', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.145000000000003);
-      tl.fromTo('#cue-1', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 18.045);
-      tl.set('#cue-1', { opacity: 0 }, 18.645);
-      tl.fromTo('#cue-2', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 24.045);
-      tl.set('#cue-2', { opacity: 0 }, 24.645);
-      window.__timelines['main'] = tl;
-      tl.seek(0);
+      // 3단계 애니매틱(실제 영상): 시각은 timing.json(박자 지도에 맞춘 값). 컷 경계 4.545 / 9.045 / 15.045 / 19.545 / 24.0
+      const T = { c2: 4.545, c3: 9.045, push: 15.045, hero: 18.045, c5: 19.545, up: 22.545, c6: 24.0, info: 26.295 };
+      // 목소리 선: BGM의 프레임별 크기(30fps, 0~1). 음원이 아니라 측정값이다
+      const RMS = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.55,0.96,1,0.99,0.95,0.92,0.9,0.87,0.86,0.83,0.8,0.78,0.75,0.73,0.71,0.68,0.66,0.65,0.62,0.61,0.59,0.57,0.54,0.81,0.83,0.72,0.71,0.72,0.75,0.76,0.76,0.76,0.75,0.74,0.87,1,0.92,0.84,0.78,0.73,0.7,0.68,0.66,0.63,0.63,0.69,0.96,0.89,0.79,0.77,0.76,0.76,0.77,0.76,0.75,0.73,0.71,0.83,0.81,0.78,0.77,0.73,0.71,0.66,0.64,0.61,0.56,0.54,0.83,0.92,0.89,0.87,0.82,0.83,0.8,0.77,0.76,0.75,0.73,0.73,0.71,0.69,0.69,0.68,0.66,0.66,0.66,0.64,0.63,0.62,0.67,1,0.98,0.93,0.9,0.87,0.84,0.83,0.8,0.79,0.77,0.78,0.76,0.75,0.74,0.74,0.72,0.7,0.7,0.69,0.68,0.66,0.65,0.79,0.92,0.86,0.81,0.82,0.86,0.86,0.86,0.86,0.85,0.82,0.82,0.81,0.78,0.76,0.73,0.71,0.68,0.66,0.64,0.64,0.63,0.75,0.98,0.96,0.91,0.9,0.88,0.87,0.86,0.84,0.83,0.8,0.79,0.77,0.76,0.76,0.75,0.75,0.74,0.71,0.69,0.67,0.65,0.64,0.91,0.93,0.82,0.78,0.81,0.81,0.83,0.83,0.84,0.84,0.83,0.82,0.82,0.82,0.81,0.79,0.77,0.76,0.75,0.74,0.73,0.72,0.72,1,1,1,0.95,0.93,0.91,0.88,0.85,0.83,0.8,0.78,0.74,0.73,0.71,0.7,0.68,0.66,0.64,0.62,0.6,0.57,0.56,0.82,0.93,0.94,0.92,0.9,0.87,0.87,0.85,0.84,0.81,0.8,0.87,0.98,0.91,0.88,0.85,0.8,0.78,0.73,0.69,0.66,0.64,0.68,1,0.99,0.89,0.89,0.85,0.82,0.79,0.78,0.79,0.73,0.76,0.75,0.74,0.74,0.69,0.73,0.7,0.7,0.69,0.69,0.66,0.67,0.78,0.96,0.92,0.86,0.83,0.82,0.79,0.78,0.75,0.75,0.73,0.72,0.72,0.72,0.71,0.71,0.71,0.7,0.67,0.66,0.63,0.63,0.7,1,1,1,0.96,0.94,0.9,0.87,0.84,0.83,0.81,0.8,0.77,0.76,0.75,0.73,0.72,0.71,0.7,0.69,0.67,0.67,0.66,0.82,0.94,0.9,0.87,0.88,0.91,0.92,0.9,0.89,0.88,0.87,0.85,0.85,0.84,0.84,0.81,0.76,0.72,0.7,0.67,0.66,0.66,0.7,0.9,0.91,0.84,0.84,0.87,0.88,0.89,0.89,0.86,0.87,0.85,0.83,0.82,0.83,0.83,0.82,0.81,0.79,0.75,0.72,0.7,0.66,0.81,0.95,0.88,0.84,0.87,0.9,0.91,0.91,0.89,0.89,0.88,0.87,0.87,0.86,0.86,0.84,0.82,0.8,0.77,0.75,0.71,0.68,0.7,1,1,0.96,0.94,0.91,0.89,0.86,0.84,0.81,0.78,0.76,0.75,0.74,0.74,0.73,0.71,0.71,0.72,0.73,0.72,0.73,0.73,0.86,0.9,0.82,0.83,0.84,0.85,0.87,0.87,0.85,0.86,0.87,0.91,1,0.95,0.91,0.87,0.84,0.84,0.87,0.86,0.85,0.85,0.87,1,0.98,0.92,0.92,0.9,0.9,0.9,0.91,0.91,0.88,0.88,1,0.98,0.92,0.91,0.9,0.89,0.88,0.85,0.79,0.73,0.72,0.94,1,1,0.97,0.94,0.91,0.89,0.87,0.85,0.85,0.84,0.83,0.81,0.83,0.82,0.8,0.79,0.78,0.77,0.76,0.75,0.76,0.85,1,1,1,0.96,0.96,0.94,0.91,0.9,0.88,0.91,0.87,0.89,0.88,0.88,0.88,0.86,0.9,0.87,0.89,0.87,0.88,0.88,0.9,0.99,0.95,0.95,0.91,0.95,0.92,0.94,0.91,0.91,0.91,0.88,0.87,0.87,0.84,0.85,0.81,0.8,0.8,0.8,0.8,0.8,0.85,1,1,0.98,0.94,0.92,0.91,0.92,0.9,0.89,0.88,0.86,0.86,0.84,0.85,0.81,0.83,0.84,0.8,0.79,0.75,0.71,0.71,0.89,0.94,0.82,0.82,0.8,0.83,0.84,0.84,0.84,0.82,0.82,0.83,0.82,0.79,0.76,0.77,0.78,0.78,0.8,0.78,0.78,0.78,0.83,1,1,1,0.99,0.97,0.96,0.96,0.94,0.91,0.89,0.87,0.86,0.83,0.82,0.81,0.83,0.85,0.84,0.85,0.82,0.83,0.84,0.9,0.96,0.96,0.96,0.95,0.93,0.91,0.9,0.87,0.89,0.9,0.88,0.97,0.9,0.88,0.86,0.83,0.83,0.78,0.72,0.69,0.67,0.72,1,1,0.95,0.92,0.89,0.88,0.84,0.77,0.78,0.77,0.8,0.8,0.77,0.76,0.75,0.78,0.79,0.8,0.79,0.74,0.7,0.68,0.91,1,1,0.96,0.94,0.92,0.9,0.9,0.88,0.86,0.84,0.82,0.82,0.83,0.81,0.79,0.78,0.79,0.77,0.77,0.74,0.71,0.77,1,1,1,1,0.96,0.98,0.96,0.94,0.97,0.92,0.95,0.91,0.95,0.9,0.93,0.9,0.91,0.91,0.91,0.94,0.89,0.93,0.95,1,1,1,1,0.98,0.98,0.95,0.95,0.94,0.91,0.9,0.9,0.87,0.88,0.84,0.87,0.82,0.87,0.8,0.86,0.81,0.86,1,1,1,1,1,1,0.99,0.96,0.96,0.94,0.94,0.92,0.92,0.87,0.88,0.84,0.85,0.82,0.81,0.82,0.83,0.83,0.91,0.98,0.97,0.95,0.94,0.93,0.9,0.88,0.88,0.85,0.82,0.82,0.83,0.85,0.83,0.86,0.86,0.87,0.87,0.87,0.87,0.87,0.88,1,1,1,1,1,0.98,0.99,0.97,0.97,0.97,0.96,0.97,0.96,0.97,0.96,0.95,0.94,0.94,0.93,0.91,0.91,0.88,0.85,0.81,0.8,0.77,0.74,0.72,0.7,0.67,0.67,0.67,0.66,0.67,0.69,0.68,0.68,0.68,0.67,0.64,0.63,0.61,0.59,0.58,0.57,0.57,0.6,0.62,0.61,0.58,0.55,0.53,0.52,0.47,0.46,0.46,0.46,0.44,0.44,0.41,0.39,0.38,0.37,0.35,0.33,0.34,0.33,0.32,0.3,0.31,0.28,0.25,0.24,0.19,0.16,0.16,0.15,0.16,0.16,0.16,0.13,0.09,0.08,0.04,0.02,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      const proxy = { t: 0 }, path = document.getElementById('voicePath');
+      function drawVoice() {
+        const f = Math.round(proxy.t * 30);
+        let d = '';
+        for (let i = 0; i <= 80; i++) {
+          const a = RMS[Math.max(0, Math.min(RMS.length - 1, f - 80 + i))] || 0;
+          const env = Math.sin(Math.PI * i / 80);
+          d += (i ? ' L' : 'M') + (i * 10) + ' ' + (35 + Math.sin(i * 1.3 + proxy.t * 6) * a * env * 30).toFixed(1);
+        }
+        path.setAttribute('d', d);
+      }
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.animatic = Promise.all(["700 100px 'GowunBatang'", "400 40px 'GowunBatang'"].map(f => document.fonts.load(f, '서늘한바람처럼스며드는윤종신의목소리와이야기가을냄새')))
+        .then(() => {
+          const tl = gsap.timeline({ paused: true });
+          gsap.set('.w', { xPercent: -50, yPercent: -50 });
+          tl.to(proxy, { t: 30, duration: 30, ease: 'none', onUpdate: drawVoice }, 0);
+          // 색온도: 서늘한 푸른 회색 → 따뜻한 갈색(0~15초)
+          tl.fromTo('#tint', { backgroundColor: '#12161d' }, { backgroundColor: '#1c1611', duration: 15, ease: 'none' }, 0);
+          // 1컷 서늘한: 첫 프레임부터 다가오는 중, 끝에 바람 방향(오른쪽)으로 가속하며 빠짐
+          tl.set('#t1', { visibility: 'visible' }, 0);
+          tl.fromTo('#t1', { scale: 0.94 }, { scale: 1.0, duration: 4.0, ease: 'power1.out' }, 0);
+          tl.to('#t1', { x: 900, filter: 'blur(12px)', duration: 0.5, ease: 'power3.in' }, T.c2 - 0.5);
+          tl.set('#t1', { visibility: 'hidden' }, T.c2);
+          // 2컷 바람처럼: 같은 방향으로 들어와 감속, 계속 흘러 화면 오른쪽 밖으로 잘림
+          tl.set('#t2', { visibility: 'visible' }, T.c2);
+          tl.fromTo('#t2', { x: -500, filter: 'blur(10px)' }, { x: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power3.out' }, T.c2);
+          tl.to('#t2', { x: 160, duration: T.c3 - T.c2 - 1.2, ease: 'none' }, T.c2 + 1.2);
+          tl.set('#t2', { visibility: 'hidden' }, T.c3);
+          // 3컷 스며드는(세로쓰기): 같은 커튼 영상 위에서 단어만 교체, 천천히 다가옴
+          tl.set('#t3', { visibility: 'visible' }, T.c3);
+          tl.fromTo('#t3', { scale: 0.96 }, { scale: 1.02, duration: T.push - 0.35 - T.c3, ease: 'none' }, T.c3);
+          // 키 모션 15.045: 획 속으로 밀고 들어가 영상이 화면 전체가 되고 띠가 열림
+          tl.to('#t3', { scale: 9, duration: 0.8, ease: 'power3.in' }, T.push - 0.35);
+          tl.to('#mask', { backgroundColor: '#fff', duration: 0.45, ease: 'power2.in' }, T.push + 0.1);
+          tl.to('#tint', { opacity: 0, duration: 0.45 }, T.push + 0.1);
+          tl.to('#shade', { opacity: 0, duration: 0.6 }, T.push);
+          tl.set('#t3', { visibility: 'hidden' }, T.push + 0.6);
+          tl.to(['#barT', '#barB'], { scaleY: 0, duration: 0.7, ease: 'power2.inOut' }, T.push);
+          tl.to('#veil', { opacity: 1, duration: 0.8 }, T.push + 0.4);
+          // 4컷: 윤종신의 / 목소리와 / 이야기가 박에 맞춰 놓여 18.045초에 한 줄 완성
+          ['#msg span:nth-child(1)', '#msg span:nth-child(2)', '#msg span:nth-child(3)'].forEach((s, i) => {
+            const at = [16.545, 17.295, 18.045][i];   // 밀고 들어가기가 끝난 뒤, 이야기가 정점(18.045)에 착지
+            tl.set(s, { visibility: 'visible' }, at - 0.75);
+            tl.fromTo(s, { y: 24, opacity: 0, filter: 'blur(6px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.75, ease: 'power2.out' }, at - 0.75);
+          });
+          tl.fromTo('#voice', { opacity: 0 }, { opacity: 1, duration: 0.6 }, T.hero);
+          // 5컷: 초점이 풀리며 커튼 방 → 저녁 도시 불빛(블러를 맞춘 컷)
+          tl.to('#wCurtain', { filter: 'blur(18px)', duration: 0.5, ease: 'power2.in' }, T.c5 - 0.5);
+          tl.fromTo('#footage', { scale: 1 }, { scale: 1.05, duration: 4.4, ease: 'none' }, T.c5);
+          tl.to(['#msg', '#voice'], { y: -60, opacity: 0, duration: 0.9, ease: 'power2.in' }, T.up);
+          tl.to('#veil', { opacity: 0, duration: 1.2 }, T.up);
+          // 키 모션 24.0: 화면 전체 불빛이 "가을냄새" 획 안으로 모임
+          tl.set('#t6', { visibility: 'visible', scale: 9 }, T.c6);
+          tl.to('#t6', { scale: 1, duration: 1.5, ease: 'power3.out' }, T.c6);
+          tl.to('#mask', { backgroundColor: '#000', duration: 0.5, ease: 'power2.out' }, T.c6 + 0.05);
+          tl.to('#tint', { opacity: 1, duration: 0.6 }, T.c6 + 0.05);
+          // 공연 정보: 박에 맞춰 차례로 착지, 이후 엔드 홀드
+          ['#i1', '#i2', '#i3'].forEach((s, i) => {
+            const at = T.info + 0.75 * i;
+            tl.set(s, { visibility: 'visible' }, at - 0.6);
+            tl.fromTo(s, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, at - 0.6);
+          });
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
     </script>
   </body>
 </html>

@@ -87,5 +87,59 @@
     "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
     "commercial": true,
     "public_redistribution": true
+  },
+  {
+    "id": "pexels-28079730",
+    "path": "projects/yoon-jongshin-concert-teaser/03_animatic/assets/video/reeds-28079730.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/tall-grasses-in-the-wind-28079730/",
+    "note": "1컷 서늘한: 바람에 흔들리는 노을빛 억새, 0~6초. 재인코딩 없이 자르고 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-35161057",
+    "path": "projects/yoon-jongshin-concert-teaser/03_animatic/assets/video/curtain-35161057.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/soft-sunlit-curtain-with-tree-shadows-35161057/",
+    "note": "2~4컷: 나뭇잎 그림자가 비치는 햇살 든 커튼, 0~17.2초. 재인코딩 없이 자르고 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-36090170",
+    "path": "projects/yoon-jongshin-concert-teaser/03_animatic/assets/video/citylights-36090170.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/vibrant-cityscape-at-night-with-blurred-lights-36090170/",
+    "note": "5~6컷: 초점 흐린 저녁 도시 불빛, 0~11.5초. 재인코딩 없이 자르고 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-5732088",
+    "path": "projects/yoon-jongshin-concert-teaser/03_animatic/assets/video/leafshadow-5732088.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/video-of-a-plant-shadow-on-the-wall-5732088/",
+    "note": "보조 장치: 글자 밖 옅은 나뭇잎 그림자, 전체. 재인코딩 없이 자르고 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "font-gowunbatang",
+    "path": "assets/fonts/gowunbatang/",
+    "kind": "font",
+    "source": "google/fonts",
+    "url": "https://github.com/google/fonts/tree/main/ofl/gowunbatang",
+    "license": "SIL Open Font License 1.1",
+    "commercial": true,
+    "public_redistribution": true
   }
 ]

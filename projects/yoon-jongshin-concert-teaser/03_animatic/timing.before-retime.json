@@ -9,9 +9,9 @@
     {
       "n": 1,
       "role": "hook",
-      "copy": "서늘한\n바람처럼",
+      "copy": "서늘한",
       "start": 0,
-      "dur": 3,
+      "dur": 4.5,
       "keyMotions": [],
       "boxes": [],
       "section": null
@@ -19,8 +19,8 @@
     {
       "n": 2,
       "role": "hook",
-      "copy": "",
-      "start": 3,
+      "copy": "바람처럼",
+      "start": 4.5,
       "dur": 4.5,
       "keyMotions": [],
       "boxes": [],
@@ -30,21 +30,25 @@
       "n": 3,
       "role": "proof",
       "copy": "스며드는",
-      "start": 7.5,
+      "start": 9,
       "dur": 6,
-      "keyMotions": [],
+      "keyMotions": [
+        {
+          "at": 15
+        }
+      ],
       "boxes": [],
       "section": null
     },
     {
       "n": 4,
       "role": "turn",
-      "copy": "윤종신의\n목소리와\n이야기",
-      "start": 13.5,
-      "dur": 6,
+      "copy": "윤종신의 목소리와 이야기",
+      "start": 15,
+      "dur": 4.5,
       "keyMotions": [
         {
-          "at": 18.02
+          "at": 18
         }
       ],
       "boxes": [],
@@ -53,7 +57,7 @@
     {
       "n": 5,
       "role": "proof",
-      "copy": "2026 윤종신 전국투어 콘서트",
+      "copy": "윤종신의 목소리와 이야기",
       "start": 19.5,
       "dur": 4.5,
       "keyMotions": [],
@@ -63,12 +67,12 @@
     {
       "n": 6,
       "role": "cta",
-      "copy": "가을냄새\n10. 2 서울에서 시작, 11월까지\n서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전",
+      "copy": "가을냄새\n2026 윤종신 전국투어 콘서트\n10. 2 서울에서 시작, 11월까지\n서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전",
       "start": 24,
       "dur": 6,
       "keyMotions": [
         {
-          "at": 24.045
+          "at": 24
         }
       ],
       "boxes": [],
