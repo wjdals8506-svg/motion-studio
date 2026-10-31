@@ -15,8 +15,12 @@ const pct = v => `${Math.round(v * 10000) / 100}%`;
 const audioName = file => `bgm${path.extname(file)}`;
 
 function beatHtml(b, cueIds) {
-  const boxes = b.boxes.map(x =>
-    `<div class="box" style="left: ${pct(x.x - x.w / 2)}; top: ${pct(x.y - x.h / 2)}; width: ${pct(x.w)}; height: ${pct(x.h)}"><span>${esc(x.label)}</span></div>`).join('\n        ');
+  // 이름표는 상자 밖 바로 위에 형제 요소로 둔다. 작은 상자(물방울 등) 안에 넣으면 글자가 넘친다.
+  const boxes = b.boxes.map(x => {
+    const left = pct(x.x - x.w / 2), top = pct(x.y - x.h / 2);
+    const box = `<div class="box" style="left: ${left}; top: ${top}; width: ${pct(x.w)}; height: ${pct(x.h)}"></div>`;
+    return x.label ? `${box}<span class="box-label" style="left: ${left}; top: ${top}">${esc(x.label)}</span>` : box;
+  }).join('\n        ');
   const copy = b.copy ? `<p class="copy" id="copy-${b.n}">${b.copy.split('\n').map(esc).join('<br>')}</p>` : '';
   const cues = cueIds.map(id => `<div class="cue" id="${id}"></div>`).join('');
   return `      <section class="clip beat" id="beat-${b.n}" data-start="${b.start}" data-duration="${b.dur}">
@@ -63,8 +67,8 @@ export function renderAnimatic(timing) {
       html, body { width: ${W}px; height: ${H}px; overflow: hidden; background: var(--ground); }
       #root { width: 100%; height: 100%; position: relative; font-family: 'Pretendard', sans-serif; word-break: keep-all; }
       .beat { width: 100%; height: 100%; position: absolute; inset: 0; }
-      .box { position: absolute; border: 2px dashed var(--box); display: flex; align-items: flex-end; padding: 8px 12px; }
-      .box span { color: var(--muted); font-size: ${floor(H)}px; }
+      .box { position: absolute; border: 2px dashed var(--box); }
+      .box-label { position: absolute; transform: translateY(-100%); padding-bottom: 4px; white-space: nowrap; color: var(--muted); font-size: ${floor(H)}px; }
       .copy { position: absolute; left: 10%; right: 10%; top: 50%; transform: translateY(-50%); text-align: center; color: var(--ink); font-size: ${Math.round(H * 0.07)}px; font-weight: 600; line-height: 1.3; }
       .caption { position: absolute; left: 0; right: 0; bottom: ${Math.round(H * 0.04)}px; text-align: center; color: var(--muted); font-size: ${floor(H)}px; }
       .cue { position: absolute; top: 0; left: 0; width: 12px; height: 100%; background: var(--ink); opacity: 0; }
