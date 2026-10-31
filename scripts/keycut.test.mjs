@@ -87,3 +87,12 @@ test('start+dur 부동소수 오차로 길이 0 컷이 생기지 않는다', () 
   const w = keycutWindow(t, 1.134, 3);
   assert.deepEqual(w.beats.map(x => x.n), [3]);
 });
+
+test('전체 영상 틀: 효과음 audio와 전체 타이밍을 넣는다', () => {
+  const win = keycutWindow(timing, 0, 30);
+  const html = renderKeycut(win, { css: '', audio: 'bgm.mp3', width: 1920, height: 1080,
+    sfx: [{ name: 'wind', at: 15.045, dur: 2.5, file: 'sfx-wind.mp3' }], timing });
+  assert.match(html, /data-duration="30"/);
+  assert.match(html, /<audio id="sfx-wind" src="assets\/audio\/sfx-wind\.mp3" data-start="15\.045" data-duration="2\.5"/);
+  assert.match(html, /window\.__timing = \{"beats":/);
+});

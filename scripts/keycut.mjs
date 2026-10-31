@@ -27,13 +27,18 @@ export function keycutWindow(timing, from, to) {
   return { duration: round(to - from), beats, cues, mediaStart: from };
 }
 
-export function renderKeycut(win, { css, audio, width, height }) {
+export function renderKeycut(win, { css, audio, width, height, sfx = [], timing = null }) {
   const sections = win.beats.map(b => `      <!-- 컷 ${b.n} 카피: ${b.copy.replace(/\n/g, ' / ').replace(/--/g, '—') || '(없음)'} -->
       <section class="clip" id="beat-${b.n}" data-start="${b.start}" data-duration="${b.dur}" data-copy="${attr(b.copy)}">
       </section>`).join('\n');
   const bgm = audio
     ? `\n      <audio id="bgm" src="assets/audio/${audio}" data-start="0" data-duration="${win.duration}" data-media-start="${win.mediaStart}" data-volume="1"></audio>`
     : '';
+  // 전체 영상(5단계): 효과음은 키 모션 시각에 하나씩, 전체 타이밍은 window.__timing으로 넘겨 시각을 하드코딩하지 않는다
+  const sfxEls = sfx.map(x => `
+      <audio id="sfx-${x.name}" src="assets/audio/${x.file}" data-start="${x.at}" data-duration="${x.dur}" data-volume="1"></audio>`).join('');
+  const timingJs = timing ? `
+      window.__timing = ${JSON.stringify({ beats: timing.beats.map(b => ({ n: b.n, start: b.start, dur: b.dur, keyMotions: b.keyMotions.map(k => k.at) })), duration: timing.duration })};` : '';
   return `<!doctype html>
 <html lang="ko" data-resolution="landscape">
   <head>
@@ -50,11 +55,11 @@ ${css}
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="${win.duration}" data-width="${width}" data-height="${height}">
-${sections}${bgm}
+${sections}${bgm}${sfxEls}
     </div>
     <script>
       // 키 모션 시각(이 키 컷의 지역 시각, 초). 영상 전체 시각 = 지역 시각 + ${win.mediaStart}
-      window.__cues = ${JSON.stringify(win.cues.map(c => c.at))};
+      window.__cues = ${JSON.stringify(win.cues.map(c => c.at))};${timingJs}
       const tl = gsap.timeline({ paused: true });
       window.__timelines['main'] = tl;
       tl.seek(0);
@@ -83,11 +88,12 @@ function fontFaces(tokens, outDir) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const [dir] = process.argv.slice(2);
   const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined; };
-  const name = arg('--name');
-  const from = Number(arg('--from'));
-  const to = Number(arg('--to'));
-  if (!dir || !name || !Number.isFinite(from) || !Number.isFinite(to)) {
-    console.error('usage: node scripts/keycut.mjs "<project dir>" --name <이름> --from <초> --to <초>');
+  const film = process.argv.includes('--film');               // 5단계: 05_film/에 영상 전체(0~duration) 틀
+  const name = film ? 'film' : arg('--name');
+  let from = Number(arg('--from'));
+  let to = Number(arg('--to'));
+  if (!dir || (!film && (!name || !Number.isFinite(from) || !Number.isFinite(to)))) {
+    console.error('usage: node scripts/keycut.mjs "<project dir>" --name <이름> --from <초> --to <초>  |  --film');
     process.exit(2);
   }
   const timing = JSON.parse(fs.readFileSync(path.join(dir, '03_animatic', 'timing.json'), 'utf8'));
@@ -98,7 +104,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     for (const e of check.errors) console.error(e);
     process.exit(1);
   }
-  const out = path.join(dir, '04_design', 'keycuts', name);
+  if (film) { from = 0; to = timing.duration; }
+  const out = film ? path.join(dir, '05_film') : path.join(dir, '04_design', 'keycuts', name);
   if (fs.existsSync(path.join(out, 'index.html'))) {
     console.error(`이미 있음: ${path.join(out, 'index.html')} (손으로 쓴 장면을 지키기 위해 덮어쓰지 않는다)`);
     process.exit(1);
@@ -121,7 +128,15 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     fs.mkdirSync(path.join(out, 'assets', 'audio'), { recursive: true });
     fs.copyFileSync(path.join(ROOT, timing.audio), path.join(out, 'assets', 'audio', audio));
   }
-  fs.writeFileSync(path.join(out, 'index.html'), renderKeycut(win, { css, audio, width: timing.width, height: timing.height }));
+  const sfx = [];
+  if (film) for (const x of (fs.existsSync(path.join(out, 'sfx.json')) ? JSON.parse(fs.readFileSync(path.join(out, 'sfx.json'), 'utf8')) : [])) {
+    if (!fs.existsSync(path.join(ROOT, x.file))) { console.error(`경고: 효과음 원본이 없어 뺌: ${x.file}`); continue; }
+    const f = `sfx-${x.name}${path.extname(x.file)}`;
+    fs.mkdirSync(path.join(out, 'assets', 'audio'), { recursive: true });
+    fs.copyFileSync(path.join(ROOT, x.file), path.join(out, 'assets', 'audio', f));
+    sfx.push({ ...x, file: f });
+  }
+  fs.writeFileSync(path.join(out, 'index.html'), renderKeycut(win, { css, audio, width: timing.width, height: timing.height, sfx, timing: film ? timing : null }));
   const missing = missingAssets(out);
   for (const m of missing) console.error(`없는 파일: ${m}`);
   console.log(JSON.stringify({ out: path.join(out, 'index.html'), duration: win.duration, cues: win.cues }));
