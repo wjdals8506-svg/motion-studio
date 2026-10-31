@@ -9,7 +9,7 @@ const RULES = [
   ['github-token', /gh[pousr]_[A-Za-z0-9]{36,}/g],
 ];
 
-const AUDIO = /\.(mp3|wav|m4a|aac|ogg|oga|flac|opus|pcm|ulaw|alaw|webm)$/i;
+export const AUDIO =/\.(mp3|wav|m4a|aac|ogg|oga|flac|opus|pcm|ulaw|alaw|webm)$/i;
 
 export function findSecrets(text) {
   return RULES.flatMap(([rule, re]) => [...text.matchAll(re)].map(m => ({ rule, index: m.index })));
