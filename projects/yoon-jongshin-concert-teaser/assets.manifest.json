@@ -1,0 +1,13 @@
+[
+  {
+    "id": "bgm-1",
+    "path": "media/yoon-jongshin-concert-teaser/bgm-1.mp3",
+    "kind": "music",
+    "source": "elevenlabs",
+    "model": "music_v1",
+    "prompt": "80 BPM, instrumental, warm intimate soft piano, gentle warm strings, light fingerpicked acoustic guitar, autumn evening, nostalgic, calm, Korean ballad mood, cinematic but restrained, 4/4 | -vocals, -drums, -percussion beat, -synthesizer, -bombastic orchestra, -bright pop, -electronic | fogged window(15.0s): solo piano, sparse and quiet, soft sustained notes, room ambience | wind seeps in(9.0s): warm strings swell in on the first beat, piano continues, gradual build to a gentle peak | autumn scent(6.0s): resolve softly to the home chord, final chord rings out and fades naturally",
+    "license": "ElevenLabs Music Terms (Creator)",
+    "commercial": true,
+    "public_redistribution": false
+  }
+]
