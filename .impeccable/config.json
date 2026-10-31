@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "projects/yoon-jongshin-concert-teaser/sketches/ab-compare.html"
+        ],
+        "createdAt": "2026-10-31T00:11:48.276Z",
+        "reason": "agent: 2단계 A/B 비교용 일회성 스케치, 비교는 끝났고 영상 디자인이 아님"
+      }
+    ]
+  }
+}
