@@ -37,6 +37,28 @@ test('빠지거나 겹친 컷은 실패', () => {
   assert.throws(() => buildMusicPlan(timing([3, 4]), brief([[1]])), /구간/);
 });
 
+const untilBrief = ends => ({
+  global: { positive: [], negative: [] },
+  sections: ends.map((until, i) => ({ name: `s${i + 1}`, until, positive: [], negative: [] })),
+});
+
+test('구간을 끝 초(until)로 정할 수 있다 — 마디·키 모션에 맞출 때', () => {
+  const plan = buildMusicPlan(timing([3, 4.5, 6, 6, 4.5, 6]), untilBrief([15, 24, 30]));
+  assert.deepEqual(plan.composition_plan.sections.map(s => s.duration_ms), [15000, 9000, 6000]);
+  assert.deepEqual(sectionStarts(plan), [0, 15, 24]);
+});
+
+test('until은 늘어나야 하고 마지막은 영상 길이와 같아야 한다', () => {
+  assert.throws(() => buildMusicPlan(timing([10, 10]), untilBrief([12, 18])), /영상 길이/);
+  assert.throws(() => buildMusicPlan(timing([10, 10]), untilBrief([12, 10, 20])), /최소 3000ms/);
+});
+
+test('beats와 until을 섞으면 실패', () => {
+  const b = untilBrief([5, 10]);
+  b.sections[0] = { name: 'a', beats: [1], positive: [], negative: [] };
+  assert.throws(() => buildMusicPlan(timing([5, 5]), b), /섞/);
+});
+
 test('구간 시작 초', () => {
   assert.deepEqual(sectionStarts(buildMusicPlan(timing([3, 4.5, 6]), brief([[1, 2], [3]]))), [0, 7.5]);
 });

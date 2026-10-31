@@ -8,14 +8,27 @@ import { fileURLToPath } from 'node:url';
 const MIN_MS = 3000;
 const MAX_MS = 120000;
 
-export function buildMusicPlan(timing, brief) {
+// 구간 길이(ms) 목록. 구간은 컷 묶음(beats)으로 정하거나, 마디·키 모션에 맞추려면 끝 초(until)로 정한다.
+function sectionLengths(timing, sections) {
+  const byUntil = sections.every(s => s.until !== undefined);
+  if (!byUntil && sections.some(s => s.until !== undefined)) throw new Error('구간을 beats와 until로 섞어 정할 수 없음');
+  if (byUntil) {
+    if (sections.at(-1).until !== timing.duration)
+      throw new Error(`마지막 구간 until ${sections.at(-1).until}초 ≠ 영상 길이 ${timing.duration}초`);
+    return sections.map((s, i) => Math.round((s.until - (i ? sections[i - 1].until : 0)) * 1000));
+  }
   const order = timing.beats.map(b => b.n);
-  const covered = brief.sections.flatMap(s => s.beats);
+  const covered = sections.flatMap(s => s.beats);
   if (covered.join() !== order.join())
     throw new Error(`구간이 컷을 순서대로 한 번씩 덮어야 함: 컷 [${order}] / 구간 [${covered}]`);
   const dur = new Map(timing.beats.map(b => [b.n, b.dur]));
-  const sections = brief.sections.map(s => {
-    const ms = Math.round(s.beats.reduce((sum, n) => sum + dur.get(n), 0) * 1000);
+  return sections.map(s => Math.round(s.beats.reduce((sum, n) => sum + dur.get(n), 0) * 1000));
+}
+
+export function buildMusicPlan(timing, brief) {
+  const lengths = sectionLengths(timing, brief.sections);
+  const sections = brief.sections.map((s, i) => {
+    const ms = lengths[i];
     if (ms < MIN_MS) throw new Error(`구간 ${s.name} 길이 ${ms}ms < 최소 ${MIN_MS}ms`);
     if (ms > MAX_MS) throw new Error(`구간 ${s.name} 길이 ${ms}ms > 최대 ${MAX_MS}ms`);
     return {
@@ -58,7 +71,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error(e.message);
     process.exit(1);
   }
-  for (const s of brief.sections) for (const n of s.beats) timing.beats.find(b => b.n === n).section = s.name;
+  // 각 컷의 section은 컷이 시작하는 시각이 속한 구간의 이름이다.
+  const starts = sectionStarts(plan);
+  for (const b of timing.beats)
+    b.section = plan.composition_plan.sections[starts.findLastIndex(t => t <= b.start)].section_name;
   fs.writeFileSync(timingFile, JSON.stringify(timing, null, 2) + '\n');
   fs.writeFileSync(path.join(out, 'music_plan.json'), JSON.stringify(plan, null, 2) + '\n');
   console.log(JSON.stringify(plan, null, 2));
