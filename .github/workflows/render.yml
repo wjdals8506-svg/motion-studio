@@ -35,6 +35,9 @@ jobs:
       - name: Check local assets exist (case-sensitive)
         run: node scripts/check-fonts.mjs "${{ inputs.project }}"
 
+      - name: Drop media files missing from the repo (audio is never committed)
+        run: node scripts/drop-missing-media.mjs "${{ inputs.project }}"
+
       - name: Ensure headless Chrome
         working-directory: ${{ inputs.project }}
         run: |
