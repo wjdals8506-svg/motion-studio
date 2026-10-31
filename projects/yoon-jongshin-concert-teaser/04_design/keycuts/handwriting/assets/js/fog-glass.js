@@ -38,7 +38,7 @@
             const lx = x + 6 + rng() * (w - 18), lw = 4 + rng() * 9, a = 0.3 + rng() * 0.6;
             l.fillStyle = `rgba(255,${185 + rng() * 45 | 0},${105 + rng() * 45 | 0},${a})`;
             l.fillRect(lx, fy, lw, 6 + rng() * 6);
-            if (a > 0.75 && rng() < 0.25) winLights.push({ x: lx + lw / 2, y: fy, r: 18 + rng() * 26, ph: rng() * TAU });
+            if (a > 0.75 && rng() < 0.25) winLights.push({ x: lx + lw / 2, y: fy, r: 18 + rng() * 26, ph: rng() * TAU, ord: rng() });
           }
         }
         x += w + 1 + rng() * 8;
@@ -58,7 +58,7 @@
     const out = canvas(), o = out.getContext('2d');       // 초점은 유리에: 도시 전체를 아주 살짝 흐리게
     o.filter = 'blur(1.4px)'; o.drawImage(c, 0, 0); o.filter = 'none';
     const lights = [];                                     // 거리 불빛(보케)
-    for (let i = 0; i < 34; i++) lights.push({ x: rng() * WW, y: WH * (0.79 + rng() * 0.17), r: 10 + rng() * 34, ph: rng() * TAU });
+    for (let i = 0; i < 34; i++) lights.push({ x: rng() * WW, y: WH * (0.79 + rng() * 0.17), r: 10 + rng() * 34, ph: rng() * TAU, ord: rng() });
     return { c: out, lights, winLights };
   }
 
@@ -148,6 +148,7 @@
 
     function render(st) {
       const t = st.t || 0, cam = st.cam || { x: 0, y: 0, zoom: 1 };
+      const on = L => L.ord <= (st.lightsOn ?? 1);         // 불빛이 하나둘 켜짐(정해진 순서)
       const sweepP = st.sweep ? st.sweep.progress : 0;
       const front = -0.06 + 1.12 * sweepP + 0.13;          // 큰 바람이 닦은 자리의 앞쪽 가장자리(화면 폭 비율)
       const wet = 1 - (st.refog || 0);                      // 김이 다시 덮이면 바람 얼룩과 가장자리 물방울도 함께 사라진다
@@ -178,10 +179,12 @@
       // 2) 다시 서리는 김: 가장자리부터 안쪽으로 마스크를 지운다(r=1이면 전부)
       if (st.refog) {
         const r = st.refog, cx = WW / 2, cy = WH / 2, R = Math.hypot(W, H) * 0.62;
-        const inner = R * 1.1 * (1 - r), outer = inner + R * 0.3 * (1 - r) + 1;
+        // 가장자리 폭은 늘 넓게(0.22R) 두고, 마지막 남은 구멍은 0.8 이후 전체가 함께 옅어진다(작은 원판이 남지 않게)
+        const inner = R * 1.1 * (1 - r), outer = inner + R * 0.22 + 1;
         const g = m.createRadialGradient(cx, cy, inner, cx, cy, outer);
         g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
         m.globalCompositeOperation = 'destination-out'; m.fillStyle = g; m.fillRect(0, 0, WW, WH);
+        if (r > 0.8) { m.globalAlpha = Math.min(1, (r - 0.8) / 0.2); m.fillStyle = '#000'; m.fillRect(0, 0, WW, WH); m.globalAlpha = 1; }
         m.globalCompositeOperation = 'source-over';
       }
       // 손가락 글씨: 시작에 물이 고여 굵고, 가운데서 가늘어지고, 손끝 압력이 흔들린다
@@ -222,7 +225,7 @@
       // 3) 김 = 기본 김(+ 김 너머 번지는 불빛) − 마스크. 숨쉬듯 아주 작게 농도가 변한다(idle: breathe, 진폭 2%)
       f.globalCompositeOperation = 'source-over'; f.clearRect(0, 0, WW, WH);
       f.globalAlpha = 0.98 + 0.02 * Math.sin(t * 0.9); f.drawImage(fogBase, 0, 0); f.globalAlpha = 1;
-      for (const L of [...scene.lights, ...scene.winLights]) {   // 강조색의 유일한 의미: 저녁 불빛
+      for (const L of [...scene.lights, ...scene.winLights].filter(on)) {   // 강조색의 유일한 의미: 저녁 불빛
         const a2 = 0.22 + 0.03 * Math.sin(t * 1.3 + L.ph), R2 = L.r * 2.4;
         const g = f.createRadialGradient(L.x, L.y, 0, L.x, L.y, R2);
         g.addColorStop(0, `rgba(255,196,130,${a2})`); g.addColorStop(1, 'rgba(255,196,130,0)');
@@ -243,11 +246,16 @@
       ctx.translate(W / 2, H / 2); ctx.scale(cam.zoom, cam.zoom);
       ctx.translate(-W / 2 - OX - cam.x * W, -H / 2 - OY - cam.y * H);
       ctx.drawImage(scene.c, 0, 0);
-      for (const L of scene.lights) {
+      for (const L of scene.lights.filter(on)) {
         const a = 0.85 + 0.06 * Math.sin(t * 1.7 + L.ph);  // 불빛도 아주 작게 산다
         const g = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, L.r);
         g.addColorStop(0, `rgba(255,214,150,${a})`); g.addColorStop(0.4, `rgba(255,180,110,${a * 0.4})`); g.addColorStop(1, 'rgba(255,180,110,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(L.x, L.y, L.r, 0, TAU); ctx.fill();
+      }
+      for (const L of scene.winLights.filter(on)) {         // 건물 창이 하나둘 켜진다(lightsOn 순서)
+        const r = L.r * 0.4, g = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, r);
+        g.addColorStop(0, 'rgba(255,222,170,0.75)'); g.addColorStop(1, 'rgba(255,196,130,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(L.x, L.y, r, 0, TAU); ctx.fill();
       }
       if (sweepP > 0 && wet > 0) {                          // 닦인 자리에 남은 가로 얼룩(바람결). 닦인 곳 안에만
         smc.globalCompositeOperation = 'source-over'; smc.clearRect(0, 0, WW, WH);

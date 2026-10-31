@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/js/fog-glass.js"></script>
+    <style>
+      @font-face { font-family: 'Pretendard'; font-weight: 700; src: url('assets/fonts/pretendard/Pretendard-Bold.woff2') format('woff2'); }
+      @font-face { font-family: 'Pretendard'; font-weight: 400; src: url('assets/fonts/pretendard/Pretendard-Regular.woff2') format('woff2'); }
+      @font-face { font-family: 'Pretendard'; font-weight: 600; src: url('assets/fonts/pretendard/Pretendard-SemiBold.woff2') format('woff2'); }
+      :root {
+        --color-ground: #2b2738;
+        --color-ink: #f6efe4;
+        --color-muted: #d8cbbb;
+        --color-accent: #ffc482;
+        --font-sans: 'Pretendard', sans-serif;
+        --type-headline-size: 140px;
+        --type-headline-weight: 600;
+        --type-headline-line: 1;
+        --type-headline-tracking: -0.02em;
+        --type-headline-family: var(--font-sans);
+        --type-sub-size: 49px;
+        --type-sub-weight: 400;
+        --type-sub-line: 1.3;
+        --type-sub-tracking: -0.01em;
+        --type-sub-family: var(--font-sans);
+        --type-line-size: 65px;
+        --type-line-weight: 400;
+        --type-line-line: 1.25;
+        --type-line-tracking: -0.01em;
+        --type-line-family: var(--font-sans);
+        --type-cities-size: 43px;
+        --type-cities-weight: 400;
+        --type-cities-line: 1.2;
+        --type-cities-tracking: 0em;
+        --type-cities-family: var(--font-sans);
+        --type-info-size: 38px;
+        --type-info-weight: 400;
+        --type-info-line: 1.4;
+        --type-info-tracking: 0em;
+        --type-info-family: var(--font-sans);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--color-ground); }
+      #root { width: 100%; height: 100%; position: relative; word-break: keep-all; }
+      .clip { position: absolute; inset: 0; }
+      #cv { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+      .copy { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--type-headline-family); visibility: hidden; }
+      .head { top: 33%; font-size: var(--type-headline-size); font-weight: var(--type-headline-weight); line-height: var(--type-headline-line); letter-spacing: var(--type-headline-tracking); color: var(--color-ink); text-shadow: 0 2px 28px rgba(20, 14, 10, 0.55); }
+      .sub { top: 49%; font-size: var(--type-sub-size); font-weight: var(--type-sub-weight); letter-spacing: var(--type-sub-tracking); color: var(--color-muted); text-shadow: 0 1px 18px rgba(20, 14, 10, 0.6); }
+      .line { top: 67%; font-size: var(--type-line-size); font-weight: var(--type-line-weight); letter-spacing: var(--type-line-tracking); color: var(--color-ink); text-shadow: 0 1px 18px rgba(20, 14, 10, 0.6); }
+      .city { position: absolute; top: 74%; display: flex; flex-direction: column; align-items: center; gap: 18px; visibility: hidden; font-family: var(--type-cities-family); }
+      .city .dot { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle, #fff3dc 0%, var(--color-accent) 45%, rgba(255,196,130,0) 72%); box-shadow: 0 0 36px 10px rgba(255, 196, 130, 0.45); }
+      .city .name { font-size: var(--type-cities-size); font-weight: var(--type-cities-weight); color: var(--color-ink); text-shadow: 0 1px 16px rgba(20, 14, 10, 0.7); white-space: nowrap; }
+      .info { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--type-info-family); font-size: var(--type-info-size); font-weight: var(--type-info-weight); line-height: var(--type-info-line); color: var(--color-ground); visibility: hidden; }
+      #i1 { top: 63%; }
+      #i2 { top: 68%; }
+    </style>
+  </head>
+  <body>
+    <!-- 끊지 않는 한 샷(2단계 A안): 캔버스 하나와 카피를 한 clip(0~30초)에 둔다. 컷 경계·키 모션 시각은 window.__timing에서 읽는다 -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+      <section class="clip" id="shot" data-start="0" data-duration="30">
+        <canvas id="cv" width="1920" height="1080"></canvas>
+        <p class="copy line" id="c2">서늘한 바람처럼</p>
+        <p class="copy head" id="c41">스며드는</p>
+        <p class="copy sub" id="c42">윤종신의 목소리와 이야기</p>
+        <div id="cities"></div>
+        <p class="info" id="i1">2026 윤종신 전국투어 콘서트</p>
+        <p class="info" id="i2">10. 2 서울에서 시작, 11월까지</p>
+      </section>
+      <audio id="bgm" src="assets/audio/bgm.mp3" data-start="0" data-duration="30" data-media-start="0" data-volume="1"></audio>
+    </div>
+    <script type="application/json" id="qa">
+      {
+        "copyWindows": [
+          { "copy": "서늘한 바람처럼", "from": 4.3, "to": 7.3 },
+          { "copy": "스며드는\n윤종신의 목소리와 이야기", "from": 16.4, "to": 19.6 },
+          { "copy": "서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전", "from": 20.95, "to": 23.7 },
+          { "copy": "가을냄새", "from": 25.0, "to": 30 },
+          { "copy": "2026 윤종신 전국투어 콘서트\n10. 2 서울에서 시작, 11월까지", "from": 26.15, "to": 30 }
+        ],
+        "endHold": 1.2
+      }
+    </script>
+    <script>
+      window.__cues = [15.045,18.045,24.045];
+      window.__timing = {"beats":[{"n":1,"start":0,"dur":3.045,"keyMotions":[]},{"n":2,"start":3.045,"dur":4.5,"keyMotions":[]},{"n":3,"start":7.545,"dur":6,"keyMotions":[]},{"n":4,"start":13.545,"dur":6,"keyMotions":[15.045,18.045]},{"n":5,"start":19.545,"dur":4.5,"keyMotions":[]},{"n":6,"start":24.045,"dur":5.955,"keyMotions":[24.045]}],"duration":30};
+      // ── 시각 표: 모두 timing.json과 3단계 음악 측정(03_animatic.md)에서 온다 ──
+      const T = window.__timing, B = n => T.beats.find(b => b.n === n);
+      const C2 = B(2).start, C3 = B(3).start, C4 = B(4).start, C5 = B(5).start, C6 = B(6).start, END = T.duration;
+      const WIND = B(4).keyMotions[0], LAND = B(4).keyMotions[1], TITLE = B(6).keyMotions[0];
+      const MUSIC = { firstNote: 1.52, accent: 20.65 };                  // 첫 음, 곡 후반 가장 센 음
+      const HOLD = END - 1.2;                                            // 엔드 홀드 1.2초(laws.md 0.6~1.4)
+      const clamp01 = x => Math.min(1, Math.max(0, x));
+      const span = (t, a, b) => clamp01((t - a) / (b - a));
+      const out = (p, k = 3) => 1 - Math.pow(1 - p, k);
+      const inOut = x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+      const lerp = (a, b, u) => a + (b - a) * u;
+
+      const fg = FogGlass.create(document.getElementById('cv'), { seed: 7, sweep: { y: 0.5, r: 0.27 } });
+      const $ = id => document.getElementById(id);
+      const CITIES = ['서울', '인천', '수원', '고양', '부산', '경주', '대전'];
+      CITIES.forEach((name, i) => {
+        const el = document.createElement('div'); el.className = 'city'; el.id = `city-${i}`;
+        el.style.left = `${(0.2 + 0.1 * i) * 100}%`;
+        el.innerHTML = `<span class="dot"></span><span class="name">${name}</span>`;
+        $('cities').appendChild(el);
+      });
+
+      // 카메라: 물방울 클로즈업(3.4배) → 물러남 → 오른쪽으로 흐름 → 유리로 밀고 들어가 창밖으로 → 다시 물러남
+      const DX = 0.55, Y0 = 0.62, R = 0.012;
+      function camera(t, dy) {
+        if (t < C2) {
+          const run = span(t, MUSIC.firstNote, C2), z = 3.4 - 0.9 * out(span(t, 0, C2), 2);
+          const sx = 0.55, sy = 0.45 + 0.17 * Math.pow(run, 1.3);
+          return { x: DX - 0.5 - (sx - 0.5) / z, y: dy - 0.5 - (sy - 0.5) / z, zoom: z };
+        }
+        const u = out(span(t, C2, C2 + 1.8), 3);                            // 컷 2: 2.5배 → 1배, 물방울 추적 → 창 전체
+        const z0 = 2.5, x0 = DX - 0.5 - 0.05 / z0, y0 = 0.695 - 0.5 - 0.12 / z0;
+        let x = lerp(x0, 0, u), y = lerp(y0, 0, u), zoom = lerp(z0, 1, u);
+        x += 0.015 * inOut(span(t, C3, WIND + 2.5));                       // 컷 3~4: 오른쪽으로 아주 느리게
+        zoom *= 1 + 0.06 * Math.pow(span(t, LAND + 0.4, C5), 3);           // 컷 4 끝: 유리로 밀고 들어감
+        zoom *= 1 + 0.25 * out(span(t, C5, MUSIC.accent), 3);              // 컷 5: 창밖으로 빠져나감(강음까지)
+        zoom /= 1 + 0.32 * inOut(span(t, C5 + 3.0, C6));                   // 같은 길로 물러남
+        zoom *= 1 + 0.02 * span(t, C6, HOLD);
+        return { x, y, zoom };
+      }
+
+      // DOM 카피: 닦인 만큼 드러나고(마스크), 흐림이 걷히며 자리 잡고, 움직임 속에서 가속 퇴장. 불투명도 페이드 없음
+      function reveal(el, front, threshold, blurPx, blurP, lift, liftP, exitP) {
+        const m = `linear-gradient(90deg, #000 ${front - 10}%, transparent ${front + 4}%)`;
+        el.style.maskImage = m; el.style.webkitMaskImage = m;
+        el.style.visibility = front + 4 < threshold || exitP >= 1 ? 'hidden' : 'visible';
+        const e = Math.pow(exitP, 2);                                      // 퇴장은 가속
+        el.style.filter = `blur(${(blurPx * (1 - out(blurP, 4)) + 8 * e).toFixed(2)}px)`;
+        el.style.transform = `translateY(${(lift * (1 - out(liftP, 4)) - 16 * e).toFixed(1)}px)`;
+      }
+
+      function renderAt(t) {
+        const tt = Math.min(t, HOLD);
+        // 물방울: 맺혀 있다가 첫 음에 흐르기 시작해 컷 2·3 동안 천천히 계속 흐른다
+        const run = span(tt, MUSIC.firstNote, C2);
+        const dy = tt < C2 ? Y0 + 0.075 * Math.pow(run, 1.6) : 0.695 + 0.03 * (tt - C2);
+        const trailP = inOut(span(tt, C2 + 0.3, C2 + 2.7));               // 컷 2: 첫 바람이 창 아래쪽을 왼→오로
+        const sweepP = inOut(span(tt, WIND, WIND + 2.8));                  // 컷 4: 큰 바람(15.045초~)
+        const refog = tt < C6 ? 0.62 * inOut(span(tt, C5 + 3.25, C6)) : 0.62 + 0.38 * out(span(tt, C6, C6 + 0.7));
+        const titleP = out(span(tt, TITLE + 0.15, TITLE + 1.75), 2);       // 1.6초 동안 드러남(정보 줄 읽기 시간 확보)
+        const cam = camera(tt, dy);
+
+        // 카피 1: "서늘한 바람처럼" — 첫 바람 자국 안에서 드러남, 컷 3 경계에서 퇴장
+        reveal($('c2'), (-0.05 + 1.1 * trailP + 0.07) * 100, 33, 6, span(tt, C2 + 1.6, C2 + 3.0), 10, span(tt, C2 + 1.6, C2 + 3.0), span(tt, C3 - 0.25, C3));
+        // 카피 2: "스며드는 / 윤종신의 목소리와 이야기" — 큰 바람이 닦은 만큼 드러나 18.045초에 착지
+        const front = (-0.06 + 1.12 * sweepP + 0.11) * 100, exit4 = span(tt, C5, C5 + 0.3);
+        reveal($('c41'), front, 33, 10, span(tt, LAND - 0.9, LAND), 22, span(tt, LAND - 0.9, LAND), exit4);
+        reveal($('c42'), front, 33, 8, span(tt, LAND - 0.6, LAND + 0.4), 12, span(tt, LAND - 0.6, LAND + 0.4), exit4);
+        // 도시 일곱: 곡 후반 강음(20.65초)에 불빛이 켜지며 이름이 붙고(간격 0.05초), 김이 다시 서리기 전에 퇴장
+        CITIES.forEach((_, i) => {
+          const el = $(`city-${i}`), a = MUSIC.accent + 0.05 * i, p = span(tt, a, a + 0.5), x = span(tt, 23.7, 24.0);
+          el.style.visibility = tt < a || x >= 1 ? 'hidden' : 'visible';
+          el.querySelector('.dot').style.transform = `scale(${(0.4 + 0.6 * out(p, 4)).toFixed(3)})`;
+          el.style.transform = `translate(-50%, ${(14 * (1 - out(p, 3)) - 18 * x * x).toFixed(1)}px)`;
+          el.style.filter = `blur(${(7 * x * x).toFixed(2)}px)`;
+        });
+        // 공연 정보: 제목이 다 드러난 뒤 한 줄씩 착지(서로 다른 꼬리), 엔드 홀드 동안 정지
+        [['i1', TITLE + 1.85, 0.45, 14], ['i2', TITLE + 2.1, 0.6, 18]].forEach(([id, a, d, off]) => {
+          const el = $(id), p = span(tt, a, a + d);
+          el.style.visibility = tt < a ? 'hidden' : 'visible';
+          el.style.transform = `translateY(${(off * (1 - out(p, id === 'i1' ? 3 : 5))).toFixed(1)}px)`;
+          el.style.filter = `blur(${(3 * (1 - out(p, 4))).toFixed(2)}px)`;
+        });
+
+        fg.render({
+          t: tt, cam,
+          lightsOn: tt < C3 ? 0.3 : 0.3 + 0.7 * out(span(tt, C3, C3 + 4.5), 2),   // 컷 3: 불빛이 하나둘 켜짐
+          droplet: tt < C4 ? { x: DX, y: dy, y0: Y0, r: R, stretch: Math.pow(Math.min(1, run + (tt >= C2 ? 1 : 0)), 0.8) } : null,
+          trail: { progress: trailP, y: 0.7, h: 0.12 },
+          sweep: { progress: sweepP },
+          refog,
+          title: { glyph, x: 0.5 + cam.x, y: 0.42, progress: titleP },   // 카메라 이동만큼 보정해 정보 줄과 가운데 맞춤
+        });
+      }
+
+      let glyph = null, lastT = 0;
+      const TITLE_FONT = "600 151px 'Pretendard'";
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.title = document.fonts.load(TITLE_FONT).then(() => {
+        glyph = FogGlass.makeTitle('가을냄새', TITLE_FONT, -3);
+        renderAt(lastT);
+      });
+      window.addEventListener('hf-seek', e => { lastT = e.detail.time; renderAt(lastT); });
+      renderAt(0);
+
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines['main'] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
