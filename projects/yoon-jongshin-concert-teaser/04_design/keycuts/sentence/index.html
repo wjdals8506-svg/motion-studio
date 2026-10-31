@@ -56,6 +56,7 @@
       #final .l1 { top: 38%; }
       #final .l2 { top: 50%; }
       #final .fw { display: inline-block; visibility: hidden; }
+      #final .l1 { visibility: hidden; }
     </style>
   </head>
   <body>
@@ -65,10 +66,10 @@
 목소리와
 이야기">
         <canvas id="cv" width="1920" height="1080"></canvas>
-        <div id="final"><p class="ln l1"><span class="fw" id="f0">서늘한 바람처럼</span> <span class="fw" id="f1">스며드는</span></p><p class="ln l2"><span class="fw" id="f2">윤종신의</span> <span class="fw" id="f3">목소리와</span> <span class="fw" id="f4">이야기</span></p></div>
-        <span class="w mid" id="k1" style="left: 50%; top: 24%">스며드는</span>
-        <span class="w big" id="k2" style="left: 30%; top: 50%">윤종신의</span>
-        <span class="w mid" id="k3" style="left: 70%; top: 60%">목소리와</span>
+        <div id="final"><p class="ln l1" id="f1">서늘한 바람처럼 스며드는</p><p class="ln l2"><span class="fw" id="f2">윤종신의</span> <span class="fw" id="f3">목소리와</span> <span class="fw" id="f4">이야기</span></p></div>
+        <span class="w big" id="k2" style="left: 30%; top: 46%">윤종신의</span>
+        <span class="w mid" id="k3" style="left: 70%; top: 58%">목소리와</span>
+        <span class="w big" id="k4" style="left: 48%; top: 72%">이야기</span>
       </section>
       <audio id="bgm" src="assets/audio/bgm.mp3" data-start="0" data-duration="6" data-media-start="13.545" data-volume="1"></audio>
     </div>
@@ -77,7 +78,7 @@
       window.__cues = [4.5];
       // 키 컷(2단계 2차): 박에 맞춰 단어가 위치·크기를 바꿔 착지하고, 정점(18.045초 = 지역 4.5초)에 키메시지 한 문장으로 모인다.
       // 창은 대부분 맑고 가장자리에만 김(물방울·닦기 효과 없음, 사용자 결정). 시각은 3단계 박자 지도에서 온다.
-      const OFFSET = 13.545, BEAT = { w2: 15.02 - OFFSET, w3: 16.52 - OFFSET, hero: __cues[0] };
+      const OFFSET = 13.545, BEAT = { w2: 15.02 - OFFSET, w3: 16.52 - OFFSET, w4: 17.27 - OFFSET, hero: __cues[0] };
       const clamp01 = x => Math.min(1, Math.max(0, x));
       const fg = FogGlass.create(document.getElementById('cv'), { seed: 7 });
       function renderAt(t) {
@@ -91,26 +92,28 @@
 
       const tl = gsap.timeline({ paused: true });
       gsap.set('.w', { xPercent: -50, yPercent: -50 });
-      // 나왔다가: 박에 도착하도록 0.9초 전에 출발, 부드러운 감속(power2.out). 단어마다 들어오는 방향이 다르다
-      tl.set('#k1', { visibility: 'visible' }, 0);
-      tl.set('#k2', { visibility: 'visible' }, BEAT.w2 - 0.9);
-      tl.fromTo('#k2', { x: -180, filter: 'blur(4px)' }, { x: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power2.out' }, BEAT.w2 - 0.9);
-      tl.set('#k3', { visibility: 'visible' }, BEAT.w3 - 0.9);
-      tl.fromTo('#k3', { y: 60, filter: 'blur(4px)' }, { y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power2.out' }, BEAT.w3 - 0.9);
-      // 사라졌다가: 정점 직전, 흩어진 단어가 조금씩 어긋난 시각에 흐려지며 물러난다(가속)
-      ['#k1', '#k2', '#k3'].forEach((id, i) => {
-        const at = BEAT.hero - 1.0 + 0.08 * i;
-        tl.to(id, { y: '-=24', scale: 0.94, filter: 'blur(10px)', duration: 0.45, ease: 'power2.in' }, at);
-        tl.set(id, { visibility: 'hidden' }, at + 0.45);
+      // 순차 등장: 세 단어가 박에 맞춰 서로 다른 자리에 천천히 내려앉는다(0.9초 전 출발, power2.out)
+      [['#k2', BEAT.w2, { x: -180 }], ['#k3', BEAT.w3, { y: 60 }], ['#k4', BEAT.w4, { y: -40, scale: 1.12 }]].forEach(([id, at, from]) => {
+        tl.set(id, { visibility: 'visible' }, at - 0.9);
+        tl.fromTo(id, { ...from, filter: 'blur(4px)' }, { x: 0, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.9, ease: 'power2.out' }, at - 0.9);
       });
-      // 다시 등장: 정점(18.045초)을 지나며 키메시지 한 문장이 같은 화면 가운데에 단어별로 천천히 자리 잡는다
-      ['#f0', '#f1', '#f2', '#f3', '#f4'].forEach((id, i) => {
-        const at = BEAT.hero - 0.35 + 0.12 * i;
-        tl.set(id, { visibility: 'visible' }, at);
-        tl.fromTo(id, { y: 26, filter: 'blur(6px)' }, { y: 0, filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }, at);
+      // 다시 모임: 정점(18.045초)에 세 단어가 "윤종신의 목소리와 이야기" 한 덩이로 움직여 모이고,
+      // 그 위에 "서늘한 바람처럼 스며드는" 한 덩이가 같은 글꼴로 나타난다. 자리는 글꼴 로드 뒤에 잰다
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.sentence = document.fonts.load("600 140px 'Pretendard'").then(() => {
+        ['k2', 'k3', 'k4'].forEach((id, i) => {
+          const k = document.getElementById(id), f = document.getElementById('f' + (i + 2)), b = f.getBoundingClientRect();
+          const ax = parseFloat(k.style.left) / 100 * 1920, ay = parseFloat(k.style.top) / 100 * 1080;   // 원래 자리(가운데 기준)
+          const sc = parseFloat(getComputedStyle(f).fontSize) / parseFloat(getComputedStyle(k).fontSize);
+          tl.to(k, { x: b.left + b.width / 2 - ax, y: b.top + b.height / 2 - ay, scale: sc, duration: 1.2, ease: 'power2.inOut' }, BEAT.hero - 0.45 + 0.06 * i);   // 정점 0.45초 전부터 모여 정점을 지나며 자리
+        });
+        tl.set('#f1', { visibility: 'visible' }, BEAT.hero + 0.25);           // 세 단어가 아래 줄로 거의 모인 뒤 위 덩이가 나타난다(겹침 방지)
+        tl.fromTo('#f1', { y: 26, filter: 'blur(6px)' }, { y: 0, filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }, BEAT.hero + 0.25);
+        window.__timelines['main'] = tl;                                    // 트윈을 다 넣은 뒤 등록(엔진 규칙)
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+        tl.seek(0);
       });
-      window.__timelines['main'] = tl;
-      tl.seek(0);
     </script>
   </body>
 </html>
