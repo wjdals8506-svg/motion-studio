@@ -23,6 +23,9 @@ export function sfxRequest(item, key, { influence = 0.5 } = {}) {
   };
 }
 
+// 크레딧을 쓰기 전에 모든 항목을 먼저 검사한다(5단계 리뷰 I6)
+export const validateBrief = brief => brief.forEach(item => sfxRequest(item, ''));
+
 export const summarize = (files, error) => (error ? { files, error } : { files });
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -42,7 +45,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   fs.mkdirSync(mediaDir, { recursive: true });
   const files = [];
   const fail = msg => { console.error(msg); console.log(JSON.stringify(summarize(files, msg))); process.exit(1); };
-  for (const item of brief) for (let c = 0; c < count; c++) {
+  try { validateBrief(brief); } catch (e) { fail(e.message); }
+  for (const item of brief) for (let c = 0; c < count; c++) try {
     let k = 1;
     while (fs.existsSync(path.join(mediaDir, `sfx-${item.name}-${k}.mp3`))) k++;
     let req, res;
@@ -56,6 +60,6 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       commercial: true, public_redistribution: false,
     });
     files.push(rel);
-  }
+  } catch (e) { fail(`중간 실패(이미 만든 파일은 위 목록): ${errorText(String(e.message), key)}`); }
   console.log(JSON.stringify(summarize(files)));
 }

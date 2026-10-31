@@ -40,3 +40,18 @@ test('카피가 읽기 시간보다 짧게 보이면 오류', () => {
 test('에셋 목록 문제와 렌더러 사본 불일치는 오류', () => {
   assert.equal(filmQa({ ...ok, manifestProblems: ['x: license 없음'], copiesMatch: false }).errors.length, 2);
 });
+
+import { sfxFromHtml, timingFromHtml, sameTiming } from './film-qa.mjs';
+
+test('효과음은 sfx.json이 아니라 영상(index.html)의 audio 요소에서 읽는다', () => {
+  const html = '<audio id="bgm" src="a.mp3" data-start="0"></audio>\n<audio id="sfx-gather" src="assets/audio/sfx-gather.mp3" data-start="20" data-duration="2"></audio>';
+  assert.deepEqual(sfxFromHtml(html), [{ name: 'gather', at: 20 }]);
+  assert.equal(filmQa({ ...ok, sfx: sfxFromHtml(html) }).errors.length, 1);
+});
+
+test('영상에 박힌 타이밍이 timing.json과 다르면 알 수 있다', () => {
+  const html = `window.__timing = ${JSON.stringify({ beats: [{ n: 4, start: 13.545, dur: 6, keyMotions: [18.045] }], duration: 30 })};`;
+  const embedded = timingFromHtml(html);
+  assert.equal(sameTiming(embedded, { duration: 30, beats: [{ n: 4, start: 13.545, dur: 6, keyMotions: [{ at: 18.045 }] }] }), true);
+  assert.equal(sameTiming(embedded, { duration: 30, beats: [{ n: 4, start: 13.545, dur: 6, keyMotions: [{ at: 18.5 }] }] }), false);
+});

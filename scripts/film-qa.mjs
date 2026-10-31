@@ -27,6 +27,18 @@ export function filmQa({ timing, sfx, copyWindows, endHold, manifestProblems, co
   return { errors, warnings };
 }
 
+// 효과음은 선언(sfx.json)이 아니라 영상에 실제로 들어간 <audio id="sfx-이름" data-start="초">에서 읽는다(5단계 리뷰 I1)
+export const sfxFromHtml = html =>
+  [...html.matchAll(/<audio\b[^>]*\bid="sfx-([^"]+)"[^>]*\bdata-start="([\d.]+)"/g)].map(m => ({ name: m[1], at: Number(m[2]) }));
+
+// 영상에 박힌 window.__timing(비계가 넣은 사본)과 timing.json이 같은지(5단계 리뷰 I3)
+export const timingFromHtml = html => JSON.parse(html.match(/window\.__timing = (\{.*?\});/)?.[1] ?? 'null');
+export function sameTiming(embedded, timing) {
+  if (!embedded) return false;
+  const key = bs => JSON.stringify(bs.map(b => [b.n, b.start, b.dur, b.keyMotions.map(k => (typeof k === 'number' ? k : k.at))]));
+  return embedded.duration === timing.duration && key(embedded.beats) === key(timing.beats);
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const dir = process.argv[2];
   if (!dir) { console.error('usage: node scripts/film-qa.mjs "<project dir>"'); process.exit(2); }
@@ -39,13 +51,18 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const origin = path.join(ROOT, 'styles', 'modules', '19-grainy-gradient', 'fog-glass.js');
   const r = filmQa({
     timing: read(path.join(dir, '03_animatic', 'timing.json')),
-    sfx: read(path.join(film, 'sfx.json'), []),
+    sfx: sfxFromHtml(html),
     copyWindows: qa.copyWindows ?? [],
     endHold: qa.endHold,
     manifestProblems: checkManifest(read(path.join(dir, 'assets.manifest.json'), [])),
     copiesMatch: !fs.existsSync(copy) || norm(copy) === norm(origin),
   });
-  if (!qa.copyWindows) r.warnings.push('index.html에 qa 블록(copyWindows, endHold)이 없음');
+  if (!qa.copyWindows) r.errors.push('index.html에 qa 블록(copyWindows, endHold)이 없음');
+  const timing = read(path.join(dir, '03_animatic', 'timing.json'));
+  if (!sameTiming(timingFromHtml(html), timing)) r.errors.push('영상의 window.__timing이 03_animatic/timing.json과 다름(3단계를 다시 맞췄다면 영상 시각도 갱신)');
+  const declared = read(path.join(film, 'sfx.json'), []);
+  if (JSON.stringify(declared.map(x => [x.name, x.at])) !== JSON.stringify(sfxFromHtml(html).map(x => [x.name, x.at])))
+    r.errors.push('sfx.json과 영상의 효과음 audio 요소가 다름');
   console.log(JSON.stringify(r, null, 2));
   if (r.errors.length) process.exit(1);
 }

@@ -23,3 +23,5 @@ projects/**/assets/audio/
 *.ulaw
 *.alaw
 *.webm
+# PC에서 음원을 합친 확인용 MP4에는 ElevenLabs 음원이 들어 있다(CLAUDE.md 14)
+*.mp4

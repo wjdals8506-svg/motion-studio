@@ -25,3 +25,10 @@ test('summarize는 실패해도 이미 만든 파일을 담는다', () => {
   assert.deepEqual(summarize(['media/x/sfx-wind-1.mp3'], 'ElevenLabs 429'), { files: ['media/x/sfx-wind-1.mp3'], error: 'ElevenLabs 429' });
   assert.deepEqual(summarize([]), { files: [] });
 });
+
+import { validateBrief } from './sfx-generate.mjs';
+
+test('크레딧을 쓰기 전에 모든 항목의 길이를 먼저 검사한다', () => {
+  assert.throws(() => validateBrief([{ ...item }, { ...item, name: 'bad', duration: 40 }]), /bad/);
+  assert.doesNotThrow(() => validateBrief([item]));
+});
