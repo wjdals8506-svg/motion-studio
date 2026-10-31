@@ -46,20 +46,21 @@
       #root { width: 100%; height: 100%; position: relative; word-break: keep-all; }
       .clip { position: absolute; inset: 0; }
       #cv { position: absolute; inset: 0; width: 1920px; height: 1080px; }
-      .w { position: absolute; white-space: nowrap; font-family: var(--type-headline-family); color: var(--color-ink); text-shadow: 0 2px 26px rgba(20, 14, 10, 0.55); visibility: hidden; }
+      .w { position: absolute; white-space: nowrap; font-family: var(--type-headline-family); color: var(--color-ink); text-shadow: 0 0 2px rgba(10, 8, 14, 0.55), 0 2px 30px rgba(10, 8, 14, 0.75); visibility: hidden; }
       .big { font-size: var(--type-headline-size); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; }
       .mid { font-size: calc(var(--type-headline-size) * 0.8); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; }
       .ch { display: inline-block; }
       #final { position: absolute; inset: 0; font-family: var(--type-headline-family); }
-      #final .ln { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; font-size: calc(var(--type-headline-size) * 0.72); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; color: var(--color-ink); text-shadow: 0 2px 26px rgba(20, 14, 10, 0.55); }
-      #final .l1 { top: 30%; visibility: hidden; }
-      #final .l2 { top: 42%; }
+      #final .ln { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; font-size: calc(var(--type-headline-size) * 0.72); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; color: var(--color-ink); text-shadow: 0 0 2px rgba(10, 8, 14, 0.55), 0 2px 30px rgba(10, 8, 14, 0.75); }
+      #final .l1 { top: 25%; visibility: hidden; }
+      #final .l2 { top: 37%; }
       #final .fw { display: inline-block; visibility: hidden; }
-      .title { position: absolute; left: 0; right: 0; top: 30%; text-align: center; font-family: var(--type-headline-family); font-size: calc(var(--type-headline-size) * 1.08); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; color: var(--color-ink); text-shadow: 0 2px 30px rgba(20, 14, 10, 0.6); visibility: hidden; }
-      .info { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--type-info-family); font-size: var(--type-info-size); font-weight: var(--type-info-weight); color: var(--color-muted); text-shadow: 0 1px 16px rgba(20, 14, 10, 0.7); visibility: hidden; white-space: nowrap; }
-      .info.sub { font-size: var(--type-sub-size); color: var(--color-ink); top: 55%; }
-      #date { top: 62%; }
-      #cities { top: 67%; }
+      .title { position: absolute; left: 0; right: 0; top: 34%; text-align: center; font-family: var(--type-headline-family); font-size: calc(var(--type-headline-size) * 1.08); font-weight: var(--type-headline-weight); letter-spacing: var(--type-headline-tracking); line-height: 1; color: var(--color-ink); text-shadow: 0 0 2px rgba(10, 8, 14, 0.55), 0 2px 34px rgba(10, 8, 14, 0.8); visibility: hidden; }
+      .info { position: absolute; left: 0; right: 0; text-align: center; font-family: var(--type-info-family); font-size: var(--type-info-size); font-weight: var(--type-info-weight); color: var(--color-ink); text-shadow: 0 0 2px rgba(10, 8, 14, 0.6), 0 1px 18px rgba(10, 8, 14, 0.85); visibility: hidden; white-space: nowrap; font-size: calc(var(--type-info-size) * 1.25); }
+      .info.sub { font-size: var(--type-sub-size); font-weight: var(--type-headline-weight); top: 52%; }
+      #date { top: 59%; }
+      #cities { top: 64.5%; }
+      #scrim { position: absolute; inset: 0; background: radial-gradient(ellipse 62% 48% at 50% 46%, rgba(12, 10, 18, 0.42), rgba(12, 10, 18, 0) 100%); }
     </style>
   </head>
   <body>
@@ -67,9 +68,10 @@
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
       <section class="clip" id="shot" data-start="0" data-duration="30">
         <canvas id="cv" width="1920" height="1080"></canvas>
+        <div id="scrim"></div>
         <span class="w big" id="a1" style="left: 34%; top: 58%">서늘한</span>
         <span class="w mid" id="a2" style="left: 64%; top: 40%">바람처럼</span>
-        <span class="w big" id="b1" style="left: 50%; top: 46%"><span class="ch">스</span><span class="ch">며</span><span class="ch">드</span><span class="ch">는</span></span>
+        <span class="w big" id="b1" style="left: 50%; top: 44%">스며드는</span>
         <span class="w big" id="k2" style="left: 30%; top: 46%">윤종신의</span>
         <span class="w mid" id="k3" style="left: 70%; top: 58%">목소리와</span>
         <span class="w big" id="k4" style="left: 48%; top: 72%">이야기</span>
@@ -84,8 +86,8 @@
     <script type="application/json" id="qa">
       {
         "copyWindows": [
-          { "copy": "서늘한 바람처럼", "from": 2.27, "to": 3.45 },
-          { "copy": "스며드는", "from": 11.3, "to": 12.9 },
+          { "copy": "서늘한 바람처럼", "from": 2.27, "to": 6.2 },
+          { "copy": "스며드는", "from": 9.045, "to": 12.9 },
           { "copy": "서늘한 바람처럼 스며드는\n윤종신의 목소리와 이야기", "from": 18.4, "to": 22.4 },
           { "copy": "2026 윤종신 전국투어 콘서트", "from": 20.65, "to": 30 },
           { "copy": "가을냄새", "from": 24.045, "to": 30 },
@@ -138,15 +140,11 @@
       // 컷 1: "서늘한"(첫 음) · "바람처럼"(다음 박), 바람 방향(왼→오)으로 들어오고 같은 방향으로 빠진다
       land('#a1', AT.cool, { x: -140 });
       land('#a2', AT.wind, { x: -120 });
-      leave('#a1', C2 + 0.4, { x: 160 });
-      leave('#a2', C2 + 0.5, { x: 180 });
-      // 컷 3: "스·며·드·는" 한 박에 한 글자씩, 컷 4 전에 사라진다
-      tl.set('#b1', { visibility: 'visible' }, AT.letters[0] - 0.6);
-      document.querySelectorAll('#b1 .ch').forEach((ch, i) => {
-        tl.fromTo(ch, { y: 40, filter: 'blur(4px)', visibility: 'hidden' }, { y: 0, filter: 'blur(0px)', visibility: 'visible', duration: 0.6, ease: 'power2.out' }, AT.letters[i] - 0.6);
-      });
+      leave('#a1', 6.2, { x: 160 });                                       // 글자 없는 구간을 줄여 끊김을 막는다(자가 점검)
+      leave('#a2', 6.32, { x: 180 });
+      // 컷 3: "스며드는"이 현악 진입(9.045초)에 한 단어로 천천히 놓이고, 컷 4 전에 사라진다(사용자: 한 글자씩은 별로)
+      land('#b1', AT.letters[0], { y: 40, scale: 1.05 }, 1.0);
       leave('#b1', C4 - 0.6, { y: -24, scale: 0.96 });
-      tl.set('#b1 .ch', { visibility: 'hidden' }, C4 - 0.15);             // 글자마다 visible을 따로 줬으므로 글자도 함께 숨긴다
       // 컷 4: 세 단어가 차례로 → 정점에 두 덩이로 모임(4단계 승인 키 컷과 같다)
       land('#k2', AT.w2, { x: -180 });
       land('#k3', AT.w3, { y: 60 });
