@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "source": {
+    "style": "19 Grainy Gradient (후보 A 필름 김 서린 창)",
+    "why": "사용자 선택: \"우선 A, B나 D는 좀 캐주얼보여서\". 2단계 A안(김 서린 창 한 샷)을 가장 가깝게 잇고, 해 질 녘의 차분함이 공연 톤에 맞음"
+  },
+  "colors": {
+    "ground": "#2b2738",
+    "ink": "#f6efe4",
+    "muted": "#d8cbbb",
+    "accent": "#f0b072"
+  },
+  "type": {
+    "families": { "sans": "Pretendard" },
+    "roles": {
+      "headline": { "family": "sans", "weight": 600, "size_h": 0.13, "line": 1.0, "tracking": -0.02, "readable": true },
+      "sub": { "family": "sans", "weight": 400, "size_h": 0.045, "line": 1.3, "tracking": -0.01, "readable": true },
+      "line": { "family": "sans", "weight": 400, "size_h": 0.06, "line": 1.25, "tracking": -0.01, "readable": true },
+      "cities": { "family": "sans", "weight": 400, "size_h": 0.04, "line": 1.2, "tracking": 0, "readable": true },
+      "info": { "family": "sans", "weight": 400, "size_h": 0.035, "line": 1.4, "tracking": 0, "readable": true }
+    }
+  },
+  "texture": {
+    "grain_amp": 22,
+    "fog_blur_px": 34,
+    "fog_film": "rgba(224,214,202,0.58)",
+    "condensation_dots": 9000,
+    "wipe_edge": "부드럽고 불규칙 (반지름 0.27~0.37H 스탬프)",
+    "handwriting": "'가을냄새'는 글꼴이 아니라 손가락으로 김을 닦은 SVG 경로. 글자 높이 0.14H, 획 굵기 약 0.018H",
+    "accent_meaning": "호박색은 저녁 불빛(공연이 있는 도시)에만"
+  },
+  "motion": {
+    "enter": "emphasized-decelerate",
+    "exit": "emphasized-accelerate",
+    "idle": "breathe",
+    "idle_scope": "김의 농도와 불빛만 아주 작게 살아 있음(진폭 2% 안). 글자는 착지 후 완전히 정지"
+  }
+}
