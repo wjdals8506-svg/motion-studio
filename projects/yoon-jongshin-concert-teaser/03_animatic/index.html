@@ -22,64 +22,54 @@
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
       <section class="clip beat" id="beat-1" data-start="0" data-duration="3.045">
-        <div class="box" style="left: 4%; top: 6%; width: 92%; height: 88%"></div><span class="box-label" style="left: 4%; top: 6%">김 서린 유리 (클로즈업)</span>
-        <div class="box" style="left: 53.25%; top: 59%; width: 3.5%; height: 6%"></div><span class="box-label" style="left: 53.25%; top: 59%">물방울</span>
         
+        <p class="copy" id="copy-1">서늘한<br>바람처럼</p>
         
         <p class="caption">#1 hook</p>
       </section>
       <section class="clip beat" id="beat-2" data-start="3.045" data-duration="4.5">
-        <div class="box" style="left: 4%; top: 6%; width: 92%; height: 88%"></div><span class="box-label" style="left: 4%; top: 6%">김 서린 유리 (카메라 물러남)</span>
-        <div class="box" style="left: 6%; top: 64%; width: 88%; height: 12%"></div><span class="box-label" style="left: 6%; top: 64%">첫 바람 자국 (왼→오)</span>
-        <div class="box" style="left: 54%; top: 56.5%; width: 2%; height: 3%"></div>
-        <p class="copy" id="copy-2">서늘한 바람처럼</p>
+        
+        
         
         <p class="caption">#2 hook</p>
       </section>
       <section class="clip beat" id="beat-3" data-start="7.545" data-duration="6">
-        <div class="box" style="left: 4%; top: 6%; width: 92%; height: 88%"></div><span class="box-label" style="left: 4%; top: 6%">유리 (아직 김)</span>
-        <div class="box" style="left: 6%; top: 64%; width: 88%; height: 12%"></div><span class="box-label" style="left: 6%; top: 64%">자국 너머 거리 불빛 (카메라 오른쪽으로)</span>
-        <div class="box" style="left: 28.75%; top: 68%; width: 2.5%; height: 4%"></div>
-        <div class="box" style="left: 46.75%; top: 68%; width: 2.5%; height: 4%"></div>
-        <div class="box" style="left: 64.75%; top: 68%; width: 2.5%; height: 4%"></div>
         
+        <p class="copy" id="copy-3">스며드는</p>
         
         <p class="caption">#3 proof</p>
       </section>
       <section class="clip beat" id="beat-4" data-start="13.545" data-duration="6">
-        <div class="box" style="left: 7%; top: 14%; width: 86%; height: 72%"></div><span class="box-label" style="left: 7%; top: 14%">큰 바람이 쓸고 간 면 (약 70%) · 카메라 밀고 들어감</span>
-        <p class="copy" id="copy-4">스며드는<br>윤종신의 목소리와 이야기</p>
-        <div class="cue" id="cue-1"></div><div class="cue" id="cue-2"></div>
+        
+        <p class="copy" id="copy-4">윤종신의<br>목소리와<br>이야기</p>
+        <div class="cue" id="cue-1"></div>
         <p class="caption">#4 turn</p>
       </section>
       <section class="clip beat" id="beat-5" data-start="19.545" data-duration="4.5">
-        <div class="box" style="left: 4%; top: 11%; width: 92%; height: 50%"></div><span class="box-label" style="left: 4%; top: 11%">저녁 하늘 (창밖)</span>
-        <div class="box" style="left: 4%; top: 75%; width: 92%; height: 22%"></div><span class="box-label" style="left: 4%; top: 75%">불빛 일곱 (카메라 다시 물러남)</span>
-        <p class="copy" id="copy-5">서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
+        
+        <p class="copy" id="copy-5">2026 윤종신 전국투어 콘서트</p>
         
         <p class="caption">#5 proof</p>
       </section>
       <section class="clip beat" id="beat-6" data-start="24.045" data-duration="5.955">
-        <div class="box" style="left: 4%; top: 6%; width: 92%; height: 88%"></div><span class="box-label" style="left: 4%; top: 6%">다시 서리는 김 · 손가락으로 쓴 가을냄새</span>
-        <div class="box" style="left: 4%; top: 78%; width: 92%; height: 16%"></div><span class="box-label" style="left: 4%; top: 78%">흐린 저녁 불빛</span>
-        <p class="copy" id="copy-6">가을냄새<br>2026 윤종신 전국투어 콘서트<br>10. 2 서울에서 시작, 11월까지</p>
-        <div class="cue" id="cue-3"></div>
+        
+        <p class="copy" id="copy-6">가을냄새<br>10. 2 서울에서 시작, 11월까지<br>서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
+        <div class="cue" id="cue-2"></div>
         <p class="caption">#6 cta</p>
       </section>
       <audio id="bgm" src="assets/audio/bgm.mp3" data-start="0" data-duration="30" data-volume="1"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo('#copy-2', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 3.145);
+      tl.fromTo('#copy-1', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.1);
+      tl.fromTo('#copy-3', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 7.645);
       tl.fromTo('#copy-4', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 13.645);
       tl.fromTo('#copy-5', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 19.645000000000003);
       tl.fromTo('#copy-6', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.145000000000003);
-      tl.fromTo('#cue-1', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 15.045);
-      tl.set('#cue-1', { opacity: 0 }, 15.645);
-      tl.fromTo('#cue-2', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 18.045);
-      tl.set('#cue-2', { opacity: 0 }, 18.645);
-      tl.fromTo('#cue-3', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 24.045);
-      tl.set('#cue-3', { opacity: 0 }, 24.645);
+      tl.fromTo('#cue-1', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 18.045);
+      tl.set('#cue-1', { opacity: 0 }, 18.645);
+      tl.fromTo('#cue-2', { x: -40, opacity: 1 }, { x: 1960, opacity: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, 24.045);
+      tl.set('#cue-2', { opacity: 0 }, 24.645);
       window.__timelines['main'] = tl;
       tl.seek(0);
     </script>

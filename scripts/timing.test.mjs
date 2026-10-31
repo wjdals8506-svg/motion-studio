@@ -38,7 +38,7 @@ test('파일럿 설계표는 6컷 30초', () => {
   const t = buildTiming(readCutTable(md), { bpm: 80 });
   assert.equal(t.beats.length, 6);
   assert.equal(t.duration, 30);
-  assert.deepEqual(t.beats.flatMap(b => b.keyMotions.map(k => k.at)), [15, 18, 24]);
+  assert.deepEqual(t.beats.flatMap(b => b.keyMotions.map(k => k.at)), [18.02, 24.045]);
 });
 
 const HEAD = `| # | 역할 | 시청자가 믿게 될 것 | 카피 | 연결(서사) | 연결(디자인) | 키 모션 | 길이(초) |
