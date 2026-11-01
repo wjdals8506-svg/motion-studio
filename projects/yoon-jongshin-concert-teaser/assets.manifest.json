@@ -167,18 +167,6 @@
     "public_redistribution": true
   },
   {
-    "id": "pexels-11040176-sketch-b",
-    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/leaves-11040176.mp4",
-    "kind": "video",
-    "source": "pexels",
-    "url": "https://www.pexels.com/video/yellow-autumn-leaves-during-wind-11040176/",
-    "author": "Ömer Derinyar",
-    "note": "2단계 5차 실사 스케치. 45.045~54초를 재인코딩 없이 자름",
-    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
-    "commercial": true,
-    "public_redistribution": true
-  },
-  {
     "id": "pexels-4306406-sketch-b",
     "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/stylus-4306406.mp4",
     "kind": "video",
@@ -186,18 +174,6 @@
     "url": "https://www.pexels.com/video/close-up-shot-of-turntable-needle-4306406/",
     "author": "Matthias Groeneveld",
     "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
-    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
-    "commercial": true,
-    "public_redistribution": true
-  },
-  {
-    "id": "pexels-35122004-sketch-b",
-    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/hall-35122004.mp4",
-    "kind": "video",
-    "source": "pexels",
-    "url": "https://www.pexels.com/video/elegant-empty-concert-hall-interior-view-35122004/",
-    "author": "Jewel Rainbow",
-    "note": "2단계 5차 실사 스케치. 원본 그대로",
     "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
     "commercial": true,
     "public_redistribution": true
@@ -222,6 +198,30 @@
     "url": "https://www.pexels.com/video/playing-vinyl-records-on-a-turntable-3116506/",
     "author": "Atakan Ozkan",
     "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-6677775-sketch-b",
+    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/branches-6677775.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/sun-light-trough-the-branches-6677775/",
+    "author": "Connor kane",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-8197868-sketch-b",
+    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/mic-8197868.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/a-vintage-microphone-8197868/",
+    "author": "RDNE Stock project",
+    "note": "2단계 5차 실사 스케치. 세로 원본, 재인코딩 없이 소리 트랙 제거",
     "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
     "commercial": true,
     "public_redistribution": true
