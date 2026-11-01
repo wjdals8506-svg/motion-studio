@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'GowunBatang'; font-weight: 700; src: url('assets/fonts/gowunbatang/GowunBatang-Bold.ttf'); }
+      @font-face { font-family: 'GowunBatang'; font-weight: 400; src: url('assets/fonts/gowunbatang/GowunBatang-Regular.ttf'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #120e0b; }
+      #root { width: 100%; height: 100%; position: relative; word-break: keep-all; font-family: 'GowunBatang', serif; color: #f3eadc; }
+      /* 2단계 4차 스케치: 설계표의 흐름·길이를 영상으로 보기 위한 것. 레코드는 직접 그린 대역, 마른 잎 장면은 억새 영상 대역 */
+      #room { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 70% 30%, #4a3424 0%, #24180f 55%, #120e0b 100%); }
+      #win { position: absolute; left: 1180px; top: 90px; width: 420px; height: 560px; background: linear-gradient(160deg, rgba(255,196,130,0.55), rgba(255,170,100,0.15)); filter: blur(30px); }
+      #cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+      #rec { position: absolute; left: 510px; top: 90px; width: 900px; height: 900px; border-radius: 50%;
+        background: radial-gradient(circle, #6b4a2b 0 150px, #0c0c0c 151px 160px, transparent 161px),
+                    repeating-radial-gradient(circle, #151515 0 3px, #1d1d1d 3px 5px); box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+      #sheen { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 20deg, transparent 0 10%, rgba(255,220,170,0.16) 14%, transparent 20% 60%, rgba(255,220,170,0.1) 64%, transparent 70%); }
+      #spin { position: absolute; inset: 0; border-radius: 50%; }
+      #spin i { position: absolute; left: 448px; top: 60px; width: 3px; height: 40px; background: rgba(255,255,255,0.18); }
+      #ring { position: absolute; left: 510px; top: 90px; width: 900px; height: 900px; overflow: visible; }
+      #ring text { font: 700 58px 'GowunBatang'; fill: #f3eadc; fill-opacity: 0.12; letter-spacing: 0.02em; }
+      #arm { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+      .echo { position: absolute; white-space: nowrap; font-weight: 700; line-height: 1; visibility: hidden; text-shadow: 0 2px 28px rgba(0,0,0,0.65); }
+      .info { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 400; visibility: hidden; text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+      .world { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.35) saturate(0.9) brightness(0.8); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+      <div id="room"><div id="win"></div></div>
+      <div id="cam" data-layout-allow-overflow>
+        <div id="rec"><div id="spin"><i></i></div><div id="sheen"></div></div>
+        <svg id="ring" viewBox="0 0 900 900" data-layout-allow-overlap>
+          <defs><path id="ccw" d="M450,120 a330,330 0 1,0 0.01,0" /></defs>
+          <g id="ringG" style="transform-origin: 450px 450px"></g>
+        </svg>
+        <!-- 멈춘 원: 위 호는 시계 방향, 아래 호는 반시계로 놓아 두 호 모두 바로 읽힌다 -->
+        <svg id="ringEnd" viewBox="0 0 900 900" data-layout-allow-overlap style="position:absolute;left:510px;top:90px;width:900px;height:900px;overflow:visible;visibility:hidden">
+          <defs><path id="arcTop" d="M70,450 A380,380 0 0,1 830,450" /><path id="arcBot" d="M40,450 A410,410 0 0,0 860,450" /></defs>
+          <text text-anchor="middle" style="font:700 90px 'GowunBatang';fill:#f3eadc;fill-opacity:0.95"><textPath href="#arcTop" startOffset="50%">서늘한 바람처럼 스며드는</textPath></text>
+          <text text-anchor="middle" dominant-baseline="hanging" style="font:700 90px 'GowunBatang';fill:#f3eadc;fill-opacity:0.95"><textPath href="#arcBot" startOffset="50%">윤종신의 목소리와 이야기</textPath></text>
+        </svg>
+        <svg id="arm" viewBox="0 0 1920 1080">
+          <g id="armG" style="transform-origin: 1500px 980px">
+            <line x1="1500" y1="980" x2="1180" y2="760" stroke="#bfb3a3" stroke-width="12" stroke-linecap="round" />
+            <rect id="head" x="1150" y="738" width="56" height="34" rx="6" fill="#d8ccbb" transform="rotate(34 1178 755)" />
+            <circle cx="1500" cy="980" r="34" fill="#8c8174" />
+          </g>
+        </svg>
+      </div>
+      <!-- 컷 2·6: 창밖 메마른 바람(대역: 억새 영상) -->
+      <video id="w1" class="clip world" src="assets/video/reeds-28079730.mp4" muted playsinline data-start="4.545" data-duration="1.5" data-media-start="0"></video>
+      <video id="w2" class="clip world" src="assets/video/reeds-28079730.mp4" muted playsinline data-start="13.545" data-duration="1.5" data-media-start="3"></video>
+      <div class="echo" id="e1" style="left:420px;top:430px;font-size:140px">서늘한</div>
+      <div class="echo" id="e2" style="left:1060px;top:330px;font-size:140px">바람처럼</div>
+      <div class="echo" id="e3" style="left:980px;top:620px;font-size:140px">스며드는</div>
+      <div class="echo" id="e4" style="left:80px;top:250px;font-size:140px">윤종신의</div>
+      <div class="echo" id="e5" style="left:80px;top:430px;font-size:140px">목소리와 <span id="e6">이야기</span></div>
+      <div class="echo" id="c8" style="left:150px;top:200px;font-size:66px;font-weight:400">2026 윤종신 전국투어 콘서트</div>
+      <div class="echo" id="title" style="left:0;right:0;top:120px;text-align:center;font-size:150px">가을냄새</div>
+      <p class="info" id="i1" style="top:300px;font-size:50px">10. 2 서울에서 시작, 11월까지</p>
+      <p class="info" id="i2" style="top:370px;font-size:44px">서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
+    </div>
+    <script>
+      // 원 규칙: 여섯 어절이 60°씩 반시계 방향으로 놓이고 원은 시계 방향 20°/초(3초에 한 어절). 마디 첫 박에 어절이 바늘 자리(θn)를 지난다.
+      const WORDS = ['서늘한', '바람처럼', '스며드는', '윤종신의', '목소리와', '이야기'];
+      const PLAY = [3.045, 6.045, 9.045, 12.045, 15.045, 18.045];
+      const THETA_N = 60, SPEED = 20, C = 2 * Math.PI * 330;
+      const g = document.getElementById('ringG');
+      WORDS.forEach((w, i) => {
+        // 반시계 경로는 12시에서 시작해 반시계로 돈다. 어절 i의 중심 각(시계 기준, 3시=0°)을 경로 길이로 바꾼다
+        const phi = THETA_N - SPEED * PLAY[i];
+        const ccwFromTop = (((-90 - phi) % 360) + 360) % 360;
+        const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('id', 'r' + i); t.setAttribute('text-anchor', 'middle');
+        const tp = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
+        tp.setAttribute('href', '#ccw'); tp.setAttribute('startOffset', (C * ccwFromTop / 360).toFixed(1)); tp.textContent = w;
+        t.appendChild(tp); g.appendChild(t);
+      });
+      // 카메라 상태: 레코드 중심(960,540)을 기준으로 scale·이동·옆모습(scaleY)
+      const CAM = {
+        macro1: { scale: 2.3, x: -1350, y: -980, scaleY: 1 },
+        macro3: { scale: 1.9, x: -1000, y: -700, scaleY: 1 },
+        side:   { scale: 0.85, x: 150, y: 470, scaleY: 0.38 },
+        macro5: { scale: 2.6, x: -1650, y: -1180, scaleY: 1 },
+        top7:   { scale: 0.7, x: 903, y: 162, scaleY: 1 },
+        top9:   { scale: 0.62, x: 365, y: 410, scaleY: 1 },
+      };
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.sketch = Promise.all(["700 100px 'GowunBatang'", "400 40px 'GowunBatang'"].map(f => document.fonts.load(f, WORDS.join('') + '가을냄새2026전국투어콘서트서울시작월까지인천수원고양부산경주대전')))
+        .then(() => {
+          const tl = gsap.timeline({ paused: true });
+          const cam = (k, at) => tl.set('#cam', { scale: CAM[k].scale, x: CAM[k].x, y: CAM[k].y, scaleY: CAM[k].scale * CAM[k].scaleY }, at);
+          // 레코드 회전(33⅓rpm 대신 보이는 속도), 원 회전(20°/초) — 진행률이라 선형
+          tl.to('#spin', { rotation: 200 * 24, duration: 24.045, ease: 'none' }, 0);
+          tl.to('#spin', { rotation: 200 * 24 + 160, duration: 2, ease: 'power2.out' }, 24.045);
+          tl.fromTo('#ringG', { rotation: 0 }, { rotation: SPEED * 24.045, duration: 24.045, ease: 'none' }, 0);
+          tl.to('#ringG', { rotation: SPEED * 24.045 + 20, duration: 2, ease: 'power2.out' }, 24.045);
+          // 컷 1: 바늘이 내려와 1.535초 첫 음에 홈에 닿음
+          cam('macro1', 0);
+          tl.fromTo('#armG', { rotation: -9 }, { rotation: 0, duration: 1.535, ease: 'power2.out' }, 0);
+          // 재생: 원 위 어절이 밝아짐
+          PLAY.forEach((p, i) => tl.to('#r' + i, { fillOpacity: i === 5 ? 0.95 : 0.6, duration: 0.25, ease: 'power2.out' }, p));
+          tl.to(['#r0', '#r1', '#r2', '#r3', '#r4'], { fillOpacity: 0.95, duration: 0.4, ease: 'power2.out' }, 18.045);
+          // 진입 1: "서늘한" 레코드 쪽에서 커져 나옴(감속)
+          tl.set('#e1', { visibility: 'visible' }, 3.045);
+          tl.fromTo('#e1', { scale: 0.35, x: 260, y: 120, filter: 'blur(8px)' }, { scale: 1, x: 0, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out' }, 3.045);
+          // 컷 2(억새 대역) 끝: 바람 방향으로 가속하며 빠짐
+          tl.to('#e1', { x: 1200, filter: 'blur(14px)', duration: 0.3, ease: 'power3.in' }, 5.745);
+          tl.set('#e1', { visibility: 'hidden' }, 6.045);
+          // 컷 3: 접사, 진입 2: "바람처럼" 원의 접선 방향으로 미끄러져 나옴
+          cam('macro3', 6.045);
+          tl.set('#e2', { visibility: 'visible' }, 6.045);
+          tl.fromTo('#e2', { x: -320, y: 180, filter: 'blur(12px)' }, { x: 0, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'power3.out' }, 6.045);
+          tl.set('#e2', { visibility: 'hidden' }, 9.045);
+          // 컷 4: 옆모습(현악), 진입 3: "스며드는" 제자리에서 흐림만 걷힘
+          cam('side', 9.045);
+          tl.set('#e3', { visibility: 'visible' }, 9.045);
+          tl.fromTo('#e3', { filter: 'blur(36px)' }, { filter: 'blur(0px)', duration: 1.5, ease: 'power2.out' }, 9.045);
+          tl.set('#e3', { visibility: 'hidden' }, 12.045);
+          // 컷 5: 접사, 진입 4: "윤종신의" 한 프레임 착지
+          cam('macro5', 12.045);
+          tl.set('#e4', { visibility: 'visible' }, 12.045);
+          // 컷 7: 위에서 본 레코드, "목소리와"·"이야기"가 둘째 줄로
+          cam('top7', 15.045);
+          tl.set('#e5', { visibility: 'visible' }, 15.045);
+          tl.set('#e6', { visibility: 'hidden' }, 0);
+          tl.fromTo('#e5', { y: 40, filter: 'blur(8px)' }, { y: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power3.out' }, 15.045);
+          tl.set('#e6', { visibility: 'visible' }, 18.045);
+          tl.fromTo('#e6', { filter: 'blur(10px)' }, { filter: 'blur(0px)', duration: 0.5, ease: 'power3.out' }, 18.045);
+          // 컷 8: 옆모습, 문장이 원으로 돌아가고 공연명
+          cam('side', 19.545);
+          tl.to(['#e4', '#e5'], { scale: 0.4, x: 700, y: 260, filter: 'blur(10px)', duration: 0.7, ease: 'power3.in' }, 19.545);
+          tl.set(['#e4', '#e5', '#e6'], { visibility: 'hidden' }, 20.3);
+          tl.set('#c8', { visibility: 'visible' }, 21.045);
+          tl.fromTo('#c8', { filter: 'blur(14px)' }, { filter: 'blur(0px)', duration: 0.8, ease: 'power2.out' }, 21.045);
+          tl.set('#c8', { visibility: 'hidden' }, 24.045);
+          // 컷 9: 위에서, 바늘이 들리고 레코드·원이 멈춤, 제목과 정보
+          cam('top9', 24.045);
+          tl.to('#armG', { rotation: -14, duration: 0.8, ease: 'power2.inOut' }, 24.045);
+          // 원이 멈추며 어절들이 바로 선 두 호로 자리 잡음(블러 스왑)
+          tl.to('#ring', { filter: 'blur(10px)', duration: 0.3, ease: 'power2.in' }, 25.6);
+          tl.set('#ring', { visibility: 'hidden' }, 25.9);
+          tl.set('#ringEnd', { visibility: 'visible' }, 25.9);
+          tl.fromTo('#ringEnd', { filter: 'blur(10px)' }, { filter: 'blur(0px)', duration: 0.5, ease: 'power2.out' }, 25.9);
+          tl.set('#title', { visibility: 'visible' }, 24.8);
+          tl.fromTo('#title', { scale: 1.25, filter: 'blur(12px)' }, { scale: 1, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out' }, 24.8);
+          [['#i1', 25.3], ['#i2', 26.0]].forEach(([s, at]) => {
+            tl.set(s, { visibility: 'visible' }, at);
+            tl.fromTo(s, { filter: 'blur(10px)' }, { filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' }, at);
+          });
+          tl.set({}, {}, 30);
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
+    </script>
+  </body>
+</html>
