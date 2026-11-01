@@ -75,3 +75,4 @@
 - 2026-11-01 · yoon-jongshin-concert-teaser · 4단계 4차 정지 처리 · 선택 · "완전히 멈춤" (글자는 착지 뒤 정지, 실사 영상만 흐름. 느린 확대·숨쉬기 같은 잔움직임은 원하지 않음)
 - 2026-11-01 · yoon-jongshin-concert-teaser · 4단계 · 승인 · "승인" (tone-a 키 컷: 실사 7컷 + A 톤 맞춤 + 고운바탕, 글자는 착지 뒤 정지)
 - 2026-11-01 · yoon-jongshin-concert-teaser · 5단계 실사 구성 영상 흐름 · 확인 · "없음" (길거나 빠르거나 끊기는 곳 없음. 승인은 아님)
+- 2026-11-01 · yoon-jongshin-concert-teaser · 5단계 · 승인 · "승인" (실사 7컷 + A 톤 + bgm-3, 효과음 없음)
