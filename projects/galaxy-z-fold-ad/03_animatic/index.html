@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* 서체: 가석체(Gasoek One, SIL OFL). 키메시지·업그레이드 줄은 코드로 만든 크롬 질감·두께, 밝은 배경 위 줄과 제품명은 단색(사용자 선택 "5") */
+      @font-face { font-family: 'Gasoek'; src: url('assets/fonts/gasoekone/GasoekOne-Regular.ttf'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d1424; }
+      #root { width: 100%; height: 100%; position: relative; word-break: keep-all; font-family: 'Gasoek', sans-serif; }
+      /* 3단계 애니매틱: 스타일 B(3D CG). 세계는 AI 정지 이미지(assets.manifest.json), 폰은 CSS 3D로 그린 자리표시.
+         폰 화면 창 = x 164~916, y 352~1184 (752×832). 세계 이미지가 이 창으로 줄거나 창에서 화면 전체로 커진다. */
+      #scene { position: absolute; inset: 0; overflow: hidden; perspective: 2600px; perspective-origin: 540px 768px; }
+      .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .bg { visibility: hidden; transform-origin: 540px 768px; }
+      #bgStudio { visibility: visible; }
+      .world { position: absolute; inset: 0; z-index: 10; visibility: hidden; clip-path: inset(0px 0px 0px 0px round 0px); overflow: hidden; }
+      .world img { transform-origin: 540px 768px; }
+      #shadow { position: absolute; left: 240px; top: 1205px; width: 600px; height: 70px; border-radius: 50%; background: radial-gradient(closest-side, rgba(40,60,90,0.38), rgba(40,60,90,0)); z-index: 4; transform-origin: 300px 35px; }
+      #phone { position: absolute; left: 150px; top: 338px; width: 780px; height: 860px; z-index: 5; transform-style: preserve-3d; transform-origin: 390px 430px; }
+      .half { position: absolute; top: 0; width: 390px; height: 860px; transform-style: preserve-3d; }
+      #pl { left: 0; }
+      #pr { left: 390px; transform-origin: 0 50%; }
+      .face { position: absolute; inset: 0; backface-visibility: hidden; background: linear-gradient(135deg, #3a3f48, #16181d 55%, #2b2f37); }
+      #pl .face { border-radius: 40px 0 0 40px; padding: 14px 0 14px 14px; }
+      #pr .front { border-radius: 0 40px 40px 0; padding: 14px 14px 14px 0; }
+      #pr .back { transform: rotateY(180deg); border-radius: 40px 0 0 40px; padding: 14px 0 14px 14px; }
+      .scr { position: relative; width: 376px; height: 832px; overflow: hidden; background: #0b0d12; }
+      #pl .scr { border-radius: 26px 0 0 26px; }
+      #pr .front .scr { border-radius: 0 26px 26px 0; }
+      .scr img { position: absolute; top: -352px; width: 1080px; height: 1920px; object-fit: cover; visibility: hidden; }
+      #pl .scr img { left: -164px; }
+      #pr .scr img { left: -540px; }
+      .scr .c-street { visibility: visible; }
+      /* 접힌 자국과 유리 반사 */
+      #pl .scr::after, #pr .front .scr::after { content: ''; position: absolute; top: 0; bottom: 0; width: 18px; z-index: 2; }
+      #pl .scr::after { right: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.10)); }
+      #pr .front .scr::after { left: 0; background: linear-gradient(90deg, rgba(0,0,0,0.12), rgba(0,0,0,0)); }
+      .cover { width: 376px; height: 832px; border-radius: 26px 0 0 26px; background: linear-gradient(160deg, #2c3a52 0%, #0e1320 45%, #1c2638 100%); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06); }
+      #shutter { position: absolute; left: 352px; top: 740px; width: 76px; height: 76px; border-radius: 50%; border: 6px solid #fff; background: rgba(255,255,255,0.35); visibility: hidden; transform: translateZ(1px); }
+      .copy { position: absolute; left: 0; right: 0; text-align: center; font-weight: 400; letter-spacing: -0.01em; line-height: 1.16; z-index: 30; visibility: hidden; }
+      /* 크롬 글자는 AI 티로 거절됨(사용자 2026-11-01). 방향을 다시 정할 때까지 단색 */
+      .chrome { color: #fff; text-shadow: 0 4px 28px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.5); }
+      .dark { color: #0f1d33; }
+      .light { color: #fff; text-shadow: 0 4px 28px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.5); }
+      .w { display: inline-block; visibility: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1080" data-height="1920">
+      <div id="scene" class="clip" data-start="0" data-duration="60">
+        <img id="bgStudio" class="full bg" src="assets/img/studio.png" alt="" />
+        <img id="bgSofa" class="full bg" src="assets/img/sofa.png" alt="" />
+        <div id="shadow"></div>
+        <div id="phone">
+          <div class="half" id="pl"><div class="face"><div class="scr">
+            <img data-layout-allow-overflow class="c-street" src="assets/img/street.png" alt="" /><img data-layout-allow-overflow class="c-dusk" src="assets/img/dusk.png" alt="" /><img data-layout-allow-overflow class="c-cinema" src="assets/img/cinema.png" alt="" /><img data-layout-allow-overflow class="c-webtoon" src="assets/img/webtoon.png" alt="" /><img data-layout-allow-overflow class="c-game" src="assets/img/game.png" alt="" /><img data-layout-allow-overflow class="c-recipe" src="assets/img/recipe.png" alt="" />
+          </div></div></div>
+          <div class="half" id="pr">
+            <div class="face front"><div class="scr">
+              <img data-layout-allow-overflow class="c-street" src="assets/img/street.png" alt="" /><img data-layout-allow-overflow class="c-dusk" src="assets/img/dusk.png" alt="" /><img data-layout-allow-overflow class="c-cinema" src="assets/img/cinema.png" alt="" /><img data-layout-allow-overflow class="c-webtoon" src="assets/img/webtoon.png" alt="" /><img data-layout-allow-overflow class="c-game" src="assets/img/game.png" alt="" /><img data-layout-allow-overflow class="c-recipe" src="assets/img/recipe.png" alt="" />
+            </div></div>
+            <div class="face back"><div class="cover"></div></div>
+          </div>
+          <div id="shutter"></div>
+        </div>
+        <div class="world" id="wStreet" style="visibility:visible"><img class="full" src="assets/img/street.png" alt="" /></div>
+        <div class="world" id="wDusk"><img class="full" src="assets/img/dusk.png" alt="" /></div>
+        <div class="world" id="wCinema"><img class="full" src="assets/img/cinema.png" alt="" /></div>
+        <div class="world" id="wWebtoon"><img class="full" src="assets/img/webtoon.png" alt="" /></div>
+        <div class="world" id="wGame"><img class="full" src="assets/img/game.png" alt="" /></div>
+        <div class="world" id="wRecipe"><img class="full" src="assets/img/recipe.png" alt="" /></div>
+        <p class="copy dark" id="c2" style="top:1262px;font-size:74px">폰을 펼쳤을 뿐인데.</p>
+        <p class="copy dark" id="c3" style="top:330px;font-size:80px">한낮에도 선명하게.</p>
+        <p class="copy" id="c5" style="top:1190px;font-size:96px"><span class="w"><span class="chrome">해</span></span> <span class="w"><span class="chrome">질</span></span> <span class="w"><span class="chrome">녘에도</span></span><br /><span class="w"><span class="chrome">넓고</span></span> <span class="w"><span class="chrome">밝게.</span></span></p>
+        <p class="copy" id="c7a" style="top:1300px;font-size:96px"><span class="chrome">더 오래,</span></p>
+        <p class="copy" id="c7b" style="top:1420px;font-size:96px"><span class="chrome">큰 화면으로.</span></p>
+        <p class="copy" id="c10a" style="top:400px;font-size:92px"><span class="chrome">한 번 펼치면,</span></p>
+        <p class="copy" id="c10b" style="top:516px;font-size:92px"><span class="chrome">다시 접기 싫어진다.</span></p>
+        <p class="copy dark" id="c11" style="top:1290px;font-size:68px">갤럭시 Z 폴드8 울트라</p>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      // 실측 이징(vendor/motionmaxxing/runtime/motion.js, tokens/motion.json)
+      const powerOut = p => t => 1 - Math.pow(1 - t, p);
+      const powerIn = p => t => Math.pow(t, p);
+      const expoOut = k => { const d = 1 - Math.exp(-k); return t => (1 - Math.exp(-k * t)) / d; };
+      const snapRamp = (w, tau) => { const n = w * (1 - Math.exp(-1 / tau)) + (1 - w); return t => (w * (1 - Math.exp(-t / tau)) + (1 - w) * t) / n; };
+      const smoothP = p => t => { const a = Math.pow(t, p), b = Math.pow(1 - t, p); return a / (a + b); };
+      const E = {
+        snapSettle: snapRamp(0.942, 0.118), softLand: expoOut(3.41), whip: powerOut(2.52), glide: powerOut(1.7),
+        softInOut: smoothP(1.42), gentleIn: powerIn(2.07), accelExit: powerIn(2.6), crashOut: powerIn(3.97),
+        // 첫 프레임부터 움직이며 빨려 들어감: 일정 속도 40% + 가속 60%
+        suck: t => 0.4 * t + 0.6 * Math.pow(t, 2.07),
+      };
+      const FULL = 'inset(0px 0px 0px 0px round 0px)';
+      const SCREEN = 'inset(352px 164px 736px 164px round 24px)';
+
+      window.__hf.buildReady.animatic = Promise.all(['90px Gasoek'].map(f => document.fonts.load(f, '폰을펼쳤뿐인데한낮에도선명하게해질녘넓고밝더오래큰화면으로번치면다시접기싫어진갤럭시Z폴드8울트라,.')))
+        .then(() => {
+          // 뒤쪽 fromTo의 시작값이 앞 시간에 미리 그려지지 않게(immediateRender 끔)
+          const tl = gsap.timeline({ paused: true, defaults: { immediateRender: false } });
+          const show = (sel, at) => tl.set(sel, { visibility: 'visible' }, at);
+          const hide = (sel, at) => tl.set(sel, { visibility: 'hidden' }, at);
+          // 폰 화면 내용 바꾸기(양쪽 반쪽 모두)
+          const screen = (name, at) => { hide('#phone .scr img', at); show(`#phone .c-${name}`, at); };
+          // 폰 화면 창에서 세계가 터져 나옴 / 세계가 창으로 빨려 들어감
+          // 나중에 나온 세계가 늘 위에 오게
+          let zTop = 11;
+          const top = (sel, at) => tl.set(sel, { zIndex: zTop++ }, at);
+          const burst = (sel, at, dur = 0.5) => {
+            top(sel, at);
+            show(sel, at);
+            tl.fromTo(sel, { clipPath: SCREEN }, { clipPath: FULL, duration: dur, ease: E.whip }, at);
+          };
+          const shrink = (sel, at, dur, ease = E.crashOut) => {
+            tl.fromTo(sel, { clipPath: FULL }, { clipPath: SCREEN, duration: dur, ease: ease }, at);
+            hide(sel, at + dur);
+          };
+          // 글자 진입은 컷마다 다르게: 아래에서 / 왼쪽에서 / 어절별 / 위에서 / 크게에서 작게
+          const enter = (sel, at, from, dur = 0.5, ease = E.softLand) => {
+            show(sel, at);
+            tl.fromTo(sel, { filter: 'blur(8px)', ...from }, { x: 0, y: 0, scale: 1, filter: 'blur(0px)', duration: dur, ease: ease }, at);
+          };
+          const exit = (sel, at, to, dur = 0.3) => {
+            tl.to(sel, { filter: 'blur(10px)', ...to, duration: dur, ease: E.accelExit }, at);
+            hide(sel, at + dur);
+          };
+
+          // 1컷 (0~3) hook: 한낮 거리 전체가 폴드 안으로 빨려 들어가고, 폴드가 닫힌다(2.4초 착지)
+          tl.fromTo('#wStreet', { clipPath: FULL }, { clipPath: SCREEN, duration: 1.4, ease: E.suck }, 0);
+          hide('#wStreet', 1.4);
+          tl.fromTo('#pr', { rotationY: 0 }, { rotationY: -180, duration: 1.0, ease: E.accelExit }, 1.4);
+          tl.to('#phone', { x: 195, duration: 1.0, ease: E.accelExit }, 1.4);
+          tl.to('#phone', { scaleY: 0.985, duration: 0.06, ease: E.gentleIn }, 2.4);
+          tl.to('#phone', { scaleY: 1, duration: 0.3, ease: E.softLand }, 2.46);
+
+          // 2컷 (3~6.5) turn: 접힌 폴드가 살짝 돌고, 한 번에 펼쳐진다
+          tl.to('#phone', { rotationY: -10, duration: 1.6, ease: E.softInOut }, 2.8);
+          enter('#c2', 3.3, { y: 110 }, 0.55);
+          tl.to('#phone', { rotationY: 0, duration: 0.5, ease: E.softInOut }, 4.4);
+          tl.to('#pr', { rotationY: 0, duration: 0.9, ease: E.snapSettle }, 4.7);
+          tl.to('#phone', { x: 0, duration: 0.9, ease: E.snapSettle }, 4.7);
+          exit('#c2', 6.1, { y: -60 });
+          tl.to('#phone', { scale: 1.04, duration: 0.5, ease: E.gentleIn }, 6.5);
+
+          // 3컷 (6.5~13.5) proof: 화면 속 거리가 터져 나와 화면 전체가 된다(7.0초)
+          tl.set('#phone', { scale: 1 }, 7.0);
+          burst('#wStreet', 7.0, 0.5);
+          tl.fromTo('#wStreet img', { scale: 1.12 }, { scale: 1.03, duration: 1.2, ease: E.softLand }, 7.0);
+          tl.to('#wStreet img', { scale: 1, duration: 4.6, ease: 'none' }, 8.2);
+          enter('#c3', 7.7, { x: -140 }, 0.45, E.whip);
+          exit('#c3', 12.5, { x: 90 });
+          // 거리를 뒤에 두고 폰이 아래에서 올라와 카메라가 된다
+          tl.set('#wStreet', { zIndex: 1 }, 12.8);
+          screen('dusk', 12.8);
+          show('#shutter', 12.8);
+          tl.fromTo('#phone', { y: 1100 }, { y: 0, duration: 0.7, ease: E.whip }, 12.8);
+
+          // 4컷 (13.5~16.5) proof: 해 질 녘 하늘을 겨누고 셔터
+          tl.to('#phone', { rotationY: -8, duration: 2.0, ease: E.softInOut }, 13.5);
+          tl.to('#phone', { rotationY: 0, duration: 0.4, ease: E.softInOut }, 15.5);
+          tl.to('#shutter', { scale: 0.82, duration: 0.07, ease: E.gentleIn }, 16.0);
+          tl.to('#shutter', { scale: 1, duration: 0.2, ease: E.softLand }, 16.07);
+          tl.to('#phone', { scale: 0.985, duration: 0.07, ease: E.gentleIn }, 16.0);
+          tl.to('#phone', { scale: 1, duration: 0.2, ease: E.softLand }, 16.07);
+
+          // 5컷 (16.5~23.5) proof: 찍은 사진이 넓은 해 질 녘 풍경으로 넘친다
+          hide('#shutter', 16.5);
+          burst('#wDusk', 16.5, 0.55);
+          tl.fromTo('#wDusk img', { scale: 1.1 }, { scale: 1.03, duration: 1.3, ease: E.softLand }, 16.5);
+          tl.to('#wDusk img', { scale: 1, duration: 4.8, ease: 'none' }, 17.8);
+          hide('#wStreet', 17.1);
+          tl.set('#wStreet', { zIndex: 10 }, 17.1);
+          show('#bgSofa', 17.1); hide('#bgStudio', 17.1);
+          // 어절별로 불규칙하게(3,2,2,3프레임)
+          const w5 = '#c5 > .w';
+          show('#c5', 17.3);
+          [0, 0.1, 0.167, 0.233, 0.333].forEach((d, i) => {
+            const w = `${w5}:nth-of-type(${i + 1})`;
+            show(w, 17.3 + d);
+            tl.fromTo(w, { y: 70, filter: 'blur(8px)' }, { y: 0, filter: 'blur(0px)', duration: 0.45, ease: E.softLand }, 17.3 + d);
+          });
+          exit('#c5', 22.2, { y: 60 });
+          hide('#c5 > .w', 22.5);
+          screen('dusk', 22.6);
+          shrink('#wDusk', 22.6, 0.9);
+
+          // 6컷 (23.5~26.5) proof: 밤 소파 위 펼친 폴드, 영상을 보는 중 → 화면 속으로 밀고 들어감
+          screen('cinema', 23.5);
+          tl.to('#phone', { rotationY: 9, duration: 2.0, ease: E.softInOut }, 23.5);
+          tl.to('#phone', { rotationY: 0, duration: 0.4, ease: E.softInOut }, 25.5);
+          tl.to('#phone', { scale: 2.5, duration: 0.6, ease: E.crashOut }, 25.9);
+
+          // 7컷 (26.5~33.5) proof: 영상이 영화관 스크린이 된다(27.0초)
+          show('#wCinema', 26.5);
+          tl.set('#wCinema', { clipPath: FULL }, 26.5);
+          tl.fromTo('#wCinema img', { scale: 2.5 }, { scale: 1.04, duration: 0.9, ease: E.whip }, 26.5);
+          tl.to('#wCinema img', { scale: 1, duration: 5.6, ease: 'none' }, 27.4);
+          tl.set('#phone', { scale: 1 }, 26.6);
+          enter('#c7a', 27.7, { y: -90 }, 0.5);
+          enter('#c7b', 28.0, { y: -90 }, 0.5);
+          exit('#c7a', 32.5, { y: 50 });
+          exit('#c7b', 32.55, { y: 50 });
+          shrink('#wCinema', 33.0, 0.5);
+
+          // 8컷 (33.5~38) proof: 펼치면 무엇이든 커진다(0.9 / 0.7 / 0.5초로 짧아짐)
+          screen('webtoon', 33.5);
+          burst('#wWebtoon', 33.8, 0.3);
+          top('#wGame', 34.7); show('#wGame', 34.7); tl.set('#wGame', { clipPath: FULL }, 34.7);
+          top('#wRecipe', 35.4); show('#wRecipe', 35.4); tl.set('#wRecipe', { clipPath: FULL }, 35.4);
+          hide('#wWebtoon', 35.4); hide('#wGame', 35.9);
+          screen('recipe', 35.9);
+          shrink('#wRecipe', 35.9, 0.5);
+
+          // 9컷 (38~42) turn: 접으려 하자 방이 폰 쪽으로 빨려 들고, 반쯤 접힌 채 멈춘다
+          tl.to('#pr', { rotationY: -125, duration: 2.2, ease: E.softInOut }, 38.3);
+          tl.to('#phone', { x: 120, duration: 2.2, ease: E.softInOut }, 38.3);
+          tl.to('#bgSofa', { scale: 0.9, duration: 2.2, ease: E.gentleIn }, 38.3);
+
+          // 10컷 (42~52) proof: 다시 펼치자 모든 세계가 한꺼번에 터져 나온다(42.5초)
+          tl.to('#pr', { rotationY: 0, duration: 0.5, ease: E.whip }, 42.0);
+          tl.to('#phone', { x: 0, duration: 0.5, ease: E.whip }, 42.0);
+          tl.to('#bgSofa', { scale: 1, duration: 0.5, ease: E.whip }, 42.0);
+          burst('#wCinema', 42.5, 0.3);
+          burst('#wStreet', 42.7, 0.3);
+          burst('#wDusk', 42.9, 0.35);
+          tl.fromTo('#wDusk img', { scale: 1.1 }, { scale: 1, duration: 8.6, ease: E.softLand }, 42.9);
+          hide('#bgSofa', 43.3); show('#bgStudio', 43.3);
+          hide('#wCinema', 43.3); hide('#wStreet', 43.3);
+          hide('#shadow', 42.5);
+          screen('street', 43.5);
+          tl.set('#phone', { zIndex: 20 }, 43.5);
+          tl.fromTo('#phone', { y: 1300, scale: 0.6 }, { y: 520, scale: 0.6, duration: 0.8, ease: E.whip }, 43.6);
+          enter('#c10a', 44.7, { scale: 1.18 }, 0.6);
+          enter('#c10b', 45.25, { scale: 1.18 }, 0.6);
+          exit('#c10a', 50.5, { y: -50 });
+          exit('#c10b', 50.55, { y: -50 });
+          screen('dusk', 50.8);
+          tl.to('#phone', { y: 0, scale: 1, duration: 0.7, ease: E.glide }, 50.8);
+          // 폰이 위에 있는 채로 세계가 화면 창으로 줄어 들어간다
+          shrink('#wDusk', 51.5, 0.5);
+          show('#shadow', 52.0);
+
+          // 11컷 (52~60) cta: 카메라가 물러나고 이름이 착지(58.8초), 엔드 홀드 1.2초
+          tl.to('#phone', { scale: 0.86, duration: 5.4, ease: E.softInOut }, 52.0);
+          tl.to('#shadow', { scale: 0.86, duration: 5.4, ease: E.softInOut }, 52.0);
+          // 마지막 줄은 2초 이상 읽히게(check line_unread): 57.8초 진입, 58.3초 착지
+          enter('#c11', 57.8, { scale: 1.22 }, 0.5);
+          tl.set({}, {}, 60);
+
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
+    </script>
+  </body>
+</html>

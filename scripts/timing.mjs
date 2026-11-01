@@ -47,6 +47,15 @@ export function readingTime(copy) {
   }, 0);
 }
 
+// 0단계 브리프의 화면 비율 칸으로 화면 크기를 정한다. 칸이 없으면 16:9.
+const SIZES = { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350] };
+export function frameSize(briefMd) {
+  const ratio = briefMd.match(/\|\s*화면 비율\s*\|\s*([0-9]+:[0-9]+)/)?.[1] ?? '16:9';
+  if (!SIZES[ratio]) throw new Error(`모르는 화면 비율: ${ratio}`);
+  const [width, height] = SIZES[ratio];
+  return { width, height };
+}
+
 export function buildTiming(cuts, { bpm, width = 1920, height = 1080 }) {
   let start = 0;
   const beats = cuts.map(c => {
@@ -76,7 +85,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error(`이미 있음: ${out} (에이전트가 적은 boxes를 지키기 위해 덮어쓰지 않는다)`);
     process.exit(1);
   }
-  const timing = buildTiming(readCutTable(fs.readFileSync(path.join(dir, '02_story.md'), 'utf8')), { bpm });
+  const brief = path.join(dir, '00_brief.md');
+  const size = frameSize(fs.existsSync(brief) ? fs.readFileSync(brief, 'utf8') : '');
+  const timing = buildTiming(readCutTable(fs.readFileSync(path.join(dir, '02_story.md'), 'utf8')), { bpm, ...size });
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, JSON.stringify(timing, null, 2) + '\n');
   console.log(JSON.stringify(timing, null, 2));

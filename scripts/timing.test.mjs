@@ -1,7 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { readCutTable, readingTime, buildTiming } from './timing.mjs';
+import { readCutTable, readingTime, buildTiming, frameSize } from './timing.mjs';
+
+test('브리프의 화면 비율로 화면 크기를 정한다', () => {
+  assert.deepEqual(frameSize('| 화면 비율 | 9:16 |'), { width: 1080, height: 1920 });
+  assert.deepEqual(frameSize(''), { width: 1920, height: 1080 });
+  assert.throws(() => frameSize('| 화면 비율 | 2:1 |'));
+});
 
 const TABLE = `| # | 역할 | 시청자가 믿게 될 것 | 카피 | 연결(서사) | 연결(디자인) | 키 모션 | 길이(초) |
 |---|---|---|---|---|---|---|---|

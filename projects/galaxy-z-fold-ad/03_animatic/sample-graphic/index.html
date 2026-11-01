@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* 비교 샘플 3: 그래픽 디자인(평면 도형, 색 네 개). 실사 샘플과 같은 구간·같은 시각·같은 글자로 만들어 화면만 비교한다.
+         색: 종이 #ede8df, 먹 #151a26, 하늘 #9cc9ff, 신호 주황 #ff5a1f. 글자: IBM Plex Sans KR(OFL). */
+      @font-face { font-family: 'Plex'; font-weight: 600; src: url('assets/fonts/ibmplexsanskr/IBMPlexSansKR-SemiBold.ttf'); }
+      @font-face { font-family: 'Plex'; font-weight: 700; src: url('assets/fonts/ibmplexsanskr/IBMPlexSansKR-Bold.ttf'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #ede8df; }
+      #root { position: relative; width: 100%; height: 100%; word-break: keep-all; font-family: 'Plex', sans-serif; }
+      #scene { position: absolute; inset: 0; overflow: hidden; background: #ede8df; perspective: 2600px; perspective-origin: 540px 960px; }
+      #phone { position: absolute; left: 150px; top: 530px; width: 780px; height: 860px; transform-style: preserve-3d; transform-origin: 390px 430px; z-index: 5; }
+      .half { position: absolute; top: 0; width: 390px; height: 860px; transform-style: preserve-3d; }
+      #pl { left: 0; } #pr { left: 390px; transform-origin: 0 50%; }
+      .face { position: absolute; inset: 0; backface-visibility: hidden; background: #151a26; }
+      #pl .face { border-radius: 36px 0 0 36px; padding: 14px 0 14px 14px; }
+      #pr .front { border-radius: 0 36px 36px 0; padding: 14px 14px 14px 0; }
+      #pr .back { transform: rotateY(180deg); border-radius: 36px 0 0 36px; padding: 14px 0 14px 14px; background: #0c0f17; }
+      .scr { width: 376px; height: 832px; background: #26304a; }
+      #pl .scr { border-radius: 24px 0 0 24px; } #pr .front .scr { border-radius: 0 24px 24px 0; }
+      .cover { width: 376px; height: 832px; border-radius: 24px 0 0 24px; background: #26304a; }
+      #fold { position: absolute; left: 389px; top: 14px; width: 2px; height: 832px; background: rgba(255,255,255,0.08); transform: translateZ(1px); }
+      #world { position: absolute; inset: 0; z-index: 10; visibility: hidden; }
+      #world svg { position: absolute; inset: 0; }
+      .copy { position: absolute; left: 72px; z-index: 30; visibility: hidden; letter-spacing: -0.03em; line-height: 1.1; color: #151a26; }
+      #c1 { top: 196px; font-size: 76px; font-weight: 600; }
+      #c2 { top: 196px; font-size: 96px; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1080" data-height="1920">
+      <div id="scene" class="clip" data-start="0" data-duration="8">
+        <div id="phone">
+          <div class="half" id="pl"><div class="face"><div class="scr"></div></div></div>
+          <div class="half" id="pr"><div class="face front"><div class="scr"></div></div><div class="face back"><div class="cover"></div></div></div>
+          <div id="fold"></div>
+        </div>
+        <div id="world">
+          <svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="win" width="46" height="64" patternUnits="userSpaceOnUse"><rect width="46" height="64" fill="none" /><rect x="10" y="12" width="26" height="36" fill="#151a26" opacity="0.18" /></pattern>
+              <pattern id="winD" width="46" height="64" patternUnits="userSpaceOnUse"><rect x="10" y="12" width="26" height="36" fill="#9cc9ff" opacity="0.28" /></pattern>
+            </defs>
+            <rect width="1080" height="1920" fill="#9cc9ff" />
+            <circle id="sun" cx="760" cy="520" r="150" fill="#ff5a1f" />
+            <g id="bBack">
+              <rect x="40" y="760" width="220" height="1160" fill="#c9d6e8" /><rect x="40" y="760" width="220" height="1160" fill="url(#win)" />
+              <rect x="820" y="700" width="230" height="1220" fill="#c9d6e8" /><rect x="820" y="700" width="230" height="1220" fill="url(#win)" />
+            </g>
+            <g id="bMid">
+              <rect x="-20" y="980" width="300" height="940" fill="#f4f1ea" /><rect x="-20" y="980" width="300" height="940" fill="url(#win)" />
+              <rect x="760" y="900" width="340" height="1020" fill="#151a26" /><rect x="760" y="900" width="340" height="1020" fill="url(#winD)" />
+            </g>
+            <g id="road">
+              <polygon points="420,1240 660,1240 1080,1920 0,1920" fill="#2b3142" />
+              <polygon points="532,1300 548,1300 572,1460 508,1460" fill="#ede8df" />
+              <polygon points="500,1560 580,1560 610,1760 470,1760" fill="#ede8df" />
+              <rect x="0" y="1220" width="1080" height="24" fill="#151a26" />
+            </g>
+          </svg>
+        </div>
+        <p class="copy" id="c1">폰을 펼쳤을 뿐인데.</p>
+        <p class="copy" id="c2">한낮에도<br />선명하게.</p>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      const powerOut = p => t => 1 - Math.pow(1 - t, p);
+      const powerIn = p => t => Math.pow(t, p);
+      const expoOut = k => { const d = 1 - Math.exp(-k); return t => (1 - Math.exp(-k * t)) / d; };
+      const snapRamp = (w, tau) => { const n = w * (1 - Math.exp(-1 / tau)) + (1 - w); return t => (w * (1 - Math.exp(-t / tau)) + (1 - w) * t) / n; };
+      const smoothP = p => t => { const a = Math.pow(t, p), b = Math.pow(1 - t, p); return a / (a + b); };
+      const E = { snapSettle: snapRamp(0.942, 0.118), softLand: expoOut(3.41), whip: powerOut(2.52), accelExit: powerIn(2.6), softInOut: smoothP(1.42) };
+      const FULL = 'inset(0px 0px 0px 0px round 0px)';
+      const SCREEN = 'inset(544px 164px 544px 164px round 24px)';
+      window.__hf.buildReady.sample = Promise.all(['600 76px Plex', '700 96px Plex'].map(f => document.fonts.load(f, '폰을펼쳤뿐인데한낮에도선명하게.')))
+        .then(() => {
+          const tl = gsap.timeline({ paused: true, defaults: { immediateRender: false } });
+          // 접힌 폰(가운데) → 펼침. 실사 샘플과 같은 시각에 맞춘다
+          tl.set('#pr', { rotationY: -180 }, 0);
+          tl.set('#phone', { x: 195 }, 0);
+          tl.fromTo('#phone', { rotationY: -14, y: 40 }, { rotationY: 0, y: 0, duration: 1.6, ease: E.softInOut }, 0);
+          tl.to('#pr', { rotationY: 0, duration: 1.0, ease: E.snapSettle }, 1.6);
+          tl.to('#phone', { x: 0, duration: 1.0, ease: E.snapSettle }, 1.6);
+          tl.set('#c1', { visibility: 'visible' }, 3.0);
+          tl.fromTo('#c1', { y: 40, filter: 'blur(6px)' }, { y: 0, filter: 'blur(0px)', duration: 0.5, ease: E.softLand }, 3.0);
+          // 화면에 거리가 켜지고(4.0초) 창에서 터져 나온다(4.45초). 건물은 층마다 늦게 솟고 해는 마지막에 커진다
+          tl.set('#world', { visibility: 'visible', clipPath: SCREEN }, 4.0);
+          tl.to('#c1', { y: -30, filter: 'blur(8px)', duration: 0.3, ease: E.accelExit }, 4.45);
+          tl.set('#c1', { visibility: 'hidden' }, 4.75);
+          tl.fromTo('#world', { clipPath: SCREEN }, { clipPath: FULL, duration: 0.6, ease: E.whip }, 4.45);
+          tl.fromTo('#bBack', { y: 260 }, { y: 0, duration: 0.9, ease: E.softLand }, 4.5);
+          tl.fromTo('#bMid', { y: 420 }, { y: 0, duration: 0.8, ease: E.softLand }, 4.6);
+          tl.fromTo('#road', { y: 300 }, { y: 0, duration: 0.7, ease: E.softLand }, 4.7);
+          tl.fromTo('#sun', { scale: 0.4, transformOrigin: '760px 520px' }, { scale: 1, duration: 0.9, ease: E.softLand }, 4.8);
+          tl.set('#c2', { visibility: 'visible' }, 5.3);
+          tl.fromTo('#c2', { x: -60, filter: 'blur(6px)' }, { x: 0, filter: 'blur(0px)', duration: 0.45, ease: E.softLand }, 5.3);
+          tl.fromTo('#sun', { x: 0 }, { x: -40, duration: 2.7, ease: 'none' }, 5.3);
+          tl.set({}, {}, 8);
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
+    </script>
+  </body>
+</html>

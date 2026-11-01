@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=2700, height=960" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* 3단계 서체 후보 비교(사용자 "폰트 구려 … 감각적인 폰트가 필요해. 안 된다면 코드로 생성하던가").
+         모두 Google Fonts의 SIL OFL 서체. 이 시트용으로 영상 문구 글자만 잘라 받았다. */
+      @font-face { font-family: 'Gasoek'; src: url('fonts/GasoekOne.woff2'); }
+      @font-face { font-family: 'BlackHan'; src: url('fonts/BlackHanSans.woff2'); }
+      @font-face { font-family: 'Orbit'; src: url('fonts/Orbit.woff2'); }
+      @font-face { font-family: 'Moirai'; src: url('fonts/MoiraiOne.woff2'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 2700px; height: 960px; overflow: hidden; background: #111; }
+      #root { position: relative; width: 2700px; height: 960px; display: flex; word-break: keep-all; }
+      .panel { position: relative; width: 540px; height: 960px; overflow: hidden; border-right: 4px solid #111; }
+      .panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .tag { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px; background: rgba(10,12,18,0.82); color: #fff; font: 600 22px sans-serif; text-align: center; }
+      .msg { position: absolute; left: 0; right: 0; top: 150px; text-align: center; color: #fff; line-height: 1.12; text-shadow: 0 3px 18px rgba(0,0,0,0.45); }
+      .sub { position: absolute; left: 0; right: 0; top: 560px; text-align: center; color: #fff; text-shadow: 0 3px 18px rgba(0,0,0,0.45); }
+      .p1 { font-family: 'Gasoek'; }
+      .p2 { font-family: 'BlackHan'; }
+      .p3 { font-family: 'Orbit'; }
+      .p4 { font-family: 'Moirai'; }
+      /* 코드로 만든 글자: 3D CG 세계에 맞춘 유리·크롬 질감 + 두께(겹친 그림자) */
+      .chrome { font-family: 'Gasoek'; background: linear-gradient(180deg, #ffffff 0%, #dfe8f5 38%, #8fa3c0 52%, #f7fbff 66%, #b9c7dc 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 1px 0 #6d7f9c) drop-shadow(0 2px 0 #5d6e8a) drop-shadow(0 3px 0 #4e5e78) drop-shadow(0 4px 0 #3f4e66) drop-shadow(0 10px 18px rgba(20,10,40,0.55)); text-shadow: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="1" data-width="2700" data-height="960">
+      <div class="panel"><img src="img/dusk.png" alt="" /><p class="msg p1" style="font-size:46px">한 번 펼치면,<br />다시 접기 싫어진다.</p><p class="sub p1" style="font-size:34px">갤럭시 Z 폴드8 울트라</p><div class="tag">1 가석체 Gasoek One · 넓고 무거움</div></div>
+      <div class="panel"><img src="img/dusk.png" alt="" /><p class="msg p2" style="font-size:54px">한 번 펼치면,<br />다시 접기 싫어진다.</p><p class="sub p2" style="font-size:40px">갤럭시 Z 폴드8 울트라</p><div class="tag">2 검은고딕 Black Han Sans · 좁고 단단함</div></div>
+      <div class="panel"><img src="img/dusk.png" alt="" /><p class="msg p3" style="font-size:50px">한 번 펼치면,<br />다시 접기 싫어진다.</p><p class="sub p3" style="font-size:38px">갤럭시 Z 폴드8 울트라</p><div class="tag">3 오르빗 Orbit · 기계적, 테크</div></div>
+      <div class="panel"><img src="img/dusk.png" alt="" /><p class="msg p4" style="font-size:50px">한 번 펼치면,<br />다시 접기 싫어진다.</p><p class="sub p4" style="font-size:38px">갤럭시 Z 폴드8 울트라</p><div class="tag">4 모이라이 Moirai One · 둥근 미래형</div></div>
+      <div class="panel"><img src="img/dusk.png" alt="" /><p class="msg chrome" style="font-size:46px">한 번 펼치면,<br />다시 접기 싫어진다.</p><p class="sub chrome" style="font-size:34px">갤럭시 Z 폴드8 울트라</p><div class="tag">5 코드 생성 · 가석체 + 크롬 질감·두께</div></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.fonts = Promise.all(['Gasoek', 'BlackHan', 'Orbit', 'Moirai'].map(f => document.fonts.load(`40px ${f}`, '한번펼치면')))
+        .then(() => { const tl = gsap.timeline({ paused: true }); tl.set({}, {}, 1); window.__timelines['main'] = tl; tl.seek(0); });
+    </script>
+  </body>
+</html>

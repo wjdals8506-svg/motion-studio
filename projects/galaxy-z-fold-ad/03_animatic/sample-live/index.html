@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* 비교 샘플 1: 실사 영상 + 실제 제품. 2→3컷(펼침 → 한낮 거리가 폰 화면에서 터져 나옴) 8초.
+         펼치는 손: 삼성 글로벌 뉴스룸 공식 영상(2026-07-22), 거리: Pexels 37200986. 글자: IBM Plex Sans KR(OFL), 효과 없이 단색. */
+      @font-face { font-family: 'Plex'; font-weight: 600; src: url('assets/fonts/ibmplexsanskr/IBMPlexSansKR-SemiBold.ttf'); }
+      @font-face { font-family: 'Plex'; font-weight: 700; src: url('assets/fonts/ibmplexsanskr/IBMPlexSansKR-Bold.ttf'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #f3f2ef; }
+      #root { position: relative; width: 100%; height: 100%; word-break: keep-all; font-family: 'Plex', sans-serif; }
+      #scene { position: absolute; inset: 0; overflow: hidden; background: #f3f2ef; }
+      /* 4:5에 가까운 영상 판. 원본 2232×1254를 높이 1128로 줄이고 x 560~1760만 보이게 */
+      #panel { position: absolute; left: 0; top: 396px; width: 1080px; height: 1128px; overflow: hidden; }
+      #unfold { position: absolute; left: -504px; top: 0; width: 2008px; height: 1128px; }
+      /* 폰 화면 창: 4.35초 프레임에서 잰 화면 네 모서리(손에 들려 살짝 기울어 사각형이 아님) */
+      #world { position: absolute; inset: 0; z-index: 10; visibility: hidden; }
+      #street { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .copy { position: absolute; left: 72px; z-index: 30; visibility: hidden; letter-spacing: -0.025em; line-height: 1.15; }
+      #c1 { top: 196px; font-size: 68px; font-weight: 600; color: #121212; }
+      #c2 { top: 196px; font-size: 80px; font-weight: 700; color: #fff; text-shadow: 0 2px 18px rgba(0,30,80,0.25); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1080" data-height="1920">
+      <div id="scene" class="clip" data-start="0" data-duration="8">
+        <div id="panel"><video id="unfold" data-layout-allow-overflow src="assets/video/unfold-samsung.mp4" muted playsinline data-start="0" data-duration="7.5" data-media-start="1.6"></video></div>
+        <div id="world"><video id="street" src="assets/video/street-37200986.mp4" muted playsinline data-start="4.0" data-duration="4.0" data-media-start="0"></video></div>
+        <p class="copy" id="c1">폰을 펼쳤을 뿐인데.</p>
+        <p class="copy" id="c2">한낮에도 선명하게.</p>
+      </div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      const powerOut = p => t => 1 - Math.pow(1 - t, p);
+      const powerIn = p => t => Math.pow(t, p);
+      const expoOut = k => { const d = 1 - Math.exp(-k); return t => (1 - Math.exp(-k * t)) / d; };
+      const E = { softLand: expoOut(3.41), whip: powerOut(2.52), accelExit: powerIn(2.6) };
+      const FULL = 'polygon(0px 0px, 1080px 0px, 1080px 1920px, 0px 1920px)';
+      const SCREEN = 'polygon(197px 498px, 950px 508px, 935px 1498px, 165px 1485px)';
+      window.__hf.buildReady.sample = Promise.all(['600 68px Plex', '700 80px Plex'].map(f => document.fonts.load(f, '폰을펼쳤뿐인데한낮에도선명하게.')))
+        .then(() => {
+          const tl = gsap.timeline({ paused: true, defaults: { immediateRender: false } });
+          // 펼침이 끝난 뒤에 과거형 카피(낯선 눈 P1: 펼치기 전에 뜨던 문제)
+          tl.set('#c1', { visibility: 'visible' }, 3.0);
+          tl.fromTo('#c1', { y: 40, filter: 'blur(6px)' }, { y: 0, filter: 'blur(0px)', duration: 0.5, ease: E.softLand }, 3.0);
+          // 폰 화면 속 앱이 거리로 바뀌고(4.0초), 화면 창에서 거리가 터져 나와 판 밖까지 화면 전체가 된다(4.45초).
+          // 손에 든 폰이 조금씩 움직여 창이 어긋나므로 바뀐 뒤 0.45초 안에 터뜨린다(남은 문제: 화면 추적 없음)
+          tl.set('#world', { visibility: 'visible', clipPath: SCREEN }, 4.0);
+          tl.to('#c1', { y: -30, filter: 'blur(8px)', duration: 0.3, ease: E.accelExit }, 4.45);
+          tl.set('#c1', { visibility: 'hidden' }, 4.75);
+          tl.fromTo('#world', { clipPath: SCREEN }, { clipPath: FULL, duration: 0.6, ease: E.whip }, 4.45);
+          tl.fromTo('#street', { scale: 1.08 }, { scale: 1, duration: 3.5, ease: E.softLand }, 4.45);
+          tl.set('#c2', { visibility: 'visible' }, 5.3);
+          tl.fromTo('#c2', { x: -60, filter: 'blur(6px)' }, { x: 0, filter: 'blur(0px)', duration: 0.45, ease: E.softLand }, 5.3);
+          tl.set({}, {}, 8);
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
+    </script>
+  </body>
+</html>
