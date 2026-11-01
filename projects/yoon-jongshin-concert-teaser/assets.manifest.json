@@ -313,5 +313,77 @@
     "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
     "commercial": true,
     "public_redistribution": true
+  },
+  {
+    "id": "pexels-11999586-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/needle-11999586.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/close-up-of-vinyl-player-11999586/",
+    "author": "Caleb Minear",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-33536359-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/grass-33536359.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/cinematic-close-up-of-grasses-in-the-wind-33536359/",
+    "author": "정규송 Nui MALAMA",
+    "note": "2단계 5차 실사 스케치. 세로 1080x1920 원본 그대로(화면에서 가로로 잘라 보임)",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-4306406-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/stylus-4306406.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/close-up-shot-of-turntable-needle-4306406/",
+    "author": "Matthias Groeneveld",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-3116506-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/turntable-3116506.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/playing-vinyl-records-on-a-turntable-3116506/",
+    "author": "Atakan Ozkan",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-6677775-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/branches-6677775.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/sun-light-trough-the-branches-6677775/",
+    "author": "Connor kane",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
+  },
+  {
+    "id": "pexels-1534965-film",
+    "path": "projects/yoon-jongshin-concert-teaser/05_film/assets/video/spotlight-1534965.mp4",
+    "kind": "video",
+    "source": "pexels",
+    "url": "https://www.pexels.com/video/beam-of-light-from-a-spotlight-1534965/",
+    "author": "Nino Souza",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
+    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
+    "commercial": true,
+    "public_redistribution": true
   }
 ]
