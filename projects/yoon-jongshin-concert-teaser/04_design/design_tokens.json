@@ -1,85 +1,75 @@
 {
   "version": 1,
   "source": {
-    "style": "4단계 3차 후보 B 번지는 빛 (글자 안의 가을)",
-    "why": "사용자 선택: \"B\" (2026-11-01). 2단계 3차 서사(가을이 글자 사이로 스며든다)를 획 둘레로 번지는 빛으로 보여 줌"
+    "style": "4단계 4차 후보 A 톤 맞춤 (실사 구성)",
+    "why": "사용자 선택: \"A 톤 맞춤\" (2026-11-01). 손대지 않은 실사를 고른 흐름에 맞춰 효과는 더하지 않고 컷마다 다른 색만 같은 호박빛 중간톤으로 맞춤"
   },
   "colors": {
-    "ground": "#1c1611",
-    "ink": "#f6efe4",
+    "ground": "#120d09",
+    "ink": "#f4ece0",
     "muted": "#d8cbbb",
-    "accent": "#ffd6a0"
+    "accent": "#e8b97a"
   },
   "type": {
     "families": {
       "serif": "GowunBatang"
     },
     "roles": {
-      "window": {
+      "line": {
         "family": "serif",
-        "weight": 700,
-        "size_h": 0.417,
+        "weight": 400,
+        "size_h": 0.0667,
         "line": 1,
-        "tracking": -0.03,
-        "readable": true
-      },
-      "window_vertical": {
-        "family": "serif",
-        "weight": 700,
-        "size_h": 0.176,
-        "line": 1,
-        "tracking": 0.02,
+        "tracking": -0.01,
         "readable": true
       },
       "title": {
         "family": "serif",
         "weight": 700,
-        "size_h": 0.333,
-        "line": 1,
-        "tracking": -0.02,
+        "size_h": 0.1185,
+        "line": 1.2,
+        "tracking": 0,
         "readable": true
       },
-      "line": {
+      "tour": {
         "family": "serif",
         "weight": 700,
-        "size_h": 0.093,
-        "line": 1,
-        "tracking": -0.02,
+        "size_h": 0.0519,
+        "line": 1.3,
+        "tracking": 0,
         "readable": true
       },
       "info": {
         "family": "serif",
         "weight": 400,
-        "size_h": 0.037,
-        "line": 1,
-        "tracking": 0.01,
+        "size_h": 0.0444,
+        "line": 1.4,
+        "tracking": 0,
         "readable": true
       },
       "cities": {
         "family": "serif",
         "weight": 400,
-        "size_h": 0.031,
-        "line": 1,
-        "tracking": 0.01,
+        "size_h": 0.0426,
+        "line": 1.4,
+        "tracking": 0,
         "readable": true
       }
     }
   },
   "texture": {
-    "window": "Pexels 영상 위에 검은 바탕·흰 글자 층(multiply)을 얹어 획 안에서만 영상이 보임. 그 위에 바탕색(screen)과 나뭇잎 그림자 영상(screen, 9%)",
-    "glow": "획 둘레 번짐: 흰 외곽선 0.012em + text-shadow 30px(75%)·90px(35%). 영상 빛이 획 밖으로 스며 나오는 모양",
-    "line_glow": "한 줄 문장: 호박빛 번짐 40px(rgba 255,214,160 45%) + 어두운 받침 그림자 28px",
-    "curtain_grade": "커튼 영상 sepia 0.45, saturate 1.35, hue-rotate -10deg, brightness 0.92, contrast 1.08 (흰빛을 늦은 오후 호박빛으로)",
-    "color_temperature": "바탕색 #12161d(서늘) → #1c1611(따뜻), 0~15초 동안",
-    "bars": "15초 전까지 위아래 검은 띠 138px(2.39:1), \"스며드는\" 안으로 들어가며 열림",
-    "voice_line": "한 줄 문장 아래 목소리 선(음악 크기 값)",
-    "accent_meaning": "호박빛은 한 줄 문장과 커튼 빛에만"
+    "footage": "Pexels 실사 7컷(출처 assets.manifest.json). 그린 층·그레인·빛줄기 없음",
+    "grade": "컷별 CSS 보정으로 같은 호박빛 중간톤: 바늘 brightness 0.9·saturate 0.75·sepia 0.18 / 풀 0.74·0.8·sepia 0.22·contrast 1.05 / 나뭇가지 0.8·0.9·sepia 0.1 / 카트리지 0.55·0.85·sepia 0.25 / 무대 조명 saturate 0.9·sepia 0.08(1.04배) / 끝 레코드 sepia 0.3, 밝기 0.62 → 0.16(19.8~29초)",
+    "text_support": "키메시지 아래쪽 어둠 막(rgba 10,7,4 0.82 → 0, 화면 아래 55%, 6.045~15.045초), 글자 그림자 24px(55%) + 4px(60%)",
+    "accent_meaning": "호박빛 #e8b97a는 영상 보정의 기준 색. 글자에는 쓰지 않음"
   },
   "motion": {
-    "enter": "emphasized-decelerate",
-    "exit": "emphasized-accelerate",
-    "idle": "breathe",
-    "idle_scope": "4단계 질문 4에서 정한다. 지금은 3단계 렌더본 그대로(영상만 흐르고 글자는 착지 후 정지)",
-    "text": "3단계 3차 렌더본(승인 2026-11-01)과 같은 시각: 컷 경계 4.545·9.045·15.045·19.545·24.0초, 키 모션 15.045·18.045·24.045초"
+    "enter": "glide",
+    "exit": "standard-accelerate",
+    "idle": "still",
+    "enter_detail": "제자리에서 불투명도 0→1, 흐림 14px→0, 1.4초(제목 1.6초, 정보 1.0초), power2.out",
+    "exit_detail": "글자는 컷 경계에서 바로 사라짐(트윈 없음)",
+    "idle_scope": "4단계 질문 4에서 정한다. 지금은 영상만 흐르고 글자는 착지 뒤 정지",
+    "text": "3단계 승인 애니매틱과 같은 시각: 첫 줄 6.3, 둘째 줄 12.3, 제목 19.8, 공연명 21.045, 기간 21.6, 도시 22.15초"
   }
 }
