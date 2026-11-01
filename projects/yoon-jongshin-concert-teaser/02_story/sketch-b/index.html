@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'GowunBatang'; font-weight: 700; src: url('assets/fonts/gowunbatang/GowunBatang-Bold.ttf'); }
+      @font-face { font-family: 'GowunBatang'; font-weight: 400; src: url('assets/fonts/gowunbatang/GowunBatang-Regular.ttf'); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { width: 100%; height: 100%; position: relative; word-break: keep-all; font-family: 'GowunBatang', serif; color: #f4ece0; }
+      /* 2단계 5차 실사 스케치: Pexels 실사 영상(출처는 assets.manifest.json), 글자는 키메시지 두 줄과 제목·정보만 */
+      .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #v2 { filter: brightness(0.9) saturate(0.85); }
+      #v3 { filter: brightness(0.82) saturate(0.95); }
+      #v9 { filter: brightness(0.5) saturate(0.85); }
+      /* 글자 받침: 글자가 놓이는 쪽만 어둡게(밝은 배경 위 글자는 막·그림자로, 사용자 지시) */
+      .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 52%; background: linear-gradient(to top, rgba(10,7,4,0.72), rgba(10,7,4,0)); visibility: hidden; }
+      .line { position: absolute; left: 192px; top: 760px; font-weight: 400; font-size: 66px; letter-spacing: -0.01em; white-space: nowrap; visibility: hidden; text-shadow: 0 2px 24px rgba(0,0,0,0.55); }
+      .end { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; visibility: hidden; text-shadow: 0 2px 24px rgba(0,0,0,0.5); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+      <video id="v1" class="clip shot" src="assets/video/needle-11999586.mp4" muted playsinline data-start="0" data-duration="4.545" data-media-start="0.3"></video>
+      <video id="v2" class="clip shot" src="assets/video/grass-33536359.mp4" muted playsinline data-start="4.545" data-duration="1.5" data-media-start="2"></video>
+      <video id="v3" class="clip shot" src="assets/video/leaves-11040176.mp4" muted playsinline data-start="6.045" data-duration="3" data-media-start="2.5"></video>
+      <video id="v4" class="clip shot" src="assets/video/stylus-4306406.mp4" muted playsinline data-start="9.045" data-duration="3" data-media-start="2"></video>
+      <video id="v5" class="clip shot" src="assets/video/hand-31948465.mp4" muted playsinline data-start="12.045" data-duration="3" data-media-start="2"></video>
+      <video id="v6" class="clip shot" src="assets/video/hall-35122004.mp4" muted playsinline data-start="15.045" data-duration="2.5" data-media-start="0.4"></video>
+      <video id="v7" class="clip shot" src="assets/video/guitar-7722894.mp4" muted playsinline data-start="17.545" data-duration="2" data-media-start="0"></video>
+      <video id="v8" class="clip shot" src="assets/video/needle-11999586.mp4" muted playsinline data-start="19.545" data-duration="4.5" data-media-start="10"></video>
+      <video id="v9" class="clip shot" src="assets/video/turntable-3116506.mp4" muted playsinline data-start="24.045" data-duration="5.955" data-media-start="3"></video>
+      <div class="shade" id="sh1" data-layout-allow-occlusion></div>
+      <div class="shade" id="sh2" data-layout-allow-occlusion></div>
+      <p class="line" id="l1">서늘한 바람처럼 스며드는</p>
+      <p class="line" id="l2">윤종신의 목소리와 이야기</p>
+      <p class="end" id="t" style="top:110px;font-size:128px;font-weight:700">가을냄새</p>
+      <p class="end" id="i0" style="top:318px;font-size:46px">2026 윤종신 전국투어 콘서트</p>
+      <p class="end" id="i1" style="top:384px;font-size:44px">10. 2 서울에서 시작, 11월까지</p>
+      <p class="end" id="i2" style="top:446px;font-size:42px">서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전</p>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady.sketch = Promise.all(["700 100px 'GowunBatang'", "400 60px 'GowunBatang'"].map(f => document.fonts.load(f, '서늘한바람처럼스며드는윤종신의목소리와이야기가을냄새2026전국투어콘서트서울에서시작월까지인천수원고양부산경주대전')))
+        .then(() => {
+          const tl = gsap.timeline({ paused: true });
+          // 글자는 "말이 스며든다"는 뜻으로만 움직인다: 제자리에서 흐림이 천천히 걷힘(조용한 주제의 페이드 예외)
+          const seep = (sel, at, dur = 1.4) => {
+            tl.set(sel, { visibility: 'visible' }, at);
+            tl.fromTo(sel, { opacity: 0, filter: 'blur(14px)' }, { opacity: 1, filter: 'blur(0px)', duration: dur, ease: 'power2.out' }, at);
+          };
+          // 키메시지 앞 절반: 바람에 흔들리는 잎(6.045~9.045초) 위, 컷과 함께 사라짐
+          tl.set('#sh1', { visibility: 'visible' }, 6.045);
+          seep('#l1', 6.3);
+          tl.set(['#sh1', '#l1'], { visibility: 'hidden' }, 9.045);
+          // 키메시지 뒤 절반: 공연장에 불이 들어온 다음 기타 장면(정점 18.045초)에 놓임(객석 무늬 위는 읽기 어려움)
+          tl.set('#sh2', { visibility: 'visible' }, 17.545);
+          seep('#l2', 17.6, 1.1);
+          tl.set(['#sh2', '#l2'], { visibility: 'hidden' }, 19.545);
+          // 끝: 위쪽이 비어 있는 어두운 턴테이블 위 제목과 정보
+          seep('#t', 24.6, 1.6);
+          seep('#i0', 25.6, 1.0);
+          seep('#i1', 26.2, 1.0);
+          seep('#i2', 26.8, 1.0);
+          tl.set({}, {}, 30);
+          window.__timelines['main'] = tl;
+          if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+          tl.seek(0);
+        });
+    </script>
+  </body>
+</html>
