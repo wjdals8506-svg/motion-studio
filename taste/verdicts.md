@@ -76,3 +76,4 @@
 - 2026-11-01 · yoon-jongshin-concert-teaser · 4단계 · 승인 · "승인" (tone-a 키 컷: 실사 7컷 + A 톤 맞춤 + 고운바탕, 글자는 착지 뒤 정지)
 - 2026-11-01 · yoon-jongshin-concert-teaser · 5단계 실사 구성 영상 흐름 · 확인 · "없음" (길거나 빠르거나 끊기는 곳 없음. 승인은 아님)
 - 2026-11-01 · yoon-jongshin-concert-teaser · 5단계 · 승인 · "승인" (실사 7컷 + A 톤 + bgm-3, 효과음 없음)
+- 2026-11-01 · yoon-jongshin-concert-teaser · 6단계 음량 · 선택 · "−14 LUFS" (웹 기준 음량. 승인 때 들은 −19.8 LUFS보다 크게)
