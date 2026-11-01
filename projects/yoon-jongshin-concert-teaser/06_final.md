@@ -1,7 +1,7 @@
 ---
 stage: 6
-status: draft
-approved_at:
+status: approved
+approved_at: 2026-11-01T20:35
 ---
 
 # 최종: 윤종신 콘서트 예고
@@ -23,7 +23,7 @@ approved_at:
 - `media/yoon-jongshin-concert-teaser/final.mp4` (커밋하지 않음, = final-14.mp4), sha256 0b35fc7e664ac70bb5b05a458412e8363a347c01468a7fe6ea2251a3036e4def, 보낸 날 2026-11-01. final-qa 오류 0(−14.0 LUFS, 피크 −1.5 dBTP)
 
 ## 마지막 확인
-(질문 2 답과 반영)
+- 질문 2 "미리보기와 다르게 보이거나 들리는 곳": "없음, 승인" (2026-11-01). 반영할 것 없음.
 
 ## 남은 문제
 - 9~12초 카트리지 접사는 다른 컷보다 밝고 뿌옇고, 그 위 글자 대비가 가장 낮다(휴대폰 폭).
