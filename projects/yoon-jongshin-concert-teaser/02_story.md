@@ -33,6 +33,21 @@ approved_at:
 | 24~30 | 다시 방: 바늘이 들리고 레코드가 천천히 멈춤. 창밖 저녁 | "가을냄새", 공연명·기간·도시 |
 
 - 소재 수집 과제(컨셉에 맞춰 수집): 같은 톤의 턴테이블 실사(바늘 착지·멈춤), 역광 억새·마른 잎, 커튼 빛, 노트에 쓰는 손, 빈 무대에 조명이 들어오는 영상(Pexels에 적음 — 다른 무료 소스도 확인 필요), 객석에서 본 무대 빛.
+- 소재 후보(2026-11-01, Pexels 페이지에서 대표 화면으로 확인, 내려받기 전):
+
+| 장면 | 후보 | 작가 | 파일(HD) | 크기 |
+|---|---|---|---|---|
+| 0~4.5 바늘 착지 | https://www.pexels.com/video/close-up-of-vinyl-player-11999586/ (어두운 따뜻한 빛, "Needle Drop") | Caleb Minear | 11999586-hd_1920_1080_24fps.mp4, 22초 | 10MB |
+| 4.5~9 바람 | https://www.pexels.com/video/yellow-autumn-leaves-during-wind-11040176/ (역광 노란 잎) | Ömer Derinyar | 11040176-hd_1920_1080_24fps.mp4, 78초 | 51MB |
+| 4.5~9 바람 | https://www.pexels.com/video/cinematic-close-up-of-grasses-in-the-wind-33536359/ (역광 마른 풀 접사, 세로 → 가로로 잘라 씀) | 정규송 Nui MALAMA | 14260282_1080_1920_30fps.mp4, 10초 | 7MB |
+| 9~12 빛 | https://www.pexels.com/video/close-up-shot-of-turntable-needle-4306406/ (창빛 든 턴테이블) | Matthias Groeneveld | 4306406-hd_1920_1080_24fps.mp4, 14초 | 5MB |
+| 12~15 손 | https://www.pexels.com/video/close-up-of-hand-writing-in-notebook-31948465/ | Nishant Das | 13611447_1920_1080_24fps.mp4, 7초 | 1MB |
+| 15~19.5 무대 | https://www.pexels.com/video/grand-piano-on-stage-with-vibrant-audience-39398536/ (어두운 무대 위 피아노) | Oğuzhan Kara | 16774372_1920_1080_24fps.mp4, 13초 | 1MB |
+| 15~19.5 무대 | https://www.pexels.com/video/person-picking-up-an-acoustic-guitar-7722894/ (따뜻한 조명 속 기타, 세로 → 가로로 잘라 씀) | Alena Darmel | 7722894-hd_1080_1920_25fps.mp4, 6초 | 3MB |
+| 19.5~24 객석 | https://www.pexels.com/video/elegant-empty-concert-hall-interior-view-35122004/ (빈 공연장) | Jewel Rainbow | 14879057_1920_1080_30fps.mp4, 5초 | 2MB |
+| 24~30 방 | https://www.pexels.com/video/playing-vinyl-records-on-a-turntable-3116506/ (어두운 방 턴테이블) | Atakan Ozkan | 3116506-hd_1920_1080_25fps.mp4, 21초 | 14MB |
+
+  찾지 못한 것: 가을 느낌의 커튼(후보는 초록 정원·꽃무늬라 뺌 → 9~12초는 창빛 든 턴테이블로 대신), 바늘이 들리고 레코드가 멈추는 실사(없음 → 끝은 도는 레코드 위에서 정지에 가깝게), 빈 무대에 조명이 켜지는 순간(없음 → 피아노·기타가 있는 어두운 무대). 다른 음반 표지가 보이는 5983043은 뺐다.
 - 위험: 무대·공연장 실사 소스가 가장 어렵다. 2차 판(창가 한 샷 + 키네틱 배치)의 "단순 배경 + 간단한 타이포" 거절과 구별되려면 샷 자체의 질과 편집 리듬이 받쳐야 한다.
 
 ## 4차 (2026-11-01, 검수 체계 반영 뒤 처음부터)
