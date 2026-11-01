@@ -43,7 +43,7 @@ jobs:
         run: |
           "$GITHUB_WORKSPACE/node_modules/.bin/hyperframes" browser ensure
 
-      - name: Render (SDR 고정: HDR 영상이 섞이면 HDR 레이어 합성으로 바뀌어 mix-blend-mode 글자 창이 깨진다)
+      - name: Render (SDR fixed, HDR layered composite breaks mix-blend-mode)
         working-directory: ${{ inputs.project }}
         run: |
           mkdir -p "$GITHUB_WORKSPACE/out"
