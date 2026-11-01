@@ -179,18 +179,6 @@
     "public_redistribution": true
   },
   {
-    "id": "pexels-7722894-sketch-b",
-    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/guitar-7722894.mp4",
-    "kind": "video",
-    "source": "pexels",
-    "url": "https://www.pexels.com/video/person-picking-up-an-acoustic-guitar-7722894/",
-    "author": "Alena Darmel",
-    "note": "2단계 5차 실사 스케치. 세로 원본 그대로",
-    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
-    "commercial": true,
-    "public_redistribution": true
-  },
-  {
     "id": "pexels-3116506-sketch-b",
     "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/turntable-3116506.mp4",
     "kind": "video",
@@ -215,13 +203,13 @@
     "public_redistribution": true
   },
   {
-    "id": "pexels-8197868-sketch-b",
-    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/mic-8197868.mp4",
+    "id": "pexels-1534965-sketch-b",
+    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/spotlight-1534965.mp4",
     "kind": "video",
     "source": "pexels",
-    "url": "https://www.pexels.com/video/a-vintage-microphone-8197868/",
-    "author": "RDNE Stock project",
-    "note": "2단계 5차 실사 스케치. 세로 원본, 재인코딩 없이 소리 트랙 제거",
+    "url": "https://www.pexels.com/video/beam-of-light-from-a-spotlight-1534965/",
+    "author": "Nino Souza",
+    "note": "2단계 5차 실사 스케치. 전체, 재인코딩 없이 소리 트랙 제거",
     "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
     "commercial": true,
     "public_redistribution": true

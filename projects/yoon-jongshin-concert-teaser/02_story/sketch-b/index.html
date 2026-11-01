@@ -14,8 +14,6 @@
       .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
       #v2 { filter: brightness(0.9) saturate(0.85); }
       #v3, #v5 { filter: brightness(0.82) saturate(0.95); }
-      #v8 { filter: brightness(0.72) saturate(0.85); }
-      #v9 { filter: brightness(0.5) saturate(0.85); }
       /* 글자 받침: 글자가 놓이는 쪽만 어둡게(밝은 배경 위 글자는 막·그림자로, 사용자 지시) */
       .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(to top, rgba(10,7,4,0.82), rgba(10,7,4,0)); visibility: hidden; }
       .line { position: absolute; left: 192px; top: 760px; font-weight: 400; font-size: 72px; letter-spacing: -0.01em; white-space: nowrap; visibility: hidden; text-shadow: 0 2px 24px rgba(0,0,0,0.55); }
@@ -29,13 +27,11 @@
       <video id="v3" class="clip shot" src="assets/video/branches-6677775.mp4" muted playsinline data-start="6.045" data-duration="3" data-media-start="2"></video>
       <video id="v4" class="clip shot" src="assets/video/stylus-4306406.mp4" muted playsinline data-start="9.045" data-duration="3" data-media-start="2"></video>
       <video id="v5" class="clip shot" src="assets/video/branches-6677775.mp4" muted playsinline data-start="12.045" data-duration="3" data-media-start="13"></video>
-      <video id="v6" class="clip shot" src="assets/video/guitar-7722894.mp4" muted playsinline data-start="15.045" data-duration="2.5" data-media-start="0"></video>
-      <video id="v7" class="clip shot" src="assets/video/mic-8197868.mp4" muted playsinline data-start="17.545" data-duration="2" data-media-start="2"></video>
-      <video id="v8" class="clip shot" src="assets/video/turntable-3116506.mp4" muted playsinline data-start="19.545" data-duration="4.5" data-media-start="3"></video>
-      <video id="v9" class="clip shot" src="assets/video/turntable-3116506.mp4" muted playsinline data-start="24.045" data-duration="5.955" data-media-start="7.5"></video>
+      <video id="v6" class="clip shot" src="assets/video/spotlight-1534965.mp4" muted playsinline data-start="15.045" data-duration="4.5" data-media-start="2"></video>
+      <video id="v8" class="clip shot" src="assets/video/turntable-3116506.mp4" muted playsinline data-start="19.545" data-duration="10.455" data-media-start="3"></video>
       <div class="shade" id="sh1" data-layout-allow-occlusion></div>
       <p class="line" id="l1">서늘한 바람처럼 스며드는</p>
-      <p class="line" id="l2" style="top:80px">윤종신의 목소리와 이야기</p>
+      <p class="line" id="l2" style="left:auto;right:192px;top:820px">윤종신의 목소리와 이야기</p>
       <p class="end" id="t" style="top:100px;font-size:128px;font-weight:700">가을냄새</p>
       <p class="end" id="i0" style="top:296px;font-size:56px;font-weight:700">2026 윤종신 전국투어 콘서트</p>
       <p class="end" id="i1" style="top:376px;font-size:42px">10월 2일 서울에서 시작, 11월까지</p>
@@ -56,10 +52,12 @@
           tl.set('#sh1', { visibility: 'visible' }, 6.045);
           seep('#l1', 6.3);
           tl.set(['#sh1', '#l1'], { visibility: 'hidden' }, 9.045);
-          // 키메시지 뒤 절반: 무대 조명 다음, 마이크 장면(정점 18.045초)에 놓임 — 목소리의 그림
+          // 키메시지 뒤 절반: 따뜻한 무대 조명 장면(정점 18.045초), 조명 반대편 아래 어두운 곳
                     seep('#l2', 17.6, 1.1);
           tl.set('#l2', { visibility: 'hidden' }, 19.545);
-          // 끝: 위쪽이 비어 있는 어두운 턴테이블 위 제목과 정보
+          // 끝: 한 컷으로 이어진 턴테이블이 끊김 없이 천천히 어두워짐(22.5초부터 29초까지, 마지막은 아주 어둡게)
+          tl.set('#v8', { filter: 'brightness(0.72) saturate(0.85)' }, 19.545);
+          tl.to('#v8', { filter: 'brightness(0.16) saturate(0.7)', duration: 6.5, ease: 'sine.inOut' }, 22.5);
           seep('#t', 24.6, 1.6);
           seep('#i0', 25.6, 1.0);
           seep('#i1', 26.2, 1.0);
