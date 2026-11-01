@@ -191,18 +191,6 @@
     "public_redistribution": true
   },
   {
-    "id": "pexels-31948465-sketch-b",
-    "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/hand-31948465.mp4",
-    "kind": "video",
-    "source": "pexels",
-    "url": "https://www.pexels.com/video/close-up-of-hand-writing-in-notebook-31948465/",
-    "author": "Nishant Das",
-    "note": "2단계 5차 실사 스케치. 원본 그대로",
-    "license": "Pexels License https://www.pexels.com/license/ (무료, 출처 표기 선택, 다른 스톡 플랫폼 재배포 금지)",
-    "commercial": true,
-    "public_redistribution": true
-  },
-  {
     "id": "pexels-35122004-sketch-b",
     "path": "projects/yoon-jongshin-concert-teaser/02_story/sketch-b/assets/video/hall-35122004.mp4",
     "kind": "video",
