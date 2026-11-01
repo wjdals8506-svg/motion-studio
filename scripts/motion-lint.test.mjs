@@ -53,7 +53,7 @@ test('결과에 줄 번호가 있다', () => {
 });
 
 test('3차 글로우 키 컷: 사용자가 거절한 판에서 다섯 종류가 모두 잡힌다', () => {
-  const html = fs.readFileSync(new URL('../projects/yoon-jongshin-concert-teaser/04_design/keycuts/glow/index.html', import.meta.url), 'utf8');
+  const html = fs.readFileSync(new URL('./fixtures/rejected-glow-keycut.html', import.meta.url), 'utf8');
   const found = new Set(rules(html));
   for (const r of ['fade-slide-in', 'drift', 'creep-scale', 'world-fade', 'no-ease']) assert.ok(found.has(r), r);
 });

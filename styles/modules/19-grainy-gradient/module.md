@@ -20,7 +20,7 @@
   renderAt(0);
 </script>
 ```
-- 글꼴 모양 제목은 글꼴 로드 뒤 `FogGlass.makeTitle(text, cssFont, tracking)`로 글리프를 만들고 `window.__hf.buildReady`에 그 promise를 등록한다(파일럿 `04_design/keycuts/handwriting/index.html` 참고).
+- 글꼴 모양 제목은 글꼴 로드 뒤 `FogGlass.makeTitle(text, cssFont, tracking)`로 글리프를 만들고 `window.__hf.buildReady`에 그 promise를 등록한다(파일럿 `04_design/keycuts/handwriting/index.html` 참고 — 2026-11-01 정리 때 지움, 커밋 167ecd1에 있음).
 - 좌표는 화면 비율(0~1). 카메라는 `{ x, y, zoom }`, 세계는 화면보다 상하좌우 12% 넓다.
 
 ## 파라미터(파일럿 값)

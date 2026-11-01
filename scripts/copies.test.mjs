@@ -13,7 +13,6 @@ const copies = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(e =>
     : e.name === 'fog-glass.js' ? [path.join(dir, e.name)] : []);
 
 test('레포 안의 모든 fog-glass.js 사본이 모듈 원본과 같다', () => {
-  const found = copies(path.join(ROOT, 'projects')).filter(f => !/candidates/.test(f));
-  assert.ok(found.length >= 3, `사본 ${found.length}개`);
-  for (const f of found) assert.equal(norm(f), norm(ORIGIN), path.relative(ROOT, f));
+  // 사본이 없어도 통과한다(실사 파일럿은 이 렌더러를 쓰지 않는다)
+  for (const f of copies(path.join(ROOT, 'projects'))) assert.equal(norm(f), norm(ORIGIN), path.relative(ROOT, f));
 });
