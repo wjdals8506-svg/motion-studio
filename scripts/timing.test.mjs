@@ -33,12 +33,12 @@ test('시작 시각은 누적합', () => {
   assert.deepEqual(t.beats[0].boxes, []);
 });
 
-test('파일럿 설계표(4차)는 9컷 30초', () => {
+test('파일럿 설계표(5차 실사)는 7컷 30초', () => {
   const md = fs.readFileSync(new URL('../projects/yoon-jongshin-concert-teaser/02_story.md', import.meta.url), 'utf8');
   const t = buildTiming(readCutTable(md), { bpm: 80 });
-  assert.equal(t.beats.length, 9);
+  assert.equal(t.beats.length, 7);
   assert.equal(t.duration, 30);
-  assert.deepEqual(t.beats.flatMap(b => b.keyMotions.map(k => k.at)), [1.535, 9.045, 18.045, 24.045]);
+  assert.deepEqual(t.beats.flatMap(b => b.keyMotions.map(k => k.at)), [1.535, 9.045, 15.045, 19.8]);
 });
 
 const HEAD = `| # | 역할 | 시청자가 믿게 될 것 | 카피 | 연결(서사) | 연결(디자인) | 키 모션 | 길이(초) |
