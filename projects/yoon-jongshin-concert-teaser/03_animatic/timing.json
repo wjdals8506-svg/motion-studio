@@ -4,24 +4,28 @@
   "width": 1920,
   "height": 1080,
   "duration": 30,
-  "audio": "media/yoon-jongshin-concert-teaser/bgm-3.mp3",
+  "audio": null,
   "beats": [
     {
       "n": 1,
       "role": "hook",
-      "copy": "서늘한",
+      "copy": "",
       "start": 0,
       "dur": 4.545,
-      "keyMotions": [],
+      "keyMotions": [
+        {
+          "at": 1.535
+        }
+      ],
       "boxes": [],
       "section": null
     },
     {
       "n": 2,
       "role": "hook",
-      "copy": "바람처럼",
+      "copy": "",
       "start": 4.545,
-      "dur": 4.5,
+      "dur": 1.5,
       "keyMotions": [],
       "boxes": [],
       "section": null
@@ -29,9 +33,43 @@
     {
       "n": 3,
       "role": "proof",
-      "copy": "스며드는",
+      "copy": "서늘한 바람처럼 스며드는",
+      "start": 6.045,
+      "dur": 3,
+      "keyMotions": [],
+      "boxes": [],
+      "section": null
+    },
+    {
+      "n": 4,
+      "role": "proof",
+      "copy": "",
       "start": 9.045,
-      "dur": 6,
+      "dur": 3,
+      "keyMotions": [
+        {
+          "at": 9.045
+        }
+      ],
+      "boxes": [],
+      "section": null
+    },
+    {
+      "n": 5,
+      "role": "turn",
+      "copy": "윤종신의 목소리와 이야기",
+      "start": 12.045,
+      "dur": 3,
+      "keyMotions": [],
+      "boxes": [],
+      "section": null
+    },
+    {
+      "n": 6,
+      "role": "proof",
+      "copy": "",
+      "start": 15.045,
+      "dur": 4.5,
       "keyMotions": [
         {
           "at": 15.045
@@ -41,38 +79,14 @@
       "section": null
     },
     {
-      "n": 4,
-      "role": "turn",
-      "copy": "윤종신의 목소리와 이야기",
-      "start": 15.045,
-      "dur": 4.5,
-      "keyMotions": [
-        {
-          "at": 18.045
-        }
-      ],
-      "boxes": [],
-      "section": null
-    },
-    {
-      "n": 5,
-      "role": "proof",
-      "copy": "윤종신의 목소리와 이야기",
-      "start": 19.545,
-      "dur": 4.455,
-      "keyMotions": [],
-      "boxes": [],
-      "section": null
-    },
-    {
-      "n": 6,
+      "n": 7,
       "role": "cta",
-      "copy": "가을냄새\n2026 윤종신 전국투어 콘서트\n10. 2 서울에서 시작, 11월까지\n서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전",
-      "start": 24,
-      "dur": 6,
+      "copy": "가을냄새\n2026 윤종신 전국투어 콘서트\n10월 2일 서울에서 시작, 11월까지\n서울 · 인천 · 수원 · 고양 · 부산 · 경주 · 대전",
+      "start": 19.545,
+      "dur": 10.455,
       "keyMotions": [
         {
-          "at": 24.045
+          "at": 19.545
         }
       ],
       "boxes": [],
