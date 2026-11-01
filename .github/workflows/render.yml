@@ -57,8 +57,20 @@ jobs:
           echo "expected=$expected actual=$actual"
           awk -v e="$expected" -v a="$actual" 'BEGIN { d = a - e; if (d < 0) d = -d; exit !(d <= 0.1) }'
 
+      - name: QC sheet and freeze/black measurement (G1, G2 on the rendered MP4)
+        run: |
+          d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 out/out.mp4)
+          rows=$(awk -v d="$d" 'BEGIN { r = int((d * 2 + 9) / 10); print (r < 1 ? 1 : r) }')
+          ffmpeg -hide_banner -loglevel error -i out/out.mp4 -vf "fps=2,scale=384:-1,drawtext=text='%{pts\:hms}':x=6:y=6:fontsize=20:fontcolor=white:box=1:boxcolor=black@0.6,tile=10x${rows}" -frames:v 1 out/sheet.jpg
+          ffmpeg -hide_banner -nostats -i out/out.mp4 -an -vf "freezedetect=n=0.003:d=2,blackdetect=d=0.1:pix_th=0.05" -f null - 2> out/qc.log || true
+          grep -E "freeze_(start|end)|black_start" out/qc.log > out/qc.txt || echo "freeze/black 없음" > out/qc.txt
+          cat out/qc.txt
+
       - uses: actions/upload-artifact@v4
         with:
           name: render-${{ github.run_id }}
-          path: out/out.mp4
+          path: |
+            out/out.mp4
+            out/sheet.jpg
+            out/qc.txt
           retention-days: 14

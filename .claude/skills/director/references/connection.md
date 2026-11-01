@@ -59,6 +59,8 @@
 - 장면 사이 크로스페이드 금지. 하드 컷, B의 배경색으로 칠한 깃털 와이프, 또는 효과가 B가 되기. (출처: mm/references/transitions.md R3.2.1)
 - 페이드는 단일 물체(헤드라인 한 줄 0.75 → 0.18을 4f, 마지막 구절 10f 선형)나 같은 중심에서 정체성 하나를 바꿀 때(아이콘 디졸브 8f)만. (출처: mm/references/transitions.md R3.2.1)
 - 예외 조건: 차분한 브랜드 목소리, 의미가 곧 디졸브(사생활, 잊힘), 실제 초점 이동을 따라 하는 블러. (출처: mm/references/slop.md Part 1b)
+- 바탕(화면 전체를 덮는 층: 마스크, 틴트, 베일, 그림자, 색면)의 불투명도·색 트윈도 크로스페이드다. 여러 층을 한꺼번에 페이드하면 중간 프레임에 의도하지 않은 덩어리가 생긴다(2026-11-01 15.2초 흰 덩어리). `scripts/motion-lint.mjs`의 `world-fade`가 잡는다. 0~15초 같은 긴 색온도 램프는 예외로 두되 REVIEW.md에 이유를 적는다. (출처: hf/motion.md "worlds never crossfade", mm/references/slop.md A7·D4)
+- 대안 "물체가 세계가 된다": 히어로가 0.65초 ease-in-out으로 커져 화면이 되고, 주변 요소만 약 15px 블러 + 0.3초 페이드로 빠지며, 새 장면 내용은 자라는 동안 들어온다. 컷은 확대가 가장 빠른 프레임에 둔다. (출처: hf/motion.md 전환표 "Object becomes the world")
 
 ## 전환 유형 고르기 (무엇이 바뀌는가로)
 - 상태만 바뀜(같은 화면, 새 순간): 움직임 위 하드 컷 + 운반 물체. 대안은 1프레임 잔상. (출처: mm/references/transitions.md 3.1절)

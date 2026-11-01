@@ -39,9 +39,16 @@
 - 비트 그리드: 비트당 프레임 = fps × 60 / BPM. 각 비트를 인덱스로 계산해 반올림하고, 반올림한 비트를 반복해서 더하지 않는다. 컷은 비트에, 레이아웃 변화는 마디에. (출처: hf/motion.md)
 - 보상 직전 0.3~0.75초 멈추고, 보상은 정상 속도로 재생한다. (출처: hf/motion.md)
 
+## 새로움과 길이 대비
+- 2~4초마다 화면에 새로운 것(새 물체, 새 배치, 새 표면)이 나온다. 같은 처리(같은 배치·같은 진입)는 6초를 넘기면 낡아 보인다. (출처: hf/spec.md, hf/film.md)
+- 컷(비트) 길이의 최장/최단 비율은 2배 이상. 비트는 짧아지다가 마지막이 머문다. 모든 컷이 비슷한 길이면 메트로놈이 된다. (출처: mm/references/slop.md Tm1·I1, onetake SKILL.md "4배 이상", 하한 2배는 원판 기본값)
+- 큰 변화(키 모션, 장면 전환)는 음악 프레이즈(보통 4마디) 경계에 둔다. 박마다 자르지 않는다. 박 위치는 음원에서 측정한 값을 쓴다. (출처: Derek Lieu, Jonny Elwyn — research_notes/모션그래픽 미감 레퍼런스와 검수 기준/editing_and_review.md)
+- 강한 모션(스케일 다이브, 화면 전체 변화)은 영화 하나에 한두 번. 나머지는 절제한다. (출처: IBM Carbon expressive "occasional, important moments", mm/references/slop.md Part 1b 거대 단어 "스케일을 다시 쓰지 않을 때만")
+
 ## 원천끼리 충돌하는 지점과 기본값
 - 퇴장 길이: HyperFrames는 "퇴장은 진입보다 40~50% 짧게", motionmaxxing 측정은 이동 퇴장 13~14f로 진입 12f보다 약간 길다. **기본값은 HyperFrames**(단어·UI 요소는 진입보다 짧게, 단어 퇴장 3~4f도 같은 방향). 프레임 밖으로 던지거나 컷으로 들어가는 퇴장, 카메라 pull-off만 accelExit 13f·crashOut 17f를 쓴다. (출처: hf/motion.md, mm/references/motion.md R1.1, R1.5, R3.4)
 - 착지한 제목: HyperFrames는 "착지한 제목은 완전히 멈추고 움직임은 다음 요소·카메라·배경으로 옮긴다", motionmaxxing은 제목이 1.1초에 약 7% W 드리프트하는 것을 선택지로 둔다. **기본값은 HyperFrames**. 정지 프레임 금지는 제목 대신 배경·카메라·다른 요소가 살아 있는 것으로 지킨다(mm R11.2와도 맞는다). (출처: hf/motion.md, mm/references/slop.md T4, mm/references/type.md R11.2)
+- 정지 비율: motionmaxxing은 "붙잡은 프레임마다 살아 있는 것 하나", onetake는 정지 34%를 허용한다. **기본값**: 글자는 착지하면 멈추고, 붙잡은 프레임에는 영상 재생·빛·카메라 중 하나가 살아 있다. 아무것도 변하지 않는 구간은 엔드 홀드(0.6~1.4초)뿐. (출처: mm/references/slop.md M5, onetake SKILL.md, hf/motion.md "footage playing")
 - 진입 속도: motionmaxxing의 snapSettle(시간 10%에 이동 54%)과 HyperFrames의 "너무 빠른 진입은 글리치"는 꼬리 길이로 화해한다. 빠른 스냅 뒤에 0.4~0.6초 꼬리를 반드시 붙인다. 꼬리 없는 스냅은 쓰지 않는다. (출처: mm/references/motion.md 1.8절, hf/motion.md)
 
 ## 실측 이징 12개 (`tokens/motion.json`의 `measured_eases`)

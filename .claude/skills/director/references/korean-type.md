@@ -11,7 +11,8 @@
 - 단어가 추가될 때 남아 있는 어절은 제자리에 둔다. 다시 가운데 맞춤하지 않는다(재정렬을 의도한 경우 제외). (출처: mm/references/slop.md T6, mm/references/type.md R2.5)
 
 ## 서체와 굵기 위계
-- 서체는 Pretendard 하나. 영상 하나에 서체 하나가 원천의 규칙이다. (출처: CLAUDE.md, mm/references/type.md 1절)
+- 서체는 프로젝트 2·4단계에서 사용자가 고른 하나(기본 Pretendard). 영상 하나에 서체 하나가 원천의 규칙이다. (출처: CLAUDE.md, mm/references/type.md 1절)
+- 400·700만 있는 세리프(예: 고운바탕)는 mm의 "헤드라인 굵기 550 이하"를 지킬 수 없다. **기본값**: 큰 단어 하나(글자 창, 제목)에만 700, 문장·정보는 400. 위계는 굵기가 아니라 크기로. (출처: mm/references/slop.md C1, 고운바탕 파일 굵기, 선택은 원판 규칙)
 - 쓸 수 있는 굵기는 레포 `assets/fonts/pretendard/`의 400(Regular), 600(SemiBold), 700(Bold)이다. 컴포지션 프로젝트의 `assets/fonts/`로 복사해 쓴다(`../` 경로 금지). (출처: 원판 규칙, 근거: 스파이크)
 - 400: 본문, 보조 문장, UI 글자, 자막. (출처: mm/references/type.md 1절)
 - 600: 헤드라인 기본값, 워드마크. (출처: mm/references/type.md 1절, 굵기 선택은 원판 규칙)
@@ -44,6 +45,7 @@
 ## 읽기 시간
 - motionmaxxing: 2~5단어는 단어당 0.2초(3단어 0.6~0.9초, 5단어 1.0초), 2줄 6~8단어는 1.7~2.0초, 숫자 하나 0.5~1.2초, 완성 후 바닥 0.45초(내레이션이 같은 말을 읽어 줄 때만). 구절의 전체 수명은 단어당 0.25~0.35초. (출처: mm/references/type.md R10.1)
 - HyperFrames: 읽어야 하는 줄은 0.5초 + 단어당 0.3초, 영상의 마지막 줄은 2초 이상, 한두 단어 챕터 줄은 0.4초. (출처: hf/motion.md)
+- 교차 확인: Netflix 한국어 자막 가이드는 한 줄 16자, 성인 초당 12자다. 화면 글자의 홀드가 글자 수 ÷ 12초보다 짧으면 늘린다. (출처: Netflix Korean Timed Text Style Guide, partnerhelp.netflixstudios.com/hc/en-us/articles/216001127)
 - 한국어에 적용할 때 "단어"는 어절로 센다. 글자(음절) 수로 세지 않는다. (출처: 원판 규칙)
 - "약 20자에 1.2초 이상" 같은 글자 수 기준은 영문 글자로 측정한 것이다. 한글 글자 수에 그대로 대입하지 않는다. (출처: mm/references/slop.md I2, 적용 주의는 원판 규칙)
 - 원천 충돌과 기본값: 한국어 글자 홀드의 하한은 **HyperFrames 공식(0.5초 + 0.3초 × 어절 수)**으로 둔다. motionmaxxing의 단어당 0.2초는 내레이션이 같은 문장을 동시에 읽어 줄 때만 쓴다. (출처: hf/motion.md, mm/references/type.md R10.1, 선택은 원판 규칙)

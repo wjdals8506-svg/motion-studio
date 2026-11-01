@@ -1,7 +1,7 @@
 ---
 stage: 2
-status: approved
-approved_at: 2026-10-31T21:53
+status: draft
+approved_at:
 ---
 
 # 서사: 윤종신 콘서트 예고

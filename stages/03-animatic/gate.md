@@ -7,6 +7,8 @@
 - [ ] `retime` 경고(곡 길이 불일치, 옮기지 않은 경계)를 사용자에게 보여줬다.
 - [ ] `npx hyperframes check "projects/<slug>/03_animatic"` 오류 0.
 - [ ] `node scripts/manifest.mjs "projects/<slug>"` 통과.
+- [ ] `director` 스킬 "자체 검수" 1~8을 마쳤다: `check --json` 경고 인용, `node scripts/motion-lint.mjs` 결과 0 또는 REVIEW.md에 이유, `snapshot --review` 시트(비트·컷 띠·폰) 묘사, 글자를 가린 그림·썸네일·무음·좌우 반전 보기, 낯선 눈 서브 에이전트 P0·P1. 기록은 `03_animatic/REVIEW.md`(P0 없음).
+- [ ] 원격 렌더본을 보냈다면 아티팩트의 `sheet.jpg`·`qc.txt`를 먼저 보고 HTML 미리보기와 같음을 확인했다. 다르면 보내지 않았다.
 - [ ] `git status`에 음원 파일이 없다.
 - [ ] 점수를 매기거나 "좋다"고 스스로 인증하지 않았다.
 
